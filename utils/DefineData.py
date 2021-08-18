@@ -8,6 +8,8 @@ class NodeState(IntEnum):
 
 
 WINDOWS_SIZE= 5
+FAULT_FLAG = "faultFlag"
+DEBUG = True
 
 # 定义固定的文件名字
 FDR = 0.01
