@@ -3,6 +3,8 @@
 如：
 1. 将多个相同类型的DataFrame合并成一个
 2. 将一个大的DataFrame根据某个特征值分割成多个
+3. 按照列名对DataFrame的每一列进行调换顺序等
+
 
 """
 
@@ -11,7 +13,7 @@ from utils.DefineData import *
 import pandas as pd
 
 """
-函数功能：合并多个DataFrame 返回值是一个合并之后的DataFrame
+函数功能：合并多个DataFrame 返回值是一个合并之后的DataFrame 上下合并
 函数参数：预期是一个含有DataFrame的列表 
 返回值： 包含各个DataFrame的一个大的DataFrame , 第二个参数表示是否运行出错 True 代表出错  False代表没错
 """
@@ -27,8 +29,9 @@ def mergeDataFrames(lpds: List[pd.DataFrame]) -> (pd.DataFrame, bool):
 
 
 """
-函数功能： 判断多个DataFrame是否含有
+函数功能： 判断多个DataFrame是否含有相同的列表
 函数参数：预期是一个含有DataFrame的列表 
+函数参数：True 含有相同的列名     False 不含有相同的列名
 """
 
 
@@ -84,3 +87,62 @@ def divedeDataFrameByFaultFlag(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], bo
 
     # 返回
     return resDict, False
+
+
+
+'''
+# - 功能介绍
+# 将dataFrame中的一个名字为lable的列名字移动到最前面
+# - 参数介绍
+# 1. dataFrame是要移动的表格信息
+# 2. 要修改的标签，如果没有这个标签，就不移动
+# - 返回值介绍
+# 放回第一个参数这个表格
+'''
+
+
+def PushLabelToFirst(dataFrame: pd.DataFrame, label: str) -> pd.DataFrame:
+    columnsList = list(dataFrame.columns)
+    if label not in columnsList:
+        return dataFrame
+    columnsList.insert(0, columnsList.pop(columnsList.index(label)))
+    dataFrame = dataFrame[columnsList]
+    return dataFrame
+
+
+'''
+# - 功能介绍
+# 将dataFrame中的一个名字为lable的列名字移动到最后面
+# - 参数介绍
+# 1. dataFrame是要移动的表格信息
+# 2. 要修改的标签，如果没有这个标签，就不移动
+# - 返回值介绍
+# 放回第一个参数这个表格
+'''
+
+
+def PushLabelToEnd(dataFrame: pd.DataFrame, label: str) -> pd.DataFrame:
+    columnsList = list(dataFrame.columns)
+    if label not in columnsList:
+        return dataFrame
+    columnsList.append(columnsList.pop(columnsList.index(label)))
+    dataFrame = dataFrame[columnsList]
+    return dataFrame
+
+
+'''
+-  功能介绍：
+   用来一个DataFrame的列按照列名重新排序，使其列按照一定顺序排列
+-  参数介绍：
+   1. dataFrame是我们要排序的表
+   2. reverse=False表示列名是按照字符串从小到大排列，True表示从大到小
+-  返回值介绍：
+   1. 表示排序好得到的DataFrame
+'''
+
+
+def SortLabels(dataFrame: pd.DataFrame, reverse=False) -> pd.DataFrame:
+    columnsList = list(dataFrame.columns)
+    columnsList.sort(reverse=reverse)
+    dataFrame = dataFrame[columnsList]
+    return dataFrame

@@ -27,8 +27,6 @@ from utils.DefineData import *
 
 
 def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.DataFrame, bool]:
-    # 在这个表格中需要排除某些列，比如时间，标识位等
-    exclude_name = ["time", FAULT_FLAG]
     # 1个特征会生成很多新的特征, 下面是这个特征需要添加的后缀名
     suffix_name = ["_min", "_max", "_percentage_5", "_percentage_25", "_percentage_50", "_percentage_75",
                    "_percentage_95", "_mean", "_var", "_std", "_skewness", "_kurtosis"]
@@ -50,7 +48,7 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
 
     for featurename in featurePD.columns.array:
         # 先去除掉要排除的特征值
-        if featurename in exclude_name:
+        if featurename in EXCLUDE_FEATURE_NAME:
             continue
 
         # 特征名字featurename
