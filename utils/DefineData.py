@@ -11,7 +11,7 @@ WINDOWS_SIZE= 5
 FAULT_FLAG = "faultFlag"
 TIME_COLUMN_NAME = "time"
 
-DEBUG = True
+DEBUG = False
 
 # 定义固定的文件名字
 FDR = 0.01

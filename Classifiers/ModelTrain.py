@@ -40,7 +40,6 @@ def model_train(df, model_type):
     # Test the accuracy of the model
     y_eval = model.predict(x_test)
     accuracy = metrics.accuracy_score(y_test, y_eval)
-    print('Accuracy of %s classifier: %f' % (model_type, accuracy))
 
     # Save model
     joblib.dump(model, '%s/%s.pkl' % (SaveModelPath ,model_type))
@@ -51,3 +50,4 @@ def model_train(df, model_type):
     f = open('%s/header.txt' % SaveModelPath, 'w')
     f.write('\n'.join(header))
     f.close()
+    return accuracy
