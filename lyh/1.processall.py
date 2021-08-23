@@ -14,15 +14,14 @@ from utils.FeatureExtraction import featureExtraction
 from utils.FeatureSelection import getUsefulFeatureFromAllDataFrames
 
 AllCSVFiles = [
-    "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_single\\wrfrst_e5=43_server.csv"
-    ""
-    "",
-    ""
+    "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_single\\wrfrst_e5-43_server.csv",
+    "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.16-1\\wrf_rst_e5-43_server.csv",
+    "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_server.csv"
 ]
 
 
 if __name__ == "__main__":
-    # 1. 将所有的数据进行合并
+    # 1. 将所有的数据进行合并1
     allPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
     mergedPd, err = mergeDataFrames(allPds)
     if err:
