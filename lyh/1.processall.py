@@ -60,11 +60,12 @@ if __name__ == "__main__":
 
     # 4. 得到一个经过特征选择之后的包含总体的表格
     print("4. 特征选择中")
-    allUserfulePD, err = getUsefulFeatureFromAllDataFrames(normalpd=normalPD, abnormalpd=abnormalPD)
+    allUserfulePD, err  = getUsefulFeatureFromAllDataFrames(normalpd=normalPD, abnormalpd=abnormalPD)
     if err:
         print("特征选择失败")
         exit(1)
     print("特征选择之后shape：", allUserfulePD.shape)
+    allUserfulePD.to_csv("tmp/4_UsefulFeatures.csv", index=False)
 
     # 5. 模型训练
     print("5. 模型训练中")

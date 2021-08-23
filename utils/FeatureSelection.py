@@ -82,7 +82,8 @@ def getFeatureNameByBenjamini_Yekutiel(dictPvalues: Dict[str, float]) -> tuple[d
 """
 
 
-def getUsefulFeatureFromAllDataFrames(normalpd: pd.DataFrame, abnormalpd: List[pd.DataFrame]) -> (pd.DataFrame, bool):
+def getUsefulFeatureFromAllDataFrames(normalpd: pd.DataFrame, abnormalpd: List[pd.DataFrame]) -> Tuple[
+    pd.DataFrame, bool]:
     allPdList = [normalpd]
     allPdList.extend(abnormalpd)
 
