@@ -64,14 +64,14 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
             # 获得特征值中对应滑动窗口大小的数值。
 
             beginLine, endLine = getnext(beginLine)
-            print(beginLine, endLine)
+            # print(beginLine, endLine)
             # 获得对应一列的数据
             calSerials = featurePD.iloc[beginLine:endLine][featurename]
-            print(list(calSerials))
+            # print(list(calSerials))
 
             newfeatureName = featurename + "_min"
             myColumeNamesDict[newfeatureName].append(calSerials.min())
-            print(newfeatureName, calSerials.min())
+            # print(newfeatureName, calSerials.min())
 
             newfeatureName = featurename + "_max"
             myColumeNamesDict[newfeatureName].append(calSerials.max())
