@@ -146,3 +146,18 @@ def SortLabels(dataFrame: pd.DataFrame, reverse=False) -> pd.DataFrame:
     columnsList.sort(reverse=reverse)
     dataFrame = dataFrame[columnsList]
     return dataFrame
+
+
+"""
+-   功能介绍：
+    用来判断某个PD里面是否有控制，用于检测bug
+-   参数介绍：
+    
+"""
+
+def isEmptyInDataFrame(targetDF: pd.DataFrame) -> bool:
+    tSeries = targetDF.isnull().any()
+    isHaveBool = [i for i in tSeries if i]
+    if len(isHaveBool) == 0:
+        return False
+    return True

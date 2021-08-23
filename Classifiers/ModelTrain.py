@@ -4,6 +4,7 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn import metrics
 import joblib
 from utils.DefineData import *
+import os
 
 
 def model_train(df, model_type):
@@ -41,13 +42,16 @@ def model_train(df, model_type):
     y_eval = model.predict(x_test)
     accuracy = metrics.accuracy_score(y_test, y_eval)
 
+    if not os.path.exists(SaveModelPath):
+        os.mkdir(SaveModelPath)
+
     # Save model
-    joblib.dump(model, '%s/%s.pkl' % (SaveModelPath ,model_type))
+    joblib.dump(model, '%s\\%s.pkl' % (SaveModelPath, model_type))
 
     # Save the header without label
     header = list(df.columns)
     header.remove(FAULT_FLAG)
-    f = open('%s/header.txt' % SaveModelPath, 'w')
+    f = open('%s\\header.txt' % SaveModelPath, 'w')
     f.write('\n'.join(header))
     f.close()
     return accuracy

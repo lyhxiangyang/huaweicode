@@ -3,9 +3,11 @@
 比如：
 1. 将滑动窗口设置，然后提取最小值、最大值等数值
 """
-from typing import Tuple
+from typing import Tuple, Union
 
 import pandas as pd
+
+from utils.DataFrameOperation import isEmptyInDataFrame
 from utils.DefineData import *
 
 """
@@ -26,7 +28,8 @@ from utils.DefineData import *
 """
 
 
-def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.DataFrame, bool]:
+def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Union[
+    tuple[None, bool], tuple[Union[pd.DataFrame, pd.Series], bool]]:
     # 1个特征会生成很多新的特征, 下面是这个特征需要添加的后缀名
     suffix_name = ["_min", "_max", "_percentage_5", "_percentage_25", "_percentage_50", "_percentage_75",
                    "_percentage_95", "_mean", "_var", "_std", "_skewness", "_kurtosis"]
@@ -40,7 +43,7 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
     def getnext(beginpos: int) -> Tuple[int, int]:
         endpos = beginpos + windowSize
         if endpos > len(featurePD):
-            endpos = featurePD
+            endpos = len(featurePD)
         return beginpos, endpos
 
     # 保存结果的返回值
@@ -60,69 +63,109 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
 
         beginLine = 0
         # 接下来按照滑动窗口大小，将对应的特征值计算一遍
-        while beginLine < len(featurePD):
+        while beginLine + windowSize <= len(featurePD):
             # 获得特征值中对应滑动窗口大小的数值。
 
             beginLine, endLine = getnext(beginLine)
-            print(beginLine, endLine)
+            # print(beginLine, endLine)
             # 获得对应一列的数据
             calSerials = featurePD.iloc[beginLine:endLine][featurename]
-            print(list(calSerials))
+            # print(list(calSerials))
 
             newfeatureName = featurename + "_min"
-            myColumeNamesDict[newfeatureName].append(calSerials.min())
-            print(newfeatureName, calSerials.min())
+            featurevalue = calSerials.min()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            # print(newfeatureName, calSerials.min())
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_max"
-            myColumeNamesDict[newfeatureName].append(calSerials.max())
+            featurevalue = calSerials.max()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_percentage_5"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.05))
+            featurevalue = calSerials.quantile(0.05)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_percentage_25"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.25))
+            featurevalue = calSerials.quantile(0.25)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_percentage_50"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.50))
+            featurevalue = calSerials.quantile(0.5)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_percentage_75"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.75))
+            featurevalue = calSerials.quantile(0.75)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_percentage_95"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.95))
+            featurevalue = calSerials.quantile(0.95)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_var"
-            myColumeNamesDict[newfeatureName].append(calSerials.var())
+            featurevalue = calSerials.var()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_std"
-            myColumeNamesDict[newfeatureName].append(calSerials.std())
+            featurevalue = calSerials.std()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_mean"
-            myColumeNamesDict[newfeatureName].append(calSerials.mean())
+            featurevalue = calSerials.mean()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_skewness"
-            myColumeNamesDict[newfeatureName].append(calSerials.skew())
+            featurevalue = calSerials.skew()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             newfeatureName = featurename + "_kurtosis"
-            myColumeNamesDict[newfeatureName].append(calSerials.kurtosis())
+            featurevalue = calSerials.kurtosis()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                return None, True
 
             # 修改起始行号
             beginLine = endLine
         # 将搜集到的这个特征的信息保存到新的DataFrame中
-        for newfeatureName in myColumeNamesList:
-            resDataFrame[newfeatureName] = myColumeNamesDict[newfeatureName]
+        # for newfeatureName in myColumeNamesList:
+        #     resDataFrame[newfeatureName] = myColumeNamesDict[newfeatureName]
+        tDF = pd.DataFrame(myColumeNamesDict)
+        # if isEmptyInDataFrame(tDF):
+        #     print("2. DataFrame is None")
+        #     print("特征名字：", featurename)
+        #     tDF.to_csv("tmp/1.error.csv")
+        #     exit(1)
+
+        resDataFrame = pd.concat([resDataFrame, tDF], axis=1)
+        # if isEmptyInDataFrame(resDataFrame):
+        #     print("3. DataFram is None")
     # 为新的DataFrame添加标签
     resDataFrame[FAULT_FLAG] = nowFaultFlag
 
     if DEBUG:
-       print("featureExtraction".center(40, "*"))
-       print(resDataFrame.iloc[:, 0:2])
-       print("end".center(40, "*"))
+        print("featureExtraction".center(40, "*"))
+        print(resDataFrame.iloc[:, 0:2])
+        print("end".center(40, "*"))
 
     return resDataFrame, False
-
-
-
-
-
-
