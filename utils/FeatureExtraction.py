@@ -40,7 +40,7 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
     def getnext(beginpos: int) -> Tuple[int, int]:
         endpos = beginpos + windowSize
         if endpos > len(featurePD):
-            endpos = featurePD
+            endpos = len(featurePD)
         return beginpos, endpos
 
     # 保存结果的返回值
