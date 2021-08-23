@@ -109,8 +109,10 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
             # 修改起始行号
             beginLine = endLine
         # 将搜集到的这个特征的信息保存到新的DataFrame中
-        for newfeatureName in myColumeNamesList:
-            resDataFrame[newfeatureName] = myColumeNamesDict[newfeatureName]
+        # for newfeatureName in myColumeNamesList:
+        #     resDataFrame[newfeatureName] = myColumeNamesDict[newfeatureName]
+        tDF = pd.DataFrame(myColumeNamesDict)
+        resDataFrame = pd.concat([resDataFrame, tDF], axis=1)
     # 为新的DataFrame添加标签
     resDataFrame[FAULT_FLAG] = nowFaultFlag
 
