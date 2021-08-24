@@ -164,12 +164,13 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
         tDF = pd.DataFrame(myColumeNamesDict)
         if isEmptyInDataFrame(tDF):
             print("2. DataFrame is None")
+            tDF.to_csv("tmp/1.error.csv")
             exit(1)
 
         resDataFrame = pd.concat([resDataFrame, tDF], axis=1)
         print("resDataFrame shape is :{}".format(resDataFrame.shape))
         if isEmptyInDataFrame(resDataFrame):
-            print("3. Data")
+            print("3. DataFram is None")
     # 为新的DataFrame添加标签
     resDataFrame[FAULT_FLAG] = nowFaultFlag
 
