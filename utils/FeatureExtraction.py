@@ -62,11 +62,11 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
 
         beginLine = 0
         # 接下来按照滑动窗口大小，将对应的特征值计算一遍
-        while beginLine < len(featurePD):
+        while beginLine + windowSize <= len(featurePD):
             # 获得特征值中对应滑动窗口大小的数值。
 
             beginLine, endLine = getnext(beginLine)
-            print(beginLine, endLine)
+            # print(beginLine, endLine)
             # 获得对应一列的数据
             calSerials = featurePD.iloc[beginLine:endLine][featurename]
             # print(list(calSerials))
