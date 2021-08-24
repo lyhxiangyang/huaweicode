@@ -64,10 +64,10 @@ if __name__ == "__main__":
         if err:
             print("abnormal 特征提取失败")
             exit(1)
+        print("{}: {}".format(i, tpd.shape))
         if isEmptyInDataFrame(tpd):
             print("数据为空")
             exit(1)
-        print("{}: {}".format(i, tpd.shape))
         abnormalPD.append(tpd)
 
     # 4. 得到一个经过特征选择之后的包含总体的表格
