@@ -42,12 +42,12 @@ def model_train(df, model_type):
     accuracy = metrics.accuracy_score(y_test, y_eval)
 
     # Save model
-    joblib.dump(model, '%s/%s.pkl' % (SaveModelPath ,model_type))
+    joblib.dump(model, '%s\\%s.pkl' % (SaveModelPath ,model_type))
 
     # Save the header without label
     header = list(df.columns)
     header.remove(FAULT_FLAG)
-    f = open('%s/header.txt' % SaveModelPath, 'w')
+    f = open('%s\\header.txt' % SaveModelPath, 'w')
     f.write('\n'.join(header))
     f.close()
     return accuracy
