@@ -36,7 +36,7 @@ if __name__  == "__main__":
 
     # == 将文件进行保存到文件下
     savefile = os.path.join(savepath, "1.mergedpd.csv")
-    pd.DataFrame(mergedPd).to_csv(savefile)
+    mergedPd.to_csv(savefile)
 
 
 
