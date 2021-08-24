@@ -39,6 +39,6 @@ if __name__ == "__main__":
         tpd, err = featureExtraction(dictPds[i], windowSize=WINDOWS_SIZE)
         if err:
             print("{}_more.csv 特征提取失败".format(i))
-        tpd.to_csv(tpath)
+        tpd.to_csv(tpath, index=False)
 
     print("数据提取结束".center(40, "*"))

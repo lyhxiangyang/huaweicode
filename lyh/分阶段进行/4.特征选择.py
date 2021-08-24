@@ -53,7 +53,7 @@ if __name__ == "__main__":
         print("最终生成的DataFrame有空值")
         exit(1)
     tpath = os.path.join(savepath4, "alluserful.csv")
-    allUserfulePD.to_csv(tpath)
+    allUserfulePD.to_csv(tpath, index=False)
 
     print("特征选择结束".center(40, "*"))
 

@@ -30,7 +30,7 @@ if __name__ == "__main__":
     for i in dictPds:
         print("{} {}".format(i, dictPds[i].shape))
         savefilepath = os.path.join(savepath2, str(i)+".csv")
-        dictPds[i].to_csv(savefilepath)
+        dictPds[i].to_csv(savefilepath, index=False)
         if isEmptyInDataFrame(dictPds[i]):
             print("错误码{} 存在NAN值".format(i))
             exit(1)
