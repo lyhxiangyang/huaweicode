@@ -6,6 +6,8 @@
 from typing import Tuple
 
 import pandas as pd
+
+from utils.DataFrameOperation import isEmptyInDataFrame
 from utils.DefineData import *
 
 """
@@ -160,7 +162,14 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
         # for newfeatureName in myColumeNamesList:
         #     resDataFrame[newfeatureName] = myColumeNamesDict[newfeatureName]
         tDF = pd.DataFrame(myColumeNamesDict)
+        if isEmptyInDataFrame(tDF):
+            print("2. DataFrame is None")
+            exit(1)
+
         resDataFrame = pd.concat([resDataFrame, tDF], axis=1)
+        print("resDataFrame shape is :{}".format(resDataFrame.shape))
+        if isEmptyInDataFrame(resDataFrame):
+            print("3. Data")
     # 为新的DataFrame添加标签
     resDataFrame[FAULT_FLAG] = nowFaultFlag
 
