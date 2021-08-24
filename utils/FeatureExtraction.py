@@ -66,7 +66,7 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
             # 获得特征值中对应滑动窗口大小的数值。
 
             beginLine, endLine = getnext(beginLine)
-            # print(beginLine, endLine)
+            print(beginLine, endLine)
             # 获得对应一列的数据
             calSerials = featurePD.iloc[beginLine:endLine][featurename]
             # print(list(calSerials))
@@ -164,11 +164,11 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
         tDF = pd.DataFrame(myColumeNamesDict)
         if isEmptyInDataFrame(tDF):
             print("2. DataFrame is None")
+            print("特征名字：", featurename)
             tDF.to_csv("tmp/1.error.csv")
             exit(1)
 
         resDataFrame = pd.concat([resDataFrame, tDF], axis=1)
-        print("resDataFrame shape is :{}".format(resDataFrame.shape))
         if isEmptyInDataFrame(resDataFrame):
             print("3. DataFram is None")
     # 为新的DataFrame添加标签
