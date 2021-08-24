@@ -70,41 +70,89 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
             # print(list(calSerials))
 
             newfeatureName = featurename + "_min"
-            myColumeNamesDict[newfeatureName].append(calSerials.min())
+            featurevalue = calSerials.min()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
             # print(newfeatureName, calSerials.min())
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_max"
-            myColumeNamesDict[newfeatureName].append(calSerials.max())
+            featurevalue = calSerials.max()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_percentage_5"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.05))
+            featurevalue = calSerials.quantile(0.05)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_percentage_25"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.25))
+            featurevalue = calSerials.quantile(0.25)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_percentage_50"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.50))
+            featurevalue = calSerials.quantile(0.5)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_percentage_75"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.75))
+            featurevalue = calSerials.quantile(0.75)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_percentage_95"
-            myColumeNamesDict[newfeatureName].append(calSerials.quantile(0.95))
+            featurevalue = calSerials.quantile(0.95)
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_var"
-            myColumeNamesDict[newfeatureName].append(calSerials.var())
+            featurevalue = calSerials.var()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_std"
-            myColumeNamesDict[newfeatureName].append(calSerials.std())
+            featurevalue = calSerials.std()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_mean"
-            myColumeNamesDict[newfeatureName].append(calSerials.mean())
+            featurevalue = calSerials.mean()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_skewness"
-            myColumeNamesDict[newfeatureName].append(calSerials.skew())
+            featurevalue = calSerials.skew()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             newfeatureName = featurename + "_kurtosis"
-            myColumeNamesDict[newfeatureName].append(calSerials.kurtosis())
+            featurevalue = calSerials.kurtosis()
+            myColumeNamesDict[newfeatureName].append(featurevalue)
+            if newfeatureName is None:
+                print("1. values is None")
+                exit(1)
 
             # 修改起始行号
             beginLine = endLine
@@ -117,14 +165,8 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Tuple[pd.
     resDataFrame[FAULT_FLAG] = nowFaultFlag
 
     if DEBUG:
-       print("featureExtraction".center(40, "*"))
-       print(resDataFrame.iloc[:, 0:2])
-       print("end".center(40, "*"))
+        print("featureExtraction".center(40, "*"))
+        print(resDataFrame.iloc[:, 0:2])
+        print("end".center(40, "*"))
 
     return resDataFrame, False
-
-
-
-
-
-
