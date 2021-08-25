@@ -120,6 +120,7 @@ def getUsefulFeatureFromAllDataFrames(normalpd: pd.DataFrame, abnormalpd: List[p
         return None, True
 
     #  将DataFrame中的某些标签移动
+    mergedPD = utils.DataFrameOperation.SortLabels(mergedPD)
     mergedPD = utils.DataFrameOperation.PushLabelToFirst(mergedPD, label=TIME_COLUMN_NAME)
     mergedPD = utils.DataFrameOperation.PushLabelToEnd(mergedPD, label=FAULT_FLAG)
 
