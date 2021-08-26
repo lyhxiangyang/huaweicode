@@ -9,13 +9,14 @@ import os
 from utils.DataFrameOperation import mergeDataFrames, isEmptyInDataFrame
 
 AllCSVFiles = [
-    "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_single\\wrfrst_e5-43_server.csv",
-    "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.16-1\\wrf_rst_e5-43_server.csv",
-    "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_server.csv"
+    "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_multi_e5_43\\wrfrst_e5-43_server.csv",
+    "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_multi_e5_104\\wrfrst_e5-104_server.csv",
+    "D:\\HuaweiMachine\\测试数据\\wrfrst多机e5\\result\\wrf-e5-43-multi\\wrfrst_e5-43_server.csv",
+    "D:\\HuaweiMachine\\测试数据\\wrfrst多机e5\\result\\wrf-e5-104-multi\\wrfrst_e5-104_server.csv"
 ]
-
-savepath = "tmp\\1\\"
-
+os.md
+savepath = "tmp\\multi\\1\\"
+os.mak
 if __name__  == "__main__":
     print("数据合并中".center(40, "*"))
     allPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
@@ -32,7 +33,7 @@ if __name__  == "__main__":
 
     # == 将文件进行保存
     if not os.path.exists(savepath):
-        os.mkdir(savepath)
+        os.makedirs(savepath)
 
     # == 将文件进行保存到文件下
     savefile = os.path.join(savepath, "1.mergedpd.csv")

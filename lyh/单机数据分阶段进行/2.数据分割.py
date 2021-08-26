@@ -8,13 +8,13 @@ import pandas as pd
 
 from utils.DataFrameOperation import divedeDataFrameByFaultFlag, isEmptyInDataFrame
 
-savepathfile1 = "tmp\\1\\1.mergedpd.csv"
-savepath2 = "tmp\\2\\"
+savepathfile1 = "tmp\\single\\1\\1.mergedpd.csv"
+savepath2 = "tmp\\single\\2\\"
 
 if __name__ == "__main__":
 
     if not os.path.exists(savepath2):
-        os.mkdir(savepath2)
+        os.makedirs(savepath2)
 
 
     # == 将步骤一种的数据进行读取

@@ -11,14 +11,14 @@ from utils.DataFrameOperation import isEmptyInDataFrame
 from utils.DefineData import WINDOWS_SIZE
 from utils.FeatureExtraction import featureExtraction
 
-savepath2 = "tmp\\2\\"
-savepath3= "tmp\\3\\"
+savepath2 = "tmp\\single\\2\\"
+savepath3= "tmp\\single\\3\\"
 
 if __name__ == "__main__":
     print("数据提取".center(40, "*"))
 
     if not os.path.exists(savepath3):
-        os.mkdir(savepath3)
+        os.makedirs(savepath3)
 
     # == 读取步骤2中产生的所有列表 产生一个dictPds
     lfiles = os.listdir(savepath2)

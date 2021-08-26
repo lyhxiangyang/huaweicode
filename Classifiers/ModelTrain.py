@@ -7,7 +7,7 @@ from utils.DefineData import *
 import os
 
 
-def model_train(df, model_type):
+def model_train(df, model_type, saved_model_path = SaveModelPath):
     """
     Train the model of selected type
     :param df: Dataframe of selected features and labels
@@ -22,10 +22,10 @@ def model_train(df, model_type):
     # df = df[header]
 
     model = DecisionTreeClassifier(random_state=0)
-    if model_type == 'random forest':
+    if model_type == 'random_forest':
         # Numbers of decision trees is 100
         model = RandomForestClassifier(n_estimators=100, random_state=0)
-    elif model_type == 'adaptive boosting':
+    elif model_type == 'adaptive_boosting':
         # Numbers of decision trees is 100 and the maximum tree depth is 5
         estimator_cart = DecisionTreeClassifier(max_depth=5)
         model = AdaBoostClassifier(base_estimator=estimator_cart, n_estimators=100, random_state=0)
@@ -42,16 +42,16 @@ def model_train(df, model_type):
     y_eval = model.predict(x_test)
     accuracy = metrics.accuracy_score(y_test, y_eval)
 
-    if not os.path.exists(SaveModelPath):
-        os.mkdir(SaveModelPath)
+    if not os.path.exists(saved_model_path):
+        os.mkdir(saved_model_path)
 
     # Save model
-    joblib.dump(model, '%s\\%s.pkl' % (SaveModelPath, model_type))
+    joblib.dump(model, '%s\\%s.pkl' % (saved_model_path, model_type))
 
     # Save the header without label
     header = list(df.columns)
     header.remove(FAULT_FLAG)
-    f = open('%s\\header.txt' % SaveModelPath, 'w')
+    f = open('%s\\header.txt' % saved_model_path, 'w')
     f.write('\n'.join(header))
     f.close()
     return accuracy
