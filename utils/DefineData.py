@@ -24,4 +24,4 @@ EXCLUDE_FEATURE_NAME = ["time", FAULT_FLAG]
 
 # 机器学习用到的常数
 # 模型类型
-MODEL_TYPE = ['decision tree', 'random forest', 'adaptive boosting']
+MODEL_TYPE = ['decision_tree', 'random_forest', 'adaptive_boosting']

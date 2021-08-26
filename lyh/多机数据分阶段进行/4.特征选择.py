@@ -10,15 +10,15 @@ import pandas as pd
 from utils.DataFrameOperation import isEmptyInDataFrame
 from utils.FeatureSelection import getUsefulFeatureFromAllDataFrames
 
-savepath3 = "tmp\\3\\"
-savepath4 = "tmp\\4\\"
+savepath3 = "tmp\\multi\\3\\"
+savepath4 = "tmp\\multi\\4\\"
 
 if __name__ == "__main__":
 
     print("特征选择".center(40, "*"))
 
     if not os.path.exists(savepath4):
-        os.mkdir(savepath4)
+        os.makedirs(savepath4)
 
 # == 读取步骤2中产生的所有列表 产生一个dictPds
     lfiles = os.listdir(savepath3)

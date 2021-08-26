@@ -89,7 +89,6 @@ def divedeDataFrameByFaultFlag(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], bo
     return resDict, False
 
 
-
 '''
 # - 功能介绍
 # 将dataFrame中的一个名字为lable的列名字移动到最前面
@@ -155,8 +154,9 @@ def SortLabels(dataFrame: pd.DataFrame, reverse=False) -> pd.DataFrame:
     
 """
 
+
 def isEmptyInDataFrame(targetDF: pd.DataFrame) -> bool:
-    tSeries = targetDF.isnull().any()
+    tSeries: pd.Series = targetDF.isnull().any()
     isHaveBool = [i for i in tSeries if i]
     if len(isHaveBool) == 0:
         return False
