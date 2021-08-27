@@ -72,9 +72,9 @@ def divedeDataFrameByFaultFlag(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], bo
         # 第i行的获取
         df_iline = df.iloc[i].copy()
         # 错误码
-        iFault_Flag_Number = df_iline[FAULT_FLAG] // 10
+        iFault_Flag_Number = (df_iline[FAULT_FLAG] // 10) * 10
         # 修改FAULT_FLAG值
-        df_iline[FAULT_FLAG] = iFault_Flag_Number * 10
+        df_iline[FAULT_FLAG] = iFault_Flag_Number
         if iFault_Flag_Number not in resDict.keys():
             resDict[iFault_Flag_Number] = pd.DataFrame(columns=df.columns.array)
         # 在对应字典中添加一行, 忽略index 逐步增加
