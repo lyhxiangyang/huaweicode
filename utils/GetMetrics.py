@@ -30,7 +30,7 @@ def get_metrics(reallist: List, prelist: List, label: int):
     rightnumber = 0
     for i in range(len(reallist)):
         if reallist[i] == prelist[i]:
-            rightnumber += 0
+            rightnumber += 1
         if prelist[i] == label:
             if reallist[i] == prelist[i]:
                 # 正-正

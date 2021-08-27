@@ -11,6 +11,8 @@ from Classifiers.ModelPred import select_and_pred
 from utils.DefineData import FAULT_FLAG, MODEL_TYPE, SaveModelPath
 
 # 包含各种特征的合并文件
+from utils.GetMetrics import get_metrics
+
 prefilepath = "tmp\\multi\\4\\alluserful.csv"
 # 模型文件
 modelpath = os.path.join(SaveModelPath, "2")
@@ -38,7 +40,9 @@ if __name__ == "__main__":
         prelist = select_and_pred(predpd, model_type=itype, saved_model_path=modelpath)
         anumber = len(prelist)
         rightnumber = len([i for i in range(0, len(prelist)) if prelist[i] == reallist[i]])
-        print("一共预测{}数据，其中预测正确{}数量, 正确率{}".format(anumber, rightnumber, rightnumber / anumber))
+        print("{}: 一共预测{}数据，其中预测正确{}数量, 正确率{}".format(itype, anumber, rightnumber, rightnumber / anumber))
+        medic = get_metrics(reallist, prelist, 0)
+        print(medic)
         tpd = getComparePD(reallist=reallist, prelist=prelist)
         # 生成准确的模型统计信息
         tpd.to_csv(os.path.join("tmp", itype+".csv"))

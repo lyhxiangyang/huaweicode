@@ -1,3 +1,5 @@
+from typing import List
+
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
@@ -6,6 +8,13 @@ import joblib
 from utils.DefineData import *
 import os
 
+TestRealLabels: List
+TestPreLabels: List
+
+def getTestRealLabels() -> List:
+    return TestRealLabels
+def getTestPreLabels() -> List:
+    return TestPreLabels
 
 def model_train(df, model_type, saved_model_path = SaveModelPath):
     """
@@ -40,6 +49,12 @@ def model_train(df, model_type, saved_model_path = SaveModelPath):
 
     # Test the accuracy of the model
     y_eval = model.predict(x_test)
+
+    global TestRealLabels
+    global TestPreLabels
+    TestRealLabels = list(y_test)
+    TestPreLabels = list(y_eval)
+
     accuracy = metrics.accuracy_score(y_test, y_eval)
 
     if not os.path.exists(saved_model_path):

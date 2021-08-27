@@ -63,15 +63,20 @@ def divedeDataFrameByFaultFlag(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], bo
     sFault_Flag_Colums = sorted(list(set(df[FAULT_FLAG])))
 
     # 重复n个空的DataFrame， 方便使用zip直接生成一个Dict结构的数据结构
-    repeatEmptyDataFrames = [pd.DataFrame(columns=df.columns.array) for i in range(0, len(sFault_Flag_Colums))]
-    resDict = dict(zip(sFault_Flag_Colums, repeatEmptyDataFrames))
+    # repeatEmptyDataFrames = [pd.DataFrame(columns=df.columns.array) for i in range(0, len(sFault_Flag_Colums))]
+    # resDict = dict(zip(sFault_Flag_Colums, repeatEmptyDataFrames))
+    resDict: Dict = {}
 
     # 遍历DataFrame根据 Fault_Flag这一行来分开
     for i in range(0, len(df)):
         # 第i行的获取
-        df_iline = df.iloc[i]
+        df_iline = df.iloc[i].copy()
         # 错误码
-        iFault_Flag_Number = df_iline[FAULT_FLAG]
+        iFault_Flag_Number = (df_iline[FAULT_FLAG] // 10) * 10
+        # 修改FAULT_FLAG值
+        df_iline[FAULT_FLAG] = iFault_Flag_Number
+        if iFault_Flag_Number not in resDict.keys():
+            resDict[iFault_Flag_Number] = pd.DataFrame(columns=df.columns.array)
         # 在对应字典中添加一行, 忽略index 逐步增加
         resDict[iFault_Flag_Number] = resDict[iFault_Flag_Number].append(df_iline, ignore_index=True)
 

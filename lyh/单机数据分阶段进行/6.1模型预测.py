@@ -16,6 +16,7 @@ from utils.DataFrameOperation import mergeDataFrames, divedeDataFrameByFaultFlag
 from utils.DefineData import WINDOWS_SIZE, MODEL_TYPE
 from utils.FeatureExtraction import featureExtraction
 from utils.FeatureSelection import getUsefulFeatureFromAllDataFrames
+from utils.GetMetrics import get_metrics
 
 """
 使用测试数据中的单机server来预测《数据修订版》中的单机数据
@@ -28,6 +29,7 @@ AllCSVFiles = [
     "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-3km-单机数据整合版\\wrf_3km_160_server.csv",
     "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-9km-单机数据整合版\\wrf_9km_160_server.csv",
 ]
+saverespath = "tmp\\informations"
 
 if __name__ == "__main__":
     ####################################################################################################################
@@ -71,7 +73,7 @@ if __name__ == "__main__":
 
     abnormalPD = []
     # 为了选择模型中存在的flag
-    tpath = "tmp\\4\\alluserful.csv"
+    tpath = "tmp\\single\\4\\alluserful.csv"
     tpd = pd.read_csv(tpath)
     ts = set(tpd[FAULT_FLAG])
 
@@ -96,7 +98,7 @@ if __name__ == "__main__":
     dfs = [normalPD]
     dfs.extend(abnormalPD)
     mergedPd, err = mergeDataFrames(dfs)
-    mergedPd:pd.DataFrame
+    mergedPd: pd.DataFrame
     if err:
         print("步骤4中数据合并失败")
         exit(1)
@@ -106,38 +108,29 @@ if __name__ == "__main__":
     ####################################################################################################################
     print("调用1中的模型进行预测".center(40, "*"))
     reallist = mergedPd[FAULT_FLAG]
+    #  包含准确率、召回率、精确率以及对应模型的的字典
+    tDic = {}
     for itype in MODEL_TYPE:
         prelist = select_and_pred(mergedPd, model_type=itype, saved_model_path=modelpath)
         anumber = len(prelist)
         rightnumber = len([i for i in range(0, len(prelist)) if prelist[i] == reallist[i]])
-        print("一共预测{}数据，其中预测正确{}数量, 正确率{}".format(anumber, rightnumber, rightnumber / anumber))
+        print("{}: 一共预测{}数据，其中预测正确{}数量, 正确率{}".format(itype, anumber, rightnumber, rightnumber / anumber))
+        tallFault = sorted(list(set(reallist)))
+        for i in tallFault:
+            if i not in tDic.keys():
+                tDic[i] = {}
+            tmetrics = get_metrics(reallist, prelist, i)
+            # 将数据进行保存
+            tDic[i]["accuracy_" + itype] = tmetrics["accuracy"]
+            tDic[i]["precision_" + itype] = tmetrics["precision"]
+            tDic[i]["recall_" + itype] = tmetrics["recall"]
 
+    # 将数据进行输出并保存
+    if not os.path.exists(saverespath):
+        os.makedirs(saverespath)
+    itpd = pd.DataFrame(data=tDic).T
+    print(itpd)
+    itpd.to_csv(os.path.join(saverespath, "单机6_1预测数据统计信息.csv"))
+    print("=========================")
+    print("输出信息->", os.path.join(saverespath, "单机6_1预测数据统计信息.csv"))
     print("模型预测结束")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
