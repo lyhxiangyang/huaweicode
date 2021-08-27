@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     abnormalPD = []
     # 为了选择模型中存在的flag
-    tpath = "tmp\\4\\alluserful.csv"
+    tpath = "tmp\\single\\4\\alluserful.csv"
     tpd = pd.read_csv(tpath)
     ts = set(tpd[FAULT_FLAG])
 
