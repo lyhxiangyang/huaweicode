@@ -15,7 +15,7 @@ def get_metrics(x, y, label):
             else:
                 false_pos += 1
         else:
-            if x[i] == y[i]:
+            if x[i] != label:
                 true_neg += 1
             else:
                 false_neg += 1
