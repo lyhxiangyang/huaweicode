@@ -15,13 +15,13 @@ def get_metrics(x, y, label):
             else:
                 false_pos += 1
         else:
-            if x[i] != label:
+            if y[i] != label:
                 true_neg += 1
             else:
                 false_neg += 1
-    metrics = {'tp': true_pos, 'tn': true_neg, 'fp': false_pos, 'fn': false_neg}
+    precision = float('nan') if true_pos + false_pos == 0 else true_pos / (true_pos + false_pos)
+    recall = float('nan') if true_pos + false_neg == 0 else true_pos / (true_pos + false_neg)
+    accuracy = (true_pos + true_neg) / len(x)
+    metrics = {'tp': true_pos, 'tn': true_neg, 'fp': false_pos, 'fn': false_neg, 'precision': precision, 'recall': recall, 'accuracy': accuracy }
     return metrics
 
-    # precision = float('nan') if true_pos + false_pos == 0 else true_pos / (true_pos + false_pos)
-    # recall = float('nan') if true_pos + false_neg == 0 else true_pos / (true_pos + false_neg)
-    # accuracy = (true_pos + true_neg) / len(x)
