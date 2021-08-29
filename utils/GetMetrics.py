@@ -14,7 +14,6 @@ precision: TP / (TP + FP)   正确预测正样本 占 全部预测正样本的�
 recall: TP / (TP + FN) 正确预测正样本 占 正样本总数的比值           召回率
 accuracy: 准确率(accuracy) = 预测对的/所有 = (TP+TN)/(TP+FN+FP+TN) = 70%
 
-
 """
 
 
@@ -28,21 +27,27 @@ def get_metrics(reallist: List, prelist: List, label: int):
     """
     true_pos, true_neg = 0, 0
     false_pos, false_neg = 0, 0
+    rightnumber = 0
     for i in range(len(reallist)):
+        if reallist[i] == prelist[i]:
+            rightnumber += 0
         if prelist[i] == label:
             if reallist[i] == prelist[i]:
+                # 正-正
                 true_pos += 1
             else:
+                # 负-正
                 false_pos += 1
         else:
             if reallist[i] != label:
+                # 负-负
                 true_neg += 1
             else:
+                # 正-负
                 false_neg += 1
     precision = float('nan') if true_pos + false_pos == 0 else true_pos / (true_pos + false_pos)
     recall = float('nan') if true_pos + false_neg == 0 else true_pos / (true_pos + false_neg)
-    accuracy = (true_pos + true_neg) / len(reallist)
+    accuracy = rightnumber / len(reallist)
     metrics = dict(tp=true_pos, tn=true_neg, fp=false_pos, fn=false_neg, precision=precision, recall=recall,
                    accuracy=accuracy)
     return metrics
-
