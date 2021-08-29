@@ -34,11 +34,11 @@ if __name__ == "__main__":
         dictPds[i] = tPd
 
     for i in dictPds.keys():
-        print("错误码{} 提取中".format(i))
         tpath = os.path.join(savepath3, "{}.csv".format(i))
         tpd, err = featureExtraction(dictPds[i], windowSize=WINDOWS_SIZE)
         if err:
             print("{}_more.csv 特征提取失败".format(i))
+        print("错误码{} 提取中 {}".format(i, tpd.shape))
         tpd.to_csv(tpath, index=False)
 
     print("数据提取结束".center(40, "*"))

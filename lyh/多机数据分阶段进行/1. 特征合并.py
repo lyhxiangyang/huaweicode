@@ -14,9 +14,7 @@ AllCSVFiles = [
     "D:\\HuaweiMachine\\测试数据\\wrfrst多机e5\\result\\wrf-e5-43-multi\\wrfrst_e5-43_server.csv",
     "D:\\HuaweiMachine\\测试数据\\wrfrst多机e5\\result\\wrf-e5-104-multi\\wrfrst_e5-104_server.csv"
 ]
-os.md
 savepath = "tmp\\multi\\1\\"
-os.mak
 if __name__  == "__main__":
     print("数据合并中".center(40, "*"))
     allPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]

@@ -7,7 +7,7 @@ import os
 import pandas as pd
 
 from Classifiers.ModelPred import select_and_pred
-from Classifiers.ModelTrain import model_train, TestRealLabels, TestPreLabels, getTestRealLabels, getTestPreLabels
+from Classifiers.ModelTrain import model_train, getTestRealLabels, getTestPreLabels
 from utils.DefineData import MODEL_TYPE, SaveModelPath
 from utils.GetMetrics import get_metrics
 
