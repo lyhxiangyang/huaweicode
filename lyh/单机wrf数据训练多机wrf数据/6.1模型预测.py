@@ -1,10 +1,11 @@
 """
 这个文件的主要作用是指定新的文件，然后进程步骤1，2，3，4，5
+使用的模型是单机版训练出来的模型，
 输入： 指定文件
 输出：模型文件
 """
 import os
-from typing import Dict, List
+from typing import Dict
 
 from Classifiers.ModelPred import select_and_pred
 from utils.DefineData import SaveModelPath, FAULT_FLAG
@@ -30,47 +31,19 @@ AllCSVFiles = [
     "D:\\HuaweiMachine\\数据修订版\\多机整合数据\\wrf-3km-多机数据整合版\\wrf_3km_160_server.csv",
     "D:\\HuaweiMachine\\数据修订版\\多机整合数据\\wrf-3km-多机数据整合版\\wrf_3km_191_server.csv",
     "D:\\HuaweiMachine\\数据修订版\\多机整合数据\\wrf-9km-多机数据整合版\\wrf_9km_160_server.csv",
-    "D:\\HuaweiMachine\\数据修订版\\多机整合数据\\wrf-9km-多机数据整合版\\wrf_9km_191_server.csv",
+    "D:\\HuaweiMachine\\数据修订版\\多机整合数据\\wrf-9km-多机数据整合版\\wrf_9km_191_server.csv"
 ]
 saverespath = "tmp\\informations"
 
-
-
-
-def getComparePD(reallist: List, prelist: List) -> pd.DataFrame:
-    resDict = {}
-    allnumber = "allnumber"
-    rightnumber = "rightnumber"
-    wrongnumber = "wrongnumber"
-    for i, realflag in enumerate(reallist):
-        if realflag not in resDict.keys():
-            resDict[realflag] = {allnumber: 0, rightnumber: 0, wrongnumber: 0}
-        resDict[realflag][allnumber] += 1
-        if reallist[i] == prelist[i]:
-            resDict[realflag][rightnumber] += 1
-        else:
-            resDict[realflag][wrongnumber] += 1
-    return pd.DataFrame(resDict).T
-
-
-
-
 if __name__ == "__main__":
-
-    # 判断一些必须的模型是否存在
-    if os.path.exists(modelpath):
-        print("模型不存在， 请检查之后重新运行")
-        exit(1)
-
-
     ####################################################################################################################
     print("1. 数据合并进行中".center(40, "*"))
     allPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
 
     # 进行判空操作
-    for i, ipd in enumerate(allPds):
+    for ipd in allPds:
         if isEmptyInDataFrame(ipd):
-            print("第{}个数据有空: {}".format(i, ipd.shape))
+            print("数据有空")
             exit(1)
 
     # 合并操作
@@ -129,7 +102,7 @@ if __name__ == "__main__":
     dfs = [normalPD]
     dfs.extend(abnormalPD)
     mergedPd, err = mergeDataFrames(dfs)
-    mergedPd:pd.DataFrame
+    mergedPd: pd.DataFrame
     if err:
         print("步骤4中数据合并失败")
         exit(1)
@@ -138,17 +111,14 @@ if __name__ == "__main__":
 
     ####################################################################################################################
     print("调用1中的模型进行预测".center(40, "*"))
-    tDic = {}
     reallist = mergedPd[FAULT_FLAG]
+    #  包含准确率、召回率、精确率以及对应模型的的字典
+    tDic = {}
     for itype in MODEL_TYPE:
         prelist = select_and_pred(mergedPd, model_type=itype, saved_model_path=modelpath)
         anumber = len(prelist)
         rightnumber = len([i for i in range(0, len(prelist)) if prelist[i] == reallist[i]])
         print("{}: 一共预测{}数据，其中预测正确{}数量, 正确率{}".format(itype, anumber, rightnumber, rightnumber / anumber))
-        tpd = getComparePD(reallist=reallist, prelist=prelist)
-        # 生成准确的模型统计信息
-        tpd.to_csv(os.path.join("tmp", itype+".csv"))
-
         tallFault = sorted(list(set(reallist)))
         for i in tallFault:
             if i not in tDic.keys():
@@ -159,43 +129,12 @@ if __name__ == "__main__":
             tDic[i]["precision_" + itype] = tmetrics["precision"]
             tDic[i]["recall_" + itype] = tmetrics["recall"]
 
-    # 将数据进行保存
+    # 将数据进行输出并保存
     if not os.path.exists(saverespath):
         os.makedirs(saverespath)
     itpd = pd.DataFrame(data=tDic).T
     print(itpd)
-    itpd.to_csv(os.path.join(saverespath, "多机6_1预测数据.csv"))
+    itpd.to_csv(os.path.join(saverespath, "单机模型预测多机数据统计信息.csv"))
     print("=========================")
-
-    print("输出信息->", os.path.join(saverespath, "多机6_1预测数据.csv"))
-
-    ####################################################################################################################
+    print("输出信息->", os.path.join(saverespath, "单机模型预测多机数据统计信息.csv"))
     print("模型预测结束")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
