@@ -19,7 +19,7 @@ from statsmodels.stats.multitest import multipletests
 
 
 def getPvalueFromTwoDataFrame(dataFrame1: pd.DataFrame, dataFrame2: pd.DataFrame) -> Union[
-    tuple[None, bool], tuple[dict[Any, float], bool]]:
+    Tuple[None, bool],Tuple[Dict[Any, float], bool]]:
     # 首先保证两个数据
     if not utils.DataFrameOperation.judgeSameFrames([dataFrame1, dataFrame2]):
         return None, True
@@ -58,7 +58,7 @@ def getCDFPvalueFromTwoColumns(l1: List[float], l2: List[float]) -> float:
 """
 
 
-def getFeatureNameByBenjamini_Yekutiel(dictPvalues: Dict[str, float]) -> tuple[dict[str, Any], dict[str, Any]]:
+def getFeatureNameByBenjamini_Yekutiel(dictPvalues: Dict[str, float]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     lfeaturenames = list(dictPvalues.keys())
     lpvalues = list(dictPvalues.values())
     isReject, pvals_corrected, _, _ = multipletests(lpvalues, alpha=FDR, method='fdr_by', is_sorted=False,
@@ -83,7 +83,7 @@ def getFeatureNameByBenjamini_Yekutiel(dictPvalues: Dict[str, float]) -> tuple[d
 
 
 def getUsefulFeatureFromAllDataFrames(normalpd: pd.DataFrame, abnormalpd: List[pd.DataFrame]) -> Union[
-    tuple[None, bool], tuple[pd.DataFrame, bool]]:
+    Tuple[None, bool], Tuple[pd.DataFrame, bool]]:
     allPdList = [normalpd]
     allPdList.extend(abnormalpd)
 

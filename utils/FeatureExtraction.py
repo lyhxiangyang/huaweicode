@@ -29,7 +29,7 @@ from utils.DefineData import *
 
 
 def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Union[
-    tuple[None, bool], tuple[Union[pd.DataFrame, pd.Series], bool]]:
+    Tuple[None, bool], Tuple[Union[pd.DataFrame, pd.Series], bool]]:
     # 1个特征会生成很多新的特征, 下面是这个特征需要添加的后缀名
     suffix_name = ["_min", "_max", "_percentage_5", "_percentage_25", "_percentage_50", "_percentage_75",
                    "_percentage_95", "_mean", "_var", "_std", "_skewness", "_kurtosis"]
