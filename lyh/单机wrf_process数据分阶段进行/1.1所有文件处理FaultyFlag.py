@@ -9,7 +9,7 @@ import pandas as pd
 from utils.DataFrameOperation import isEmptyInDataFrame, judgeSameFrames, mergeDataFrames
 from utils.DefineData import FAULT_FLAG
 
-savepath = "tmp\\wrf_single_process\\1\\"
+savepath = "tmp\\wrf_single_process\\1.1\\"
 
 abnormalPathes = {
     "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.16-1\\wrf_rst_e5-43_process_cacheGrabNum-1.csv": 91,
