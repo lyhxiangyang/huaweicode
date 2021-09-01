@@ -36,7 +36,7 @@ if __name__ == "__main__":
     allcolumns.remove(TIME_COLUMN_NAME)
     allPds = []
     for ipd in tallPds:
-        tpd, err = subtractFirstLineFromDataFrame(ipd, allcolumns)
+        tpd, err = subtractFirstLineFromDataFrame(df=ipd, columns=allcolumns)
         if err:
             print("在处理server数据中，减去第一行出现问题")
             exit(1)
