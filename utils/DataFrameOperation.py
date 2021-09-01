@@ -177,7 +177,6 @@ def isEmptyInDataFrame(targetDF: pd.DataFrame) -> bool:
 
 def subtractFirstLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[
     Tuple[None, bool], Tuple[pd.DataFrame, bool]]:
-    df = df.copy()
     if len(df) == 0:
         return None, True
     firstlineSeries = df.iloc[0][columns]
