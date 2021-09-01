@@ -50,7 +50,7 @@ abnormalPathes = {
     "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_process_memleak-600.csv": 65,
     "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_process_memleak-1200.csv": 65,
 }
-process_features = (
+process_features = [
     "time",
     # "pid",
     # "status",
@@ -85,7 +85,7 @@ process_features = (
     "voluntary",
     "involuntary",
     "faultFlag",
-)
+]
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
