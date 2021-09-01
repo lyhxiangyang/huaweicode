@@ -21,8 +21,10 @@ if __name__ == "__main__":
         print("c1 >= c2")
 
     print("c1 - c2:")
+    print(len(c1 - c2))
     print(c1 - c2)
     print("c2 - c1:")
+    print(len(c2 - c1))
     print(c2 - c1)
 
     print("end")
