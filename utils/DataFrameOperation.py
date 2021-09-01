@@ -179,9 +179,10 @@ def subtractFirstLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[
     Tuple[None, bool], Tuple[pd.DataFrame, bool]]:
     if len(df) == 0:
         return None, True
-    firstlineSeries = df.iloc[0][columns]
+# https://www.jianshu.com/p/72274ccb647a
+# 注意会出现这种警告
     for iline in range(1, len(df)):
-        df.iloc[iline][columns] = df.iloc[iline][columns] - firstlineSeries
-    df.iloc[0][columns] = firstlineSeries - firstlineSeries
+        df.loc[iline, columns] = df.loc[iline, columns] - df.loc[0, columns]
+    df.loc[0, columns] = df.loc[0, columns] - df.loc[0, columns]
     return df, False
 
