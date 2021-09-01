@@ -56,4 +56,4 @@ if __name__ == "__main__":
     ####################################################################################################################
     # 将文件进行保存
     tpath = os.path.join(savepath, "1.2_serverData_mergePd.csv")
-    meregdPd.to_csv(savepath, index=False)
+    meregdPd.to_csv(tpath, index=False)
