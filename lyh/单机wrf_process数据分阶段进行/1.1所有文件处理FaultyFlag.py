@@ -99,6 +99,8 @@ def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
+    if not os.path.exists(savepath):
+        os.makedirs(savepath)
     ####################################################################################################################
     print("1. 将所有文件的处理成对应faultFlag".center(40, "*"))
     allpds = []
