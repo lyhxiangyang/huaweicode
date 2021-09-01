@@ -6,4 +6,4 @@ savepathfile1_1 = "tmp\\tmp\\wrf_single_process\\1.1\\mergePD_After.csv"
 savepathfile1_2 = "tmp\\wrf_single_process\\1.2\\1.2_serverData_mergePd.csv"
 
 if __name__ == "__main__":
-    pass
+    # 验证一波
