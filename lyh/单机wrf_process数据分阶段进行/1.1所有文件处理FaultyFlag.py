@@ -84,7 +84,7 @@ process_features = (
     "num_threads",
     "voluntary",
     "involuntary",
-    # "faultFlag",
+    "faultFlag",
 )
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
@@ -122,12 +122,21 @@ if __name__ == "__main__":
     print("2. 将所有文件合并成一个文件".center(40, "*"))
     mergePD, flag = mergeDataFrames(allpds)
     if flag:
-        print("合并文件失败");
+        print("合并文件失败")
         exit(1)
     # 将文件进行保存
     mergePD: pd.DataFrame
     tpath = os.path.join(savepath, "mergePD_Before.csv")
     mergePD.to_csv(tpath, index=False)
+
+    # 判断我选择特征是否是mergePD的真子集
+    allcolumns = set(mergePD.columns.array)
+    if set(process_features) <= allcolumns:
+        print("是一个子集")
+    else:
+        print("不是一个子集")
+        print(allcolumns ^ set(process_features))
+
     ####################################################################################################################
     print("3. 去掉不必要的特征".center(40, "*"))
     print("去掉之前大小：{}".format(mergePD.shape))
