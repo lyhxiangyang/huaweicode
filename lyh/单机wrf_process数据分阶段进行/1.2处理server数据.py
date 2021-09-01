@@ -22,24 +22,30 @@ if __name__ == "__main__":
 
     ####################################################################################################################
     print("server数据合并中".center(40, "*"))
-    allPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
+    tallPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
     # ==判断是否存在空
-    for ipds in allPds:
+    for ipds in tallPds:
         print("shape: {}".format(ipds.shape))
         if isEmptyInDataFrame(ipds):
-            print("打开的csv文件中， 有空值");
+            print("打开的csv文件中， 有空值")
             exit(1)
 
     # == 将每一个Pd中的数据都减去第一行
-    allcolumns = list(allPds[0].columns)
+    allcolumns = list(tallPds[0].columns)
     allcolumns.remove(FAULT_FLAG)
     allcolumns.remove(TIME_COLUMN_NAME)
-    allPds = [subtractFirstLineFromDataFrame(ipd, allcolumns) for ipd in allPds]
+    allPds = []
+    for ipd in tallPds:
+        tpd, err = subtractFirstLineFromDataFrame(ipd, allcolumns)
+        if err:
+            print("在处理server数据中，减去第一行出现问题")
+            exit(1)
+        allPds.append(tpd)
 
     # == 将多个文件进行合并
     meregdPd, err = mergeDataFrames(allPds)
     if err:
-        print("数据合并失败");
+        print("数据合并失败")
         exit(1)
     print("合并之后文件大小：", meregdPd.shape)
     if isEmptyInDataFrame(meregdPd):
