@@ -20,4 +20,6 @@ if __name__ == "__main__":
     if c1 >= c2:
         print("c1 >= c2")
 
+    print("end")
+
 
