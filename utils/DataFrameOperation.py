@@ -8,7 +8,7 @@
 
 """
 
-from typing import List, Dict
+from typing import List, Dict, Tuple, Union
 from utils.DefineData import *
 import pandas as pd
 
@@ -42,7 +42,7 @@ def judgeSameFrames(lpds: List[pd.DataFrame]) -> bool:
     if len(lpds) == 0 or len(lpds) == 1:
         return True
     for i in range(1, len(lcolumns)):
-        if lcolumns[1] != lcolumns[0]:
+        if lcolumns[i] != lcolumns[0]:
             return False
     return True
 
@@ -166,3 +166,23 @@ def isEmptyInDataFrame(targetDF: pd.DataFrame) -> bool:
     if len(isHaveBool) == 0:
         return False
     return True
+
+
+"""
+-   功能介绍：
+    将一个DataFrame中的所有行中对应的特征值都都剪去第一行，除去time和flagFault
+-   返回值一个DataFrame和一个是否有错误的bool类型
+"""
+
+
+def subtractFirstLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[
+    Tuple[None, bool], Tuple[pd.DataFrame, bool]]:
+    df = df.copy()
+    if len(df) == 0:
+        return None, True
+    firstlineSeries = df.iloc[0][columns]
+    for iline in range(1, len(df)):
+        df.iloc[iline][columns] = df.iloc[iline][columns] - firstlineSeries
+    df.iloc[0][columns] = firstlineSeries - firstlineSeries
+    return df, False
+
