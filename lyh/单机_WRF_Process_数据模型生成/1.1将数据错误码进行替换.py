@@ -72,7 +72,7 @@ process_features = [
     "children_user",
     "children_system",
     "iowait",
-    "cpu_affinity", # 依照这个来为数据进行分类
+    "cpu_affinity",  # 依照这个来为数据进行分类
     "memory_percent",
     "rss",
     "vms",
@@ -92,6 +92,7 @@ process_features = [
     "involuntary",
     "faultFlag",
 ]
+
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
@@ -130,11 +131,3 @@ if __name__ == "__main__":
         tpd = ipd[process_features]
         tpath = os.path.join(savepath, str(iflaut) + ".csv")
         tpd.to_csv(tpath, index=False)
-
-
-
-
-
-
-
-

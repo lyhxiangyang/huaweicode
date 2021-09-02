@@ -15,10 +15,10 @@ from utils.FeatureExtraction import featureExtraction
 CPU_FEATURE = "cpu_affinity"
 
 savepath1_1 = "tmp\\wrf_single_process\\1.1\\"
-savepath1_2 = "tmp\\wrf_single_process\\1.2\\" # 每个核的原始数据
-savepath1_3 = "tmp\\wrf_single_process\\1.3\\" # 特征提取
-savepath1_4 = "tmp\\wrf_single_process\\1.4\\" #
-savepath1_5 = "tmp\\wrf_single_process\\1.5\\" # 特征提取
+savepath1_2 = "tmp\\wrf_single_process\\1.2\\"  # 每个核的原始数据
+savepath1_3 = "tmp\\wrf_single_process\\1.3\\"  # 特征提取
+savepath1_4 = "tmp\\wrf_single_process\\1.4\\"  #
+savepath1_5 = "tmp\\wrf_single_process\\1.5\\"  # 特征提取
 
 
 def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool]]:
@@ -29,9 +29,8 @@ def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool
     for icore in corelist:
         tpd = df.loc[df[CPU_FEATURE] == icore]
         # 将CPU_FEATURE去掉
-        coreDict[icore] = tpd.drop(CPU_FEATURE)
+        coreDict[icore] = tpd.drop(CPU_FEATURE, axis=1)
     return coreDict, False
-
 
 
 if __name__ == "__main__":
