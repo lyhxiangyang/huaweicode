@@ -112,6 +112,7 @@ if __name__ == "__main__":
     print("1. 将所有文件的处理成对应faultFlag".center(40, "*"))
     allpdlists = {}
     for ipath, iflaut in abnormalPathes.items():
+        iflaut = iflaut // 10
         if iflaut not in allpdlists:
             allpdlists[iflaut] = []
         tpd = pd.read_csv(ipath)
@@ -120,7 +121,6 @@ if __name__ == "__main__":
             print("path: {} 存在空的情形".format(ipath))
             exit(1)
         # 将tpd中的flag设置为对应的flag
-        iflaut = iflaut // 10
         tpd = setPDfaultFlag(tpd, iflaut)
         allpdlists[iflaut].append(tpd)
         print("{}: {}".format(os.path.basename(ipath), tpd.shape))
