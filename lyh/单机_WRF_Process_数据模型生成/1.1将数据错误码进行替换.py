@@ -129,7 +129,7 @@ if __name__ == "__main__":
     print("2. 将allpdlists 每个列表进行合并")
     allpds = {}
     for iflauty, ipdlist in allpdlists.items():
-        allpds[iflaut] = mergeDataFrames(ipdlist)
+        allpds[iflauty] = mergeDataFrames(ipdlist)
 
     ####################################################################################################################
 
