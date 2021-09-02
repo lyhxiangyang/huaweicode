@@ -29,7 +29,7 @@ if __name__ == "__main__":
     dictPds = {}
     for ifaulty in os.listdir(savepath1_3):
         tpath = os.path.join(savepath1_3, ifaulty)
-        ifaultynumber = int(os.path.basename(ifaulty)[0])
+        ifaultynumber = int(os.path.splitext(ifaulty)[0])
         tusefulfeature = os.path.join(tpath, userfulFeatureName)
         dictPds[ifaultynumber] = pd.read_csv(tusefulfeature)
 

@@ -25,7 +25,7 @@ if __name__ == "__main__":
         if ifault not in allpds.keys():
             allpds[ifault] = {}
         for icore in os.listdir(tpath):
-            icorenumber = int(os.path.basename(icore)[0])
+            icorenumber = int(os.path.splitext(icore)[0])
             tfilepath = os.path.join(tpath, icore)
             allpds[ifault][icorenumber] = pd.read_csv(tfilepath)
 
