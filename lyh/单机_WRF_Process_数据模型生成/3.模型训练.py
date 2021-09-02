@@ -18,6 +18,8 @@ savepath3 = "tmp\\wrf_single_process\\5\\"
 saverespath = "tmp\\informations"
 
 if __name__ == "__main__":
+    if not os.path.exists(SaveModelPath):
+        os.makedirs(SaveModelPath)
     print("模型训练".center(40, "*"))
 
     # == 读取步骤四种生成的文件
