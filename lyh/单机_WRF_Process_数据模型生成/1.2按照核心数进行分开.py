@@ -1,5 +1,7 @@
 """
-1. 将步骤1.1中的数据进行读取之后，按照核心数进行划分
+2. 将步骤1.1中的数据进行读取之后，按照核心数进行划分
+3. 并且求出滑动窗口 特征扩展以及特征条数减少
+4. 将每个错误码对应的数据合并在一起
 """
 import os
 from typing import Dict, Tuple, Union
@@ -13,9 +15,9 @@ from utils.FeatureExtraction import featureExtraction
 CPU_FEATURE = "cpu_affinity"
 
 savepath1_1 = "tmp\\wrf_single_process\\1.1\\"
-savepath1_2 = "tmp\\wrf_single_process\\1.2\\"
+savepath1_2 = "tmp\\wrf_single_process\\1.2\\" # 每个核的原始数据
 savepath1_3 = "tmp\\wrf_single_process\\1.3\\" # 特征提取
-savepath1_4 = "tmp\\wrf_single_process\\1.4\\" # 特征提取
+savepath1_4 = "tmp\\wrf_single_process\\1.4\\" #
 savepath1_5 = "tmp\\wrf_single_process\\1.5\\" # 特征提取
 
 
@@ -60,7 +62,7 @@ if __name__ == "__main__":
         print("错误码{}  核心数{}".format(ifault, len(tdict)))
 
     ####################################################################################################################
-    # 将allpds数据进行保存
+    # 将allpds数据进行保存 格式为错误码: 核心数
     print("2. 将所有的数据都进行保存".center(40, "*"))
     for ifaults, idict in allpds.items():
         print("save {}: len {}".format(ifaults, len(idict)))
@@ -72,42 +74,4 @@ if __name__ == "__main__":
             tfile = os.path.join(tpath, str(i) + ".csv")
             ipd.to_csv(tfile, index=False)
 
-    ####################################################################################################################
-    # 将每个核心树求滑动窗口
-    print("3. 将每个核心都进行特征提取".center(40, "*"))
-    for ifaults, idict in allpds.items():
-        tpath = os.path.join(savepath1_3, str(ifaults))
-        if not os.path.exists(tpath):
-            os.makedirs(tpath)
-
-        for i, ipd in idict.items():
-            tpd , err = featureExtraction(ipd, windowSize=WINDOWS_SIZE)
-            if err:
-                print("特征提取过程中失败")
-                exit(1)
-            allpds[ifaults][i] = tpd
-            print("{}-{}: {}".format(ifaults, i, tpd.shape))
-            tfilepath = os.path.join(tpath, str(i) + ".csv")
-            tpd.to_csv(tfilepath, index=False)
-
-    ####################################################################################################################
-    print("4. 将每个错误码中的数据核心数都合成起来".center(40, "*"))
-    allmergedDict = {}
-    for ifaults, idict in allpds.items():
-        mergeDF, err = mergeDataFrames(list(idict.values()))
-        if err:
-            print("步骤4中合并数据操作错误")
-        allmergedDict[ifaults] = mergeDF
-        #  将错误码数据合成起来之后保存
-        tfilepath = os.path.join(savepath1_4, str(ifaults) + ".csv")
-        mergeDF.to_csv(tfilepath, index=False)
-
-    ####################################################################################################################
-    print("5: 将全部错误码进行合并之后进行保存")
-    allUserfulPd, err = mergeDataFrames(list(allmergedDict.values()))
-    if err:
-        print("第5步骤中全部错误码合并之后出错")
-        exit(1)
-    tfilepath = os.path.join(savepath1_5, "userFeature.csv")
-    allUserfulPd.to_csv(tfilepath, index=False)
-    ####################################################################################################################
+    print("划分结束")
