@@ -48,6 +48,7 @@ if __name__ == "__main__":
             allusefulpds[ifault][i] = tpd
             print("{}-{}: {}".format(ifault, i, tpd.shape))
             tfilepath = os.path.join(tpath, str(i) + ".csv")
+            tpd.to_csv(tfilepath, index=False)
 
     ####################################################################################################################
     # 将数据合并得到
