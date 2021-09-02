@@ -58,7 +58,7 @@ def model_train(df, model_type, saved_model_path = SaveModelPath):
     accuracy = metrics.accuracy_score(y_test, y_eval)
 
     if not os.path.exists(saved_model_path):
-        os.mkdir(saved_model_path)
+        os.makedirs(saved_model_path)
 
     # Save model
     joblib.dump(model, '%s\\%s.pkl' % (saved_model_path, model_type))
