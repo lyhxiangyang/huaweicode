@@ -49,9 +49,10 @@ if __name__ == "__main__":
         exit(1)
     print("特征选择后一共{}个特征".format(allUserfulePD.shape[1]))
 
-    if isEmptyInDataFrame(allUserfulePD):
-        print("最终生成的DataFrame有空值")
+    if err:
+        print("特征选择失败")
         exit(1)
+    print("特征选择后一共{}个特征".format(allUserfulePD.shape[1]))
     tpath = os.path.join(savepath4, "alluserful.csv")
     allUserfulePD.to_csv(tpath, index=False)
 
