@@ -110,17 +110,28 @@ if __name__ == "__main__":
         os.makedirs(savepath)
     ####################################################################################################################
     print("1. 将所有文件的处理成对应faultFlag".center(40, "*"))
-    allpds = {}
+    allpdlists = {}
     for ipath, iflaut in abnormalPathes.items():
+        if iflaut not in allpdlists:
+            allpdlists[iflaut] = []
         tpd = pd.read_csv(ipath)
         # 判断这个tpd是否满足不存在空值的条件
         if isEmptyInDataFrame(tpd):
             print("path: {} 存在空的情形".format(ipath))
             exit(1)
         # 将tpd中的flag设置为对应的flag
+        iflaut = iflaut // 10
         tpd = setPDfaultFlag(tpd, iflaut)
-        allpds[iflaut] = tpd
+        allpdlists[iflaut].append(tpd)
         print("{}: {}".format(os.path.basename(ipath), tpd.shape))
+
+    ####################################################################################################################
+    print("2. 将allpdlists 每个列表进行合并")
+    allpds = {}
+    for iflauty, ipdlist in allpdlists.items():
+        allpds[iflaut] = mergeDataFrames(ipdlist)
+
+    ####################################################################################################################
 
     if not judgeSameFrames(list(allpds.values())):
         print("不是所有的特征都是相同的")
