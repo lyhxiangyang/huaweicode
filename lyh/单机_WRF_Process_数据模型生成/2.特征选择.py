@@ -32,6 +32,7 @@ if __name__ == "__main__":
         ifaultynumber = int(os.path.splitext(ifaulty)[0])
         tusefulfeature = os.path.join(tpath, userfulFeatureName)
         dictPds[ifaultynumber] = pd.read_csv(tusefulfeature)
+        print("{}: {}".format(ifaulty, dictPds[ifaultynumber].shape))
 
     if not judgeSameFrames(list(dictPds.values())):
         print("读取的文件中特征值不一样")
