@@ -114,7 +114,7 @@ def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool
     return coreDict, False
 
 if __name__ == "__main__":
-    if os.path.exists(savepath):
+    if not os.path.exists(savepath):
         os.makedirs(savepath)
     ####################################################################################################################
     print("1. 将grape数据的错误码进行处理")
