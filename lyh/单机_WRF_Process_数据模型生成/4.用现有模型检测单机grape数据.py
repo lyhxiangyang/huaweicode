@@ -222,7 +222,7 @@ if __name__ == "__main__":
     mergedPd = allmergedpd
     # 进行预测
     print("利用wrf的模型对grape进行预测".center(40, "*"))
-    reallist = mergedPd[FAULT_FLAG]
+    reallist, err = mergedPd[FAULT_FLAG]
     tDic = {}
     for itype in MODEL_TYPE:
         prelist = select_and_pred(mergedPd, model_type=itype, saved_model_path=savemodulepath)
