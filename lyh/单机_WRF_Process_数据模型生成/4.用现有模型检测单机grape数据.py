@@ -91,6 +91,7 @@ process_features = [
 savemodulepath = os.path.join(SaveModelPath, str(1))
 saverespath = "tmp\\informations"
 savepath = "tmp\\wrf_process_grape"
+isreadfile = False
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
@@ -216,13 +217,16 @@ if __name__ == "__main__":
         tfilepath = os.path.join(tpath, userfulFeatureName)
         mergeDF.to_csv(tfilepath, index=False)
     # 再将所有的数据合并在一起
-    allmergedpd = mergeDataFrames(list(allmergedDict.values()))
+    allmergedpd, err = mergeDataFrames(list(allmergedDict.values()))
+    if err:
+        print("所有数据合并错误")
+        exit(1)
 
     ####################################################################################################################
     mergedPd = allmergedpd
     # 进行预测
     print("利用wrf的模型对grape进行预测".center(40, "*"))
-    reallist, err = mergedPd[FAULT_FLAG]
+    reallist = mergedPd[FAULT_FLAG]
     tDic = {}
     for itype in MODEL_TYPE:
         prelist = select_and_pred(mergedPd, model_type=itype, saved_model_path=savemodulepath)
