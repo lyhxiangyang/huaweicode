@@ -91,7 +91,7 @@ process_features = [
 savemodulepath = os.path.join(SaveModelPath, str(1))
 saverespath = "tmp\\informations"
 savepath = "tmp\\wrf_process_grape"
-isreadfile = False
+isreadfile = True
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
@@ -159,63 +159,88 @@ if __name__ == "__main__":
         tpath = os.path.join(spath, str(iflaut) + ".csv")
         tpd.to_csv(tpath, index=False)
     ####################################################################################################################
-    print("3. 按照核心数进行分开".format(40, "*"))
+    print("3. 按照核心数进行分开".center(40, "*"))
     allpds = {}
-    for iflauty, tpd in fault_df_dict.items():
-        if iflauty not in allpds.keys():
-            allpds[iflauty] = {}
-        tdict, err = splitDFbyCore(tpd)
-        if err:
-            print("将核心提取的过程失败")
-            exit(1)
-        allpds[iflauty] = tdict
-        print("错误码{}: 核心数{}".format(iflauty, len(tdict)))
-    # == 将数据保存到3
     spath = os.path.join(savepath, "3")
-    for ifaults, idict in allpds.items():
-        print("save {}: len {}".format(ifaults, len(idict)))
-        tpath = os.path.join(spath, str(ifaults))
-        if not os.path.exists(tpath):
-            os.makedirs(tpath)
-        for i, ipd in idict.items():
-            ipd: pd.DataFrame
-            tfile = os.path.join(tpath, str(i) + ".csv")
-            ipd.to_csv(tfile, index=False)
+    if isreadfile:
+        print("直接从文件中进行读取")
+        allfaults = os.listdir(spath)
+        for ifaults in allfaults:
+            tpath = os.path.join(spath, ifaults)
+            corefiles = os.listdir(tpath)
+            if ifaults not in allpds:
+                allpds[ifaults] = {}
+            for icore in corefiles:
+                icorenumber = int(os.path.splitext(icore)[0])
+                fullpath = os.path.join(tpath, icore)
+                allpds[ifaults][icorenumber] = pd.read_csv(fullpath)
+                print("读取 {}-{}: {}".format(ifaults, icorenumber, allpds[ifaults][icorenumber].shape))
+    else:
+        for iflauty, tpd in fault_df_dict.items():
+            if iflauty not in allpds.keys():
+                allpds[iflauty] = {}
+            tdict, err = splitDFbyCore(tpd)
+            if err:
+                print("将核心提取的过程失败")
+                exit(1)
+            allpds[iflauty] = tdict
+            print("错误码{}: 核心数{}".format(iflauty, len(tdict)))
+        # == 将数据保存到3
+        for ifaults, idict in allpds.items():
+            print("save {}: len {}".format(ifaults, len(idict)))
+            tpath = os.path.join(spath, str(ifaults))
+            if not os.path.exists(tpath):
+                os.makedirs(tpath)
+            for i, ipd in idict.items():
+                ipd: pd.DataFrame
+                tfile = os.path.join(tpath, str(i) + ".csv")
+                ipd.to_csv(tfile, index=False)
     ####################################################################################################################
     print("4. 将每个核心都进行滑动窗口处理".center(40, "*"))
     allusefulpds = {}
-    spath = os.path.join(savepath, "4")
-    for ifault, idict in allpds.items():
-        tpath = os.path.join(spath, str(ifault))
-        if not os.path.exists(tpath):
-            os.makedirs(tpath)
-        if ifault not in allusefulpds.keys():
-            allusefulpds[ifault] = {}
-        for i, ipd in idict.items():
-            print("提取前：{}-{}: {}".format(ifault, i, ipd.shape))
-            tpd, err = featureExtraction(ipd, windowSize=WINDOWS_SIZE)
-            if err:
-                print("特征提取过程中失败")
-                exit(1)
-            allusefulpds[ifault][i] = tpd
-            print("提取后：{}-{}: {}".format(ifault, i, tpd.shape))
-            tfilepath = os.path.join(tpath, str(i) + ".csv")
-            print("save to: {}".format(tpath))
-            tpd.to_csv(tfilepath, index=False)
-    # 将数据合并得到
     allmergedDict = {}
     userfulFeatureName = "userfulfeature.csv"
-    print("4. 将每个错误码中的数据核心数都合成起来".center(40, "*"))
-    for ifault, idict in allusefulpds.items():
-        mergeDF, err = mergeDataFrames(list(idict.values()))
-        if err:
-            print("步骤4中合并数据操作错误")
-            exit(1)
-        allmergedDict[ifault] = mergeDF
-        # 将错误码数据合成起来之后保存
-        tpath = os.path.join(spath, str(ifault))
-        tfilepath = os.path.join(tpath, userfulFeatureName)
-        mergeDF.to_csv(tfilepath, index=False)
+    spath = os.path.join(savepath, "4")
+    if isreadfile:
+        dirs = os.listdir(spath) # 先得到所有的错误
+        for idir in dirs:
+            tpath = os.path.join(spath, idir)
+            ufn = os.path.join(tpath, userfulFeatureName)
+            if not os.path.exists(ufn):
+                print("步骤四中您想要从文件中读取，没有去没有{}".format(userfulFeatureName))
+                exit(1)
+            allmergedDict[int(idir)] = pd.read_csv(ufn)
+    else:
+        for ifault, idict in allpds.items():
+            tpath = os.path.join(spath, str(ifault))
+            if not os.path.exists(tpath):
+                os.makedirs(tpath)
+            if ifault not in allusefulpds.keys():
+                allusefulpds[ifault] = {}
+            for i, ipd in idict.items():
+                print("提取前：{}-{}: {}".format(ifault, i, ipd.shape))
+                tpd, err = featureExtraction(ipd, windowSize=WINDOWS_SIZE)
+                if err:
+                    print("特征提取过程中失败")
+                    exit(1)
+                allusefulpds[ifault][i] = tpd
+                print("提取后：{}-{}: {}".format(ifault, i, tpd.shape))
+                tfilepath = os.path.join(tpath, str(i) + ".csv")
+                print("save to: {}".format(tpath))
+                tpd.to_csv(tfilepath, index=False)
+        # 将数据合并得到
+        print("4. 将每个错误码中的数据核心数都合成起来".center(40, "*"))
+        for ifault, idict in allusefulpds.items():
+            mergeDF, err = mergeDataFrames(list(idict.values()))
+            if err:
+                print("步骤4中合并数据操作错误")
+                exit(1)
+            print("错误码{}: 数据量：{}".format(ifault, mergeDF.shape))
+            allmergedDict[ifault] = mergeDF
+            # 将错误码数据合成起来之后保存
+            tpath = os.path.join(spath, str(ifault))
+            tfilepath = os.path.join(tpath, userfulFeatureName)
+            mergeDF.to_csv(tfilepath, index=False)
     # 再将所有的数据合并在一起
     allmergedpd, err = mergeDataFrames(list(allmergedDict.values()))
     if err:
