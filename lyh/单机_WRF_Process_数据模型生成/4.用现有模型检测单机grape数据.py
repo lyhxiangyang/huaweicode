@@ -88,7 +88,7 @@ process_features = [
     "faultFlag",
 ]
 
-savemodulepath = os.path.join(SaveModelPath, 1)
+savemodulepath = os.path.join(SaveModelPath, str(1))
 saverespath = "tmp\\informations"
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
