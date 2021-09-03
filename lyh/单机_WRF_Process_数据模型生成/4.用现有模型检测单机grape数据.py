@@ -101,7 +101,9 @@ def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
     tpd = pd.DataFrame(data=ffdict)
     tpd = pd.concat([df, tpd], axis=1)
     return tpd
+
 CPU_FEATURE = "cpu_affinity"
+
 def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool]]:
     if CPU_FEATURE not in df.columns.array:
         return None, True
@@ -123,7 +125,7 @@ if __name__ == "__main__":
         iflauty //= 10
         if iflauty not in allpdlists:
             allpdlists[iflauty] = []
-        tpd = pd.read_csv(ipath)
+        tpd = pd.read_csv(ipath)[process_features]
         # 判断这个tpd是否满足不存在空值的条件
         if isEmptyInDataFrame(tpd):
             print("path: {} 存在空的情形".format(ipath))
