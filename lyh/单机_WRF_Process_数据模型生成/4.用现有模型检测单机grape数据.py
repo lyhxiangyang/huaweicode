@@ -110,7 +110,7 @@ def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool
     corelist = list(set(df[CPU_FEATURE]))
     coreDict = {}
     for icore in corelist:
-        tpd = df.loc[df[CPU_FEATURE] == icore]
+        tpd = df.loc[df[CPU_FEATURE] == icore].reset_index(drop=True)
         # 将CPU_FEATURE去掉
         coreDict[icore] = tpd.drop(CPU_FEATURE, axis=1)
     return coreDict, False
@@ -184,7 +184,6 @@ if __name__ == "__main__":
     print("4. 将每个核心都进行滑动窗口处理".center(40, "*"))
     allusefulpds = {}
     spath = os.path.join(savepath, "4")
-    print("2. 将每个核心提取中".center(40, "*"))
     for ifault, idict in allpds.items():
         tpath = os.path.join(spath, str(ifault))
         if not os.path.exists(tpath):
