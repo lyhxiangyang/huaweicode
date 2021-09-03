@@ -90,6 +90,7 @@ process_features = [
 
 savemodulepath = os.path.join(SaveModelPath, str(1))
 saverespath = "tmp\\informations"
+savepath = "tmp\\wrf_process_grape"
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
