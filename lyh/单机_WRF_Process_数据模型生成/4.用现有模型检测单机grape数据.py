@@ -210,6 +210,7 @@ if __name__ == "__main__":
                 print("步骤四中您想要从文件中读取，没有去没有{}".format(userfulFeatureName))
                 exit(1)
             allmergedDict[int(idir)] = pd.read_csv(ufn)
+            print("错误码：{}, 数据量：{}".format(idir, allmergedDict[int(idir)].shape))
     else:
         for ifault, idict in allpds.items():
             tpath = os.path.join(spath, str(ifault))
@@ -250,7 +251,7 @@ if __name__ == "__main__":
     ####################################################################################################################
     mergedPd = allmergedpd
     # 进行预测
-    print("利用wrf的模型对grape进行预测".center(40, "*"))
+    print("5. 利用wrf的模型对grape进行预测".center(40, "*"))
     reallist = mergedPd[FAULT_FLAG]
     tDic = {}
     for itype in MODEL_TYPE:
