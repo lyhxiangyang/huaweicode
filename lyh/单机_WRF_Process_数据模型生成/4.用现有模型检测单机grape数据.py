@@ -148,6 +148,8 @@ if __name__ == "__main__":
         exit(1)
     # 将错误码进行保存
     spath = os.path.join(savepath, "2")
+    if not os.path.exists(spath):
+        os.makedirs(spath)
     print("合并后的数据保存在-{}".format(spath))
     for iflaut, ipd in fault_df_dict.items():
         tpd = ipd[process_features]
