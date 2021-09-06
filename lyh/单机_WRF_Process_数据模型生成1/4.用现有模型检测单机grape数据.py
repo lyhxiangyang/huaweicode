@@ -99,7 +99,7 @@ savemodulepath = os.path.join(SaveModelPath, str(1))
 
 saverespath = "tmp\\informations"
 savepath = "tmp\\wrf_process_grape"
-isreadfile = True
+isreadfile = False
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
@@ -277,6 +277,8 @@ if __name__ == "__main__":
             if i not in tDic.keys():
                 tDic[i] = {}
             tmetrics = get_metrics(reallist, prelist, i)
+            if "num" not in tDic[i].keys():
+                tDic[i]["num"] = tmetrics["realnums"][i]
             # 将数据进行保存
             tDic[i]["accuracy_" + itype] = tmetrics["accuracy"]
             tDic[i]["precision_" + itype] = tmetrics["precision"]
