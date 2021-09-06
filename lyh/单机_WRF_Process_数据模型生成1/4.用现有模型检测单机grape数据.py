@@ -88,7 +88,15 @@ process_features = [
     "faultFlag",
 ]
 
+# 如果只是用某个错误里面的若干核心，就修改下面的includecores变量，比如下面错误2就只是用核心1中的数据
+includecores = {
+    2: [1],
+    3: [0, 1, 2, 3, 4, 5, 6]
+}
+# 排除一些错误码的使用，也可以将abnormalPathes中的数据进行注释到达同样的效果
+excludefaulty = [81, 82, 83, 84, 85]
 savemodulepath = os.path.join(SaveModelPath, str(1))
+
 saverespath = "tmp\\informations"
 savepath = "tmp\\wrf_process_grape"
 isreadfile = True
@@ -123,11 +131,16 @@ if __name__ == "__main__":
     print("1. 将grape数据的错误码进行处理")
     allpdlists = {}
     for ipath, iflauty in abnormalPathes.items():
+        if iflauty in excludefaulty:
+            continue
         iflauty //= 10
         if iflauty not in allpdlists:
             allpdlists[iflauty] = []
         tpd = pd.read_csv(ipath)[process_features]
         # 判断这个tpd是否满足不存在空值的条件
+        if iflauty in includecores.keys():
+            tpd = tpd[ [True if i in includecores[iflauty] else False for i in tpd[CPU_FEATURE]] ]
+            tpd.reset_index(drop=True, inplace=True)
         if isEmptyInDataFrame(tpd):
             print("path: {} 存在空的情形".format(ipath))
             exit(1)
