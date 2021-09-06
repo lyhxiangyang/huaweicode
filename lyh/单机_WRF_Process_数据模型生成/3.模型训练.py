@@ -13,7 +13,7 @@ from utils.GetMetrics import get_metrics
 
 savepath2 = "tmp\\wrf_single_process\\2\\" # 特征提
 filename2 = "alluserful.csv"
-savepath3 = "tmp\\wrf_single_process\\5\\"
+savepath3 = "tmp\\wrf_single_process\\3\\"
 
 saverespath = "tmp\\informations"
 

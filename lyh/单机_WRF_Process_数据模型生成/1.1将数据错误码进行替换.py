@@ -4,7 +4,7 @@
 
 """
 1. 这个文件的作用是将所有的process数据进行读取，然后修改为对应的FlagFaulty
-2. 将各个提取之后的错误码进行保存
+2. 将不必要的特征删除，将各个提取之后的错误码进行保存
 """
 import os
 from typing import Tuple

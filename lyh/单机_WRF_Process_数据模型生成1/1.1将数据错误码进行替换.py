@@ -98,7 +98,7 @@ includecores = {
     3: [0, 1, 2, 3, 4, 5, 6]
 }
 # 排除一些错误码的使用，也可以将abnormalPathes中的数据进行注释到达同样的效果
-excludefaulty = [91, 92, 93, 94, 95]
+excludefaulty = [81, 82, 83, 84, 85]
 
 CPU_FEATURE = "cpu_affinity"
 
@@ -127,7 +127,7 @@ if __name__ == "__main__":
             allpdlists[iflaut] = []
         # 将这个文件读取出来，那么接下来我要判断去掉不必要的核心数
         tpd = pd.read_csv(ipath)
-        # 如果在这个字典里面
+        # 如果在这个字典里面, 按照核心数提取数据
         if iflaut in includecores.keys():
             tpd = tpd[ [True if i in includecores[iflaut] else False for i in tpd[CPU_FEATURE]] ]
             tpd.reset_index(drop=True, inplace=True)
