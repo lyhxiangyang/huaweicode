@@ -11,9 +11,9 @@ from Classifiers.ModelTrain import model_train, getTestRealLabels, getTestPreLab
 from utils.DefineData import MODEL_TYPE, SaveModelPath
 from utils.GetMetrics import get_metrics
 
-savepath2 = "tmp\\wrf_single_process\\2\\" # 特征提
+savepath2 = "tmp\\wrf_single_process_1\\2\\" # 特征提
 filename2 = "alluserful.csv"
-savepath3 = "tmp\\wrf_single_process\\3\\"
+savepath3 = "tmp\\wrf_single_process_1\\5\\"
 
 saverespath = "tmp\\informations"
 
@@ -42,6 +42,8 @@ if __name__ == "__main__":
             if i not in tDic.keys():
                 tDic[i] = {}
             tmetrics = get_metrics(getTestRealLabels(), getTestPreLabels(), label=i)
+            if "num" not in tDic[i].keys():
+                tDic[i]["num"] = tmetrics["realnums"][i]
             # 将数据进行输出并保存
             tDic[i]["accuracy_" + itype] = tmetrics["accuracy"]
             tDic[i]["precision_" + itype] = tmetrics["precision"]

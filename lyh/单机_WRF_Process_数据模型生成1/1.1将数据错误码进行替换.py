@@ -1,10 +1,10 @@
 """
-目的是将每个数据的错误码进行替换
+1. 将错误码合并并替换
 """
 
 """
 1. 这个文件的作用是将所有的process数据进行读取，然后修改为对应的FlagFaulty
-2. 将不必要的特征删除，将各个提取之后的错误码进行保存
+2. 将各个提取之后的错误码进行保存
 """
 import os
 from typing import Tuple
@@ -14,7 +14,7 @@ import pandas as pd
 from utils.DataFrameOperation import isEmptyInDataFrame, judgeSameFrames, mergeDataFrames
 from utils.DefineData import FAULT_FLAG
 
-savepath = "tmp\\wrf_single_process\\1.1\\"
+savepath = "tmp\\wrf_single_process_1\\1.1\\"
 
 abnormalPathes = {
     "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_single\\wrfrst_e5-43_process-2.csv": 0,
@@ -92,7 +92,15 @@ process_features = [
     "involuntary",
     "faultFlag",
 ]
+# 如果只是用某个错误里面的若干核心，就修改下面的includecores变量，比如下面错误2就只是用核心1中的数据
+includecores = {
+    2: [1],
+    3: [0, 1, 2, 3, 4, 5, 6]
+}
+# 排除一些错误码的使用，也可以将abnormalPathes中的数据进行注释到达同样的效果
+excludefaulty = [81, 82, 83, 84, 85]
 
+CPU_FEATURE = "cpu_affinity"
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
@@ -112,10 +120,17 @@ if __name__ == "__main__":
     print("1. 将所有文件的处理成对应faultFlag".center(40, "*"))
     allpdlists = {}
     for ipath, iflaut in abnormalPathes.items():
+        if iflaut in excludefaulty:
+            continue
         iflaut = iflaut // 10
         if iflaut not in allpdlists:
             allpdlists[iflaut] = []
+        # 将这个文件读取出来，那么接下来我要判断去掉不必要的核心数
         tpd = pd.read_csv(ipath)
+        # 如果在这个字典里面, 按照核心数提取数据
+        if iflaut in includecores.keys():
+            tpd = tpd[ [True if i in includecores[iflaut] else False for i in tpd[CPU_FEATURE]] ]
+            tpd.reset_index(drop=True, inplace=True)
         # 判断这个tpd是否满足不存在空值的条件
         if isEmptyInDataFrame(tpd):
             print("path: {} 存在空的情形".format(ipath))
