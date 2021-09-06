@@ -50,4 +50,12 @@ def get_metrics(reallist: List, prelist: List, label: int):
     accuracy = rightnumber / len(reallist)
     metrics = dict(tp=true_pos, tn=true_neg, fp=false_pos, fn=false_neg, precision=precision, recall=recall,
                    accuracy=accuracy)
+    # 添加数量数据，即各个实际标签对应的数量
+    realnums = {}
+    for i in reallist:
+        if i not in realnums.keys():
+            realnums[i] = 0
+        realnums[i] += 1
+    metrics["realnums"] = realnums
+
     return metrics

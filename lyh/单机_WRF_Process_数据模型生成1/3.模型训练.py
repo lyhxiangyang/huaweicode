@@ -42,6 +42,8 @@ if __name__ == "__main__":
             if i not in tDic.keys():
                 tDic[i] = {}
             tmetrics = get_metrics(getTestRealLabels(), getTestPreLabels(), label=i)
+            if "num" not in tDic[i].keys():
+                tDic[i]["num"] = tmetrics["realnums"][i]
             # 将数据进行输出并保存
             tDic[i]["accuracy_" + itype] = tmetrics["accuracy"]
             tDic[i]["precision_" + itype] = tmetrics["precision"]
