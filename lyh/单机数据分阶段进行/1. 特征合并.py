@@ -19,16 +19,16 @@ savepath = "tmp\\single\\1\\"
 
 if __name__  == "__main__":
     print("数据合并中".center(40, "*"))
-    allPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
+    tallPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
 
     # == 判断是否存在空
-    for ipds in allPds:
+    for ipds in tallPds:
         if isEmptyInDataFrame(ipds):
             print("打开csv文件中 有空值")
             exit(1)
 
     # == 将每一个Pd中的数据都减去第一行
-    allcolumns = list(allPds[0].columns)
+    allcolumns = list(tallPds[0].columns)
     allcolumns.remove(FAULT_FLAG)
     allcolumns.remove(TIME_COLUMN_NAME)
     allPds = []
