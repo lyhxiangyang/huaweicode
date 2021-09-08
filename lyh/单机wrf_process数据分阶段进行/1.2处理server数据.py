@@ -22,20 +22,20 @@ if __name__ == "__main__":
 
     ####################################################################################################################
     print("server数据合并中".center(40, "*"))
-    tallPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
+    allPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
     # ==判断是否存在空
-    for ipds in tallPds:
+    for ipds in allPds:
         print("shape: {}".format(ipds.shape))
         if isEmptyInDataFrame(ipds):
             print("打开的csv文件中， 有空值")
             exit(1)
 
     # == 将每一个Pd中的数据都减去第一行
-    allcolumns = list(tallPds[0].columns)
+    allcolumns = list(allPds[0].columns)
     allcolumns.remove(FAULT_FLAG)
     allcolumns.remove(TIME_COLUMN_NAME)
     allPds = []
-    for ipd in tallPds:
+    for ipd in allPds:
         tpd, err = subtractFirstLineFromDataFrame(df=ipd, columns=allcolumns)
         if err:
             print("在处理server数据中，减去第一行出现问题")

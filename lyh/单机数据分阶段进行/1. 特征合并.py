@@ -6,7 +6,8 @@ import pandas as pd
 import numpy as np
 import os
 
-from utils.DataFrameOperation import mergeDataFrames, isEmptyInDataFrame
+from utils.DataFrameOperation import mergeDataFrames, isEmptyInDataFrame, subtractFirstLineFromDataFrame
+from utils.DefineData import FAULT_FLAG, TIME_COLUMN_NAME
 
 AllCSVFiles = [
     "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_single\\wrfrst_e5-43_server.csv",
@@ -25,6 +26,20 @@ if __name__  == "__main__":
         if isEmptyInDataFrame(ipds):
             print("打开csv文件中 有空值")
             exit(1)
+
+    # == 将每一个Pd中的数据都减去第一行
+    allcolumns = list(allPds[0].columns)
+    allcolumns.remove(FAULT_FLAG)
+    allcolumns.remove(TIME_COLUMN_NAME)
+    allPds = []
+    for ipd in allPds:
+        tpd, err = subtractFirstLineFromDataFrame(df=ipd, columns=allcolumns)
+        if err:
+            print("在处理server数据中，减去第一行出现问题")
+            exit(1)
+        allPds.append(tpd)
+
+
     # == 将多个文件进行合并
     mergedPd, err = mergeDataFrames(allPds)
     print("合并之后文件大小：", mergedPd.shape)
