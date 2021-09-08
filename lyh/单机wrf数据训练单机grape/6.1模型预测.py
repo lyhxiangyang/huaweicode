@@ -7,12 +7,13 @@ import os
 from typing import Dict
 
 from Classifiers.ModelPred import select_and_pred
-from utils.DefineData import SaveModelPath, FAULT_FLAG
+from utils.DefineData import SaveModelPath, FAULT_FLAG, TIME_COLUMN_NAME
 import pandas as pd
 import numpy as np
 
 from Classifiers.ModelTrain import model_train
-from utils.DataFrameOperation import mergeDataFrames, divedeDataFrameByFaultFlag, isEmptyInDataFrame
+from utils.DataFrameOperation import mergeDataFrames, divedeDataFrameByFaultFlag, isEmptyInDataFrame, \
+    subtractFirstLineFromDataFrame
 from utils.DefineData import WINDOWS_SIZE, MODEL_TYPE
 from utils.FeatureExtraction import featureExtraction
 from utils.FeatureSelection import getUsefulFeatureFromAllDataFrames
@@ -33,13 +34,25 @@ saverespath = "tmp\\informations"
 if __name__ == "__main__":
     ####################################################################################################################
     print("1. 数据合并进行中".center(40, "*"))
-    allPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
+    tallPds = [pd.read_csv(ipath) for ipath in AllCSVFiles]
 
     # 进行判空操作
-    for ipd in allPds:
+    for ipd in tallPds:
         if isEmptyInDataFrame(ipd):
             print("数据有空")
             exit(1)
+
+    # == 将每一个Pd中的数据都减去第一行
+    allcolumns = list(tallPds[0].columns)
+    allcolumns.remove(FAULT_FLAG)
+    allcolumns.remove(TIME_COLUMN_NAME)
+    allPds = []
+    for ipd in tallPds:
+        tpd, err = subtractFirstLineFromDataFrame(df=ipd, columns=allcolumns)
+        if err:
+            print("在处理server数据中，减去第一行出现问题")
+            exit(1)
+        allPds.append(tpd)
 
     # 合并操作
     mergedPd, err = mergeDataFrames(allPds)
@@ -119,6 +132,8 @@ if __name__ == "__main__":
             if i not in tDic.keys():
                 tDic[i] = {}
             tmetrics = get_metrics(reallist, prelist, i)
+            if "num" not in tDic[i].keys():
+                tDic[i]["num"] = tmetrics["realnums"][i]
             # 将数据进行保存
             tDic[i]["accuracy_" + itype] = tmetrics["accuracy"]
             tDic[i]["precision_" + itype] = tmetrics["precision"]
