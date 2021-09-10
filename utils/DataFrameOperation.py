@@ -46,10 +46,13 @@ def judgeSameFrames(lpds: List[pd.DataFrame]) -> bool:
             return False
     return True
 
+
 # 将一个DataFrame的FAULT_FLAG重值为ff
 """
 函数功能： 将DataFrame中的FAULT_FLAG设置为ff
 """
+
+
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
     if FAULT_FLAG in df.columns.array:
         df = df.drop(FAULT_FLAG, axis=1)
@@ -58,6 +61,7 @@ def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
     tpd = pd.DataFrame(data=ffdict)
     tpd = pd.concat([df, tpd], axis=1)
     return tpd
+
 
 """
 函数功能： 将DataFrame中按照FAULT_FLAG进行分类生成
@@ -83,6 +87,7 @@ def divedeDataFrameByFaultFlag1(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], b
     for ifault in sFault_Flag_Colums:
         tfault = ifault // 10
         ipd = df.loc[df[FAULT_FLAG] == ifault].copy()
+        ipd.reset_index(drop=True, inplace=True)
         ipd = setPDfaultFlag(ipd, tfault)
         if tfault not in resDict.keys():
             resDict[tfault] = ipd
@@ -91,6 +96,7 @@ def divedeDataFrameByFaultFlag1(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], b
         resDict[tfault] = tipd
 
     return resDict, False
+
 
 """
 函数功能： 将DataFrame中按照FAULT_FLAG进行分类生成
@@ -224,10 +230,9 @@ def subtractFirstLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[
     Tuple[None, bool], Tuple[pd.DataFrame, bool]]:
     if len(df) == 0:
         return None, True
-# https://www.jianshu.com/p/72274ccb647a
-# 注意会出现这种警告
+    # https://www.jianshu.com/p/72274ccb647a
+    # 注意会出现这种警告
     for iline in range(1, len(df)):
         df.loc[iline, columns] = df.loc[iline, columns] - df.loc[0, columns]
     df.loc[0, columns] = df.loc[0, columns] - df.loc[0, columns]
     return df, False
-
