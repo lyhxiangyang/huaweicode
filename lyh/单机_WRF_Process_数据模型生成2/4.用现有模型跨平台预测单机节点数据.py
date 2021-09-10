@@ -134,12 +134,14 @@ if __name__ == "__main__":
     # 舍弃一些错误码的识别
     for i in excludefaulty:
         if i in faultDict.keys():
+            print("删除错误码{}".format(i))
             del faultDict[i]
     # 舍弃一些核的数据
-    for fault, icoredict in faultDict:
+    for fault, icoredict in faultDict.items():
         if fault in includecores.keys():
             for icore, ipd in icoredict.items():
                 if icore not in includecores[fault]:
+                    print("删除核心数据{}-{}".format(fault, icore))
                     del icoredict[icore]
     # faultDict 存储的是有用的核心数据
 
