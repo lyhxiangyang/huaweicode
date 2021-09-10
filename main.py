@@ -31,7 +31,7 @@ if __name__ == "__main__":
         print("process合并错误")
         exit(1)
 
-    serverpds = [pd.read.csv(ipdpath) for ipdpath in serverpathes1]
+    serverpds = [pd.read_csv(ipdpath) for ipdpath in serverpathes1]
     allserverpds, err = mergeDataFrames(serverpds)
     if err:
         print("server合并错误")
