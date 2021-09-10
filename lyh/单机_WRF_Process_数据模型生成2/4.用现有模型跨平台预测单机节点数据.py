@@ -133,7 +133,8 @@ if __name__ == "__main__":
     print("3. 对一些核心数进行处理".center(40, "*"))
     # 舍弃一些错误码的识别
     for i in excludefaulty:
-        del faultDict[i]
+        if i in faultDict.keys():
+            del faultDict[i]
     # 舍弃一些核的数据
     for fault, icoredict in faultDict:
         if fault in includecores.keys():
