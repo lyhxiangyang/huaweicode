@@ -9,7 +9,8 @@ import pandas as pd
 
 from Classifiers.ModelPred import select_and_pred
 from Classifiers.ModelTrain import model_train, getTestRealLabels
-from utils.DataFrameOperation import isEmptyInDataFrame, mergeDataFrames, judgeSameFrames, divedeDataFrameByFaultFlag
+from utils.DataFrameOperation import isEmptyInDataFrame, mergeDataFrames, judgeSameFrames, divedeDataFrameByFaultFlag, \
+    divedeDataFrameByFaultFlag1
 from utils.DefineData import FAULT_FLAG, WINDOWS_SIZE, SaveModelPath, MODEL_TYPE
 from utils.FeatureExtraction import featureExtraction
 from utils.GetMetrics import get_metrics
