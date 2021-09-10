@@ -103,7 +103,7 @@ if __name__ == "__main__":
     tpath = os.path.join(savepath, "1.错误码分割")
     if not os.path.exists(tpath):
         os.makedirs(tpath)
-    for ifault, ipd in tfaultDict:
+    for ifault, ipd in tfaultDict.items():
         ipd.to_csv(os.path.join(tpath, "{}.csv".format(ifault)), index=False)
 
     ####################################################################################################################
