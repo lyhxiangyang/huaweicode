@@ -109,7 +109,7 @@ if __name__ == "__main__":
     ####################################################################################################################
     faultDict = {}
     print("2. 按照核心数将每一个数据进行分割".center(40, "*"))
-    for fault, ipd in tfaultDict:
+    for fault, ipd in tfaultDict.items():
         tdict, err = splitDFbyCore(ipd)
         if err:
             print("{} 错误码按照核心分离失败".format(fault))
