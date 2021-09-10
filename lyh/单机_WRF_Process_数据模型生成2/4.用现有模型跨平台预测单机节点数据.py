@@ -193,7 +193,7 @@ if __name__ == "__main__":
         if err:
             print("错误码：{} 合并失败".format(ifault))
             exit(1)
-        print("错误码{}: 数据量:{}".format(ifault, mergeDF.shaoe))
+        print("错误码{}: 数据量:{}".format(ifault, mergeDF.shape))
         allmergedDict[ifault] = mergeDF
         # 将所有数据都保存到步骤四种
         tfaultpath = os.path.join(tpath, str(ifault))
