@@ -99,7 +99,7 @@ if __name__ == "__main__":
         "9km",
         "allkm"
     ]
-    for iii, ipath in range(0, 4):
+    for iii in range(0, 4):
         savepath = os.path.join(savepath1, filedirs[iii])
         # 要预测的数
         mergePds = [pd.read_csv(ipath) for ipath in abnormalPathes]
