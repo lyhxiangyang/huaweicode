@@ -90,11 +90,11 @@ if __name__ == "__main__":
     # 要预测的数据
     mergedPd = pd.read_csv(abnormalPathes[0])
     mergedPd = mergedPd[process_features]
-
+    print("shape: {}".format(mergedPd.shape))
     ## 将错误码进行分开
     ####################################################################################################################
     print("1. 按照错误码将数据进行分割".center(40, "*"))
-    tfaultDict, err = divedeDataFrameByFaultFlag(mergedPd)
+    tfaultDict, err = divedeDataFrameByFaultFlag1(mergedPd)
     if err:
         print("按照错误码进行数据分割失败")
         exit(1)

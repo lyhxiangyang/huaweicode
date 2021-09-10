@@ -7,7 +7,7 @@
 
 
 """
-
+from collections import defaultdict
 from typing import List, Dict, Tuple, Union
 from utils.DefineData import *
 import pandas as pd
@@ -46,6 +46,50 @@ def judgeSameFrames(lpds: List[pd.DataFrame]) -> bool:
             return False
     return True
 
+# 将一个DataFrame的FAULT_FLAG重值为ff
+"""
+函数功能： 将DataFrame中的FAULT_FLAG设置为ff
+"""
+def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
+    if FAULT_FLAG in df.columns.array:
+        df = df.drop(FAULT_FLAG, axis=1)
+    lengthpd = len(df)
+    ffdict = {FAULT_FLAG: [ff] * lengthpd}
+    tpd = pd.DataFrame(data=ffdict)
+    tpd = pd.concat([df, tpd], axis=1)
+    return tpd
+
+"""
+函数功能： 将DataFrame中按照FAULT_FLAG进行分类生成
+函数参数： 传入一个Server的信息 包含Fault_Flag参数
+函数返回值： Dict 第一个是错误码 对应是其DataFrame结构
+"""
+
+
+def divedeDataFrameByFaultFlag1(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], bool):
+    # 先判断是否存在Fault_FLag参数，不存在就报错
+    if FAULT_FLAG not in list(df.columns.array):
+        return None, True
+
+    # 对Fault_Flag这一行进行去重, 并将错误
+    sFault_Flag_Colums = sorted(list(set(df[FAULT_FLAG])))
+
+    # 重复n个空的DataFrame， 方便使用zip直接生成一个Dict结构的数据结构
+    # repeatEmptyDataFrames = [pd.DataFrame(columns=df.columns.array) for i in range(0, len(sFault_Flag_Colums))]
+    # resDict = dict(zip(sFault_Flag_Colums, repeatEmptyDataFrames))
+    resDict: Dict = {}
+
+    # 遍历DataFrame根据 Fault_Flag这一行来分开
+    for ifault in sFault_Flag_Colums:
+        tfault = ifault // 10
+        ipd = df.loc[df[FAULT_FLAG] == ifault].copy()
+        ipd = setPDfaultFlag(ipd, tfault)
+        if tfault not in resDict.keys():
+            resDict[tfault] = ipd
+            continue
+        resDict[tfault] = pd.concat([resDict[tfault], ipd], ignore_index=True)
+
+    return resDict, False
 
 """
 函数功能： 将DataFrame中按照FAULT_FLAG进行分类生成
