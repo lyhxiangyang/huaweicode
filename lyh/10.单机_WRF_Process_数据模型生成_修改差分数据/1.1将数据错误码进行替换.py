@@ -7,14 +7,14 @@
 2. 将各个提取之后的错误码进行保存
 """
 import os
-from typing import Tuple
+from typing import Tuple, List
 
 import pandas as pd
 
 from utils.DataFrameOperation import isEmptyInDataFrame, judgeSameFrames, mergeDataFrames
 from utils.DefineData import FAULT_FLAG
 
-savepath = "tmp\\wrf_single_process_grape\\1.1\\"
+savepath = "tmp\\wrf_single_process_step10\\1.1\\"
 
 abnormalPathes = {
     "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_single\\wrfrst_e5-43_process-2.csv": 0,
@@ -55,7 +55,30 @@ abnormalPathes = {
     "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_process_memleak-120.csv": 64,
     "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_process_memleak-600.csv": 65,
     "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_process_memleak-1200.csv": 65,
+    # 下面这三个文件需要先运行步骤5中的第一步
+    # "tmp\\wrf_process_otherplatform\\1km\\1.错误码分割\\0.csv": 0,
+    # "tmp\\wrf_process_otherplatform\\3km\\1.错误码分割\\0.csv": 0,
+    # "tmp\\wrf_process_otherplatform\\9km\\1.错误码分割\\0.csv": 0,
 }
+
+dataPathes = [
+    "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-1km-单机数据整合版\\wrf_1km_160_process.csv",
+    "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-3km-单机数据整合版\\wrf_3km_160_process.csv",
+    "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-9km-单机数据整合版\\wrf_9km_160_process.csv",
+]
+
+
+def getDataByFaultFlag(FaultFlag: int, pathes: List[str]) -> pd.DataFrame:
+    dfpds = [pd.read_csv(i) for i in pathes]
+    mergepd, err = mergeDataFrames(dfpds)
+    if err:
+        print("在函数 getDataByFaultFlag中 读取失败")
+        exit(1)
+    mergepd: pd.DataFrame
+    respd = mergepd.loc[mergepd[FAULT_FLAG] == FaultFlag].reset_index(drop=True)
+    return respd
+
+
 process_features = [
     "time",
     # "pid",
@@ -94,13 +117,22 @@ process_features = [
 ]
 # 如果只是用某个错误里面的若干核心，就修改下面的includecores变量，比如下面错误2就只是用核心1中的数据
 includecores = {
-    2: [1],
-    3: [0, 1, 2, 3, 4, 5, 6]
+    21: [1],
+    22: [1],
+    23: [1],
+    24: [1],
+    25: [1],
+    31: [0, 1, 2, 3, 4, 5, 6],
+    32: [0, 1, 2, 3, 4, 5, 6],
+    33: [0, 1, 2, 3, 4, 5, 6],
+    34: [0, 1, 2, 3, 4, 5, 6],
+    35: [0, 1, 2, 3, 4, 5, 6],
 }
 # 排除一些错误码的使用，也可以将abnormalPathes中的数据进行注释到达同样的效果
 excludefaulty = [81, 82, 83, 84, 85]
 
 CPU_FEATURE = "cpu_affinity"
+
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
@@ -119,17 +151,17 @@ if __name__ == "__main__":
     ####################################################################################################################
     print("1. 将所有文件的处理成对应faultFlag".center(40, "*"))
     allpdlists = {}
+    allpdlists[0] = [getDataByFaultFlag(0, dataPathes)]
     for ipath, iflaut in abnormalPathes.items():
         if iflaut in excludefaulty:
             continue
-        iflaut = iflaut // 10
         if iflaut not in allpdlists:
             allpdlists[iflaut] = []
         # 将这个文件读取出来，那么接下来我要判断去掉不必要的核心数
         tpd = pd.read_csv(ipath)
         # 如果在这个字典里面, 按照核心数提取数据
         if iflaut in includecores.keys():
-            tpd = tpd[ [True if i in includecores[iflaut] else False for i in tpd[CPU_FEATURE]] ]
+            tpd = tpd[[True if i in includecores[iflaut] else False for i in tpd[CPU_FEATURE]]]
             tpd.reset_index(drop=True, inplace=True)
         # 判断这个tpd是否满足不存在空值的条件
         if isEmptyInDataFrame(tpd):
@@ -149,6 +181,7 @@ if __name__ == "__main__":
             print("步骤2中合并列表失败")
             exit(1)
         allpds[iflauty] = tpd
+        print("{}: {}".format(iflauty, tpd.shape))
 
     ####################################################################################################################
 
@@ -158,6 +191,6 @@ if __name__ == "__main__":
     ####################################################################################################################
     # 将错误码进行保存
     for iflaut, ipd in allpds.items():
-        tpd = ipd[process_features]
+        ipd = ipd[process_features]
         tpath = os.path.join(savepath, str(iflaut) + ".csv")
-        tpd.to_csv(tpath, index=False)
+        ipd.to_csv(tpath, index=False)

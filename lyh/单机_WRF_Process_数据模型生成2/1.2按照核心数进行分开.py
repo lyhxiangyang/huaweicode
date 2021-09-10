@@ -14,11 +14,11 @@ from utils.FeatureExtraction import featureExtraction
 
 CPU_FEATURE = "cpu_affinity"
 
-savepath1_1 = "tmp\\wrf_single_process_grape\\1.1\\"
-savepath1_2 = "tmp\\wrf_single_process_grape\\1.2\\"  # 每个核的原始数据
-savepath1_3 = "tmp\\wrf_single_process_grape\\1.3\\"  # 特征提取
-savepath1_4 = "tmp\\wrf_single_process_grape\\1.4\\"  #
-savepath1_5 = "tmp\\wrf_single_process_grape\\1.5\\"  # 特征提取
+savepath1_1 = "tmp\\wrf_single_process_1\\1.1\\"
+savepath1_2 = "tmp\\wrf_single_process_1\\1.2\\"  # 每个核的原始数据
+savepath1_3 = "tmp\\wrf_single_process_1\\1.3\\"  # 特征提取
+savepath1_4 = "tmp\\wrf_single_process_1\\1.4\\"  #
+savepath1_5 = "tmp\\wrf_single_process_1\\1.5\\"  # 特征提取
 
 
 def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool]]:

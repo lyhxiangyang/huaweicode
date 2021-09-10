@@ -11,9 +11,9 @@ from Classifiers.ModelTrain import model_train, getTestRealLabels, getTestPreLab
 from utils.DefineData import MODEL_TYPE, SaveModelPath
 from utils.GetMetrics import get_metrics
 
-savepath2 = "tmp\\wrf_single_process_grape\\2\\" # 特征提
+savepath2 = "tmp\\wrf_single_process_1\\2\\" # 特征提
 filename2 = "alluserful.csv"
-savepath3 = "tmp\\wrf_single_process_grape\\5\\"
+savepath3 = "tmp\\wrf_single_process_1\\5\\"
 
 saverespath = "tmp\\informations"
 

@@ -8,17 +8,18 @@ from typing import Dict, Tuple, Union
 
 import pandas as pd
 
-from utils.DataFrameOperation import mergeDataFrames
+from utils.DataFrameOperation import mergeDataFrames, subtractFirstLineFromDataFrame, subtractLastLineFromDataFrame
 from utils.DefineData import WINDOWS_SIZE
 from utils.FeatureExtraction import featureExtraction
 
 CPU_FEATURE = "cpu_affinity"
 
-savepath1_1 = "tmp\\wrf_single_process_grape\\1.1\\"
-savepath1_2 = "tmp\\wrf_single_process_grape\\1.2\\"  # 每个核的原始数据
-savepath1_3 = "tmp\\wrf_single_process_grape\\1.3\\"  # 特征提取
-savepath1_4 = "tmp\\wrf_single_process_grape\\1.4\\"  #
-savepath1_5 = "tmp\\wrf_single_process_grape\\1.5\\"  # 特征提取
+savepath1_1 = "tmp\\wrf_single_process_step10\\1.1\\"
+savepath1_2 = "tmp\\wrf_single_process_step10\\1.2\\"  # 每个核的原始数据
+savepath1_21 = "tmp\\wrf_single_process_step10\\1.2_特征处理_减去第一行\\"  # 特征提取
+savepath1_22 = "tmp\\wrf_single_process_step10\\1.2_特征处理_减去前一行\\"  # 特征提取
+
+subtrctFeature = ["user", "system"]
 
 
 def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool]]:
@@ -36,12 +37,9 @@ def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool
 if __name__ == "__main__":
     if not os.path.exists(savepath1_2):
         os.makedirs(savepath1_2)
-    if not os.path.exists(savepath1_3):
-        os.makedirs(savepath1_3)
-    if not os.path.exists(savepath1_4):
-        os.makedirs(savepath1_4)
-    if not os.path.exists(savepath1_5):
-        os.makedirs(savepath1_5)
+    if not os.path.exists(savepath1_21):
+        os.makedirs(savepath1_21)
+
     ####################################################################################################################
     # 先将一中的数据进行读取 并且按照核数据提取
     print("1. 按照核心进行数据提取".center(40, "*"))
@@ -66,11 +64,36 @@ if __name__ == "__main__":
     for ifaults, idict in allpds.items():
         print("save {}: len {}".format(ifaults, len(idict)))
         tpath = os.path.join(savepath1_2, str(ifaults))
+        ttpath = os.path.join(savepath1_21, str(ifaults))
+        tttpath = os.path.join(savepath1_22, str(ifaults))
+
         if not os.path.exists(tpath):
             os.makedirs(tpath)
+        if not os.path.exists(ttpath):
+            os.makedirs(ttpath)
+        if not os.path.exists(tttpath):
+            os.makedirs(tttpath)
+
         for i, ipd in idict.items():
             ipd: pd.DataFrame
             tfile = os.path.join(tpath, str(i) + ".csv")
             ipd.to_csv(tfile, index=False)
+            # 进行特征处理
+            ipd.reset_index(drop=True, inplace=True)
+            ttfile = os.path.join(ttpath, str(i) + ".csv")
+            tpd, err = subtractFirstLineFromDataFrame(ipd, subtrctFeature)
+            if err:
+                print("数据处理失败, subtractFirstLineFromDataFrame")
+                exit(1)
+            tpd.to_csv(ttfile, index=False)
+
+            # 每一行都减去前一行
+
+            tttfile = os.path.join(tttpath, str(i)+".csv")
+            ttpd, err = subtractLastLineFromDataFrame(tpd, subtrctFeature)
+            if err:
+                print("数据处理失败, subtractLastLineFromDataFrame")
+                exit(1)
+            ttpd.to_csv(tttfile, index=False)
 
     print("划分结束")
