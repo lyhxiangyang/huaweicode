@@ -40,9 +40,9 @@ if __name__ == "__main__":
     processTime = set(list(allprocesspds[TIME_COLUMN_NAME]))
     serverTime = set(list(allserverpds[TIME_COLUMN_NAME]))
 
-    if processTime in serverTime:
+    if processTime.issubset(serverTime):
         print("Server时间大，包含了process时间")
-    elif serverTime in processTime:
+    elif serverTime.issubset(processTime):
         print("Process时间大，包含了server时间")
 
     print("判断结束".center(40, "*"))
