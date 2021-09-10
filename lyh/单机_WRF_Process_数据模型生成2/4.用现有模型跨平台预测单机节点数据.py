@@ -139,7 +139,7 @@ if __name__ == "__main__":
     # 舍弃一些核的数据
     for fault, icoredict in faultDict.items():
         if fault in includecores.keys():
-            for icore, ipd in icoredict.items():
+            for icore, ipd in list(icoredict.items()):
                 if icore not in includecores[fault]:
                     print("删除核心数据{}-{}".format(fault, icore))
                     del icoredict[icore]
