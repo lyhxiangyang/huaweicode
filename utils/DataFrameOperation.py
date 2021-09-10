@@ -87,7 +87,8 @@ def divedeDataFrameByFaultFlag1(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], b
         if tfault not in resDict.keys():
             resDict[tfault] = ipd
             continue
-        resDict[tfault], err = mergeDataFrames([resDict[tfault], ipd])
+        tipd, err = mergeDataFrames([resDict[tfault], ipd])
+        resDict[tfault] = tipd
 
     return resDict, False
 
