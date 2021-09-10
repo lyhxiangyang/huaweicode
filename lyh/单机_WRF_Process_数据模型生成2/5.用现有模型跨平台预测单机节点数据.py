@@ -69,7 +69,7 @@ excludefaulty = [8]
 savemodulepath = os.path.join(SaveModelPath, str(1))
 
 saverespath = "tmp\\informations"
-savepath = "tmp\\wrf_process_otherplatform"
+savepath1 = "tmp\\wrf_process_otherplatform"
 isreadfile = False
 
 CPU_FEATURE = "cpu_affinity"
@@ -93,8 +93,15 @@ if __name__ == "__main__":
         "9km_input.csv",
         "1_3_9km_imput.csv"
     ]
+    filedirs = [
+        "1km",
+        "3km",
+        "9km",
+        "allkm"
+    ]
     for iii, ipath in range(0, 4):
-        # 要预测的数据
+        savepath = os.path.join(savepath1, filedirs[iii])
+        # 要预测的数
         mergePds = [pd.read_csv(ipath) for ipath in abnormalPathes]
 
         if iii == 3:
