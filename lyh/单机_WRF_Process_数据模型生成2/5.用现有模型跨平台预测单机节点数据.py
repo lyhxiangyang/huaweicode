@@ -105,7 +105,7 @@ if __name__ == "__main__":
         mergePds = [pd.read_csv(ipath) for ipath in abnormalPathes]
 
         if iii == 3:
-            mergedPd = mergeDataFrames(mergePds)
+            mergedPd, err = mergeDataFrames(mergePds)
         else:
             mergedPd = mergePds[iii]
 
