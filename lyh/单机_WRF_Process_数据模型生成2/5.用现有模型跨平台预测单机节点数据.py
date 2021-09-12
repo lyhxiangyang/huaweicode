@@ -68,7 +68,7 @@ excludefaulty = [8]
 # 使用模型的路径
 savemodulepath = os.path.join(SaveModelPath, str(1))
 
-saverespath = "tmp\\informations"
+saverespathinfo = "tmp\\informations"
 savepath1 = "tmp\\wrf_process_otherplatform"
 isreadfile = False
 
@@ -219,10 +219,10 @@ if __name__ == "__main__":
             if not os.path.exists(tfaultpath):
                 os.makedirs(tfaultpath)
             mergeDF : pd.DataFrame
-            mergeDF.to_csv("merged.csv", index=False)
+            mergeDF.to_csv(os.path.join(tfaultpath, "merged.csv"), index=False)
         # 将所有的数据合并在一起
         mergedPd, err = mergeDataFrames(list(allmergedDict.values()))
-        mergedPd.to_csv("Allmerged.csv", index=False)
+        mergedPd.to_csv(os.path.join(tpath, "Allmerged.csv"), index=False)
         if err:
             print("所有数据合并错误")
             exit(1)
@@ -246,13 +246,13 @@ if __name__ == "__main__":
                 tDic[i]["accuracy_" + itype] = tmetrics["accuracy"]
                 tDic[i]["precision_" + itype] = tmetrics["precision"]
                 tDic[i]["recall_" + itype] = tmetrics["recall"]
-        if not os.path.exists(saverespath):
-            os.makedirs(saverespath)
+        if not os.path.exists(saverespathinfo):
+            os.makedirs(saverespathinfo)
         itpd = pd.DataFrame(data=tDic).T
         print(itpd)
-        itpd.to_csv(os.path.join(saverespath, filenames[iii]))
+        itpd.to_csv(os.path.join(saverespathinfo, filenames[iii]))
         print("=========================")
-        print("输出信息->", os.path.join(saverespath, filenames[iii]))
+        print("输出信息->", os.path.join(saverespathinfo, filenames[iii]))
         print("模型预测结束")
         ####################################################################################################################
         ####################################################################################################################
