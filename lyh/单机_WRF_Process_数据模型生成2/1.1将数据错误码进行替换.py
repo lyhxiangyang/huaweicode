@@ -56,9 +56,9 @@ abnormalPathes = {
     "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_process_memleak-600.csv": 65,
     "D:\\HuaweiMachine\\测试数据\\wrfrst单机版e5\\wrfrst单机版e5\\wrfrst-7.17-2\\wrf_rst_e5-43_process_memleak-1200.csv": 65,
     # 下面这三个文件需要先运行步骤5中的第一步
-    "tmp\\wrf_process_otherplatform\\1km\\1.错误码分割\\0.csv": 0,
-    "tmp\\wrf_process_otherplatform\\3km\\1.错误码分割\\0.csv": 0,
-    "tmp\\wrf_process_otherplatform\\9km\\1.错误码分割\\0.csv": 0,
+    # "tmp\\wrf_process_otherplatform\\1km\\1.错误码分割\\0.csv": 0,
+    # "tmp\\wrf_process_otherplatform\\3km\\1.错误码分割\\0.csv": 0,
+    # "tmp\\wrf_process_otherplatform\\9km\\1.错误码分割\\0.csv": 0,
 }
 
 dataPathes = [
