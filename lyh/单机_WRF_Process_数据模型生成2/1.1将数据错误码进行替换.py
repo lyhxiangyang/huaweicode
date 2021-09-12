@@ -7,7 +7,7 @@
 2. 将各个提取之后的错误码进行保存
 """
 import os
-from typing import Tuple
+from typing import Tuple, List
 
 import pandas as pd
 
@@ -60,6 +60,25 @@ abnormalPathes = {
     "tmp\\wrf_process_otherplatform\\3km\\1.错误码分割\\0.csv": 0,
     "tmp\\wrf_process_otherplatform\\9km\\1.错误码分割\\0.csv": 0,
 }
+
+dataPathes = [
+    "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-1km-单机数据整合版\\wrf_1km_160_process.csv",
+    "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-3km-单机数据整合版\\wrf_3km_160_process.csv",
+    "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-9km-单机数据整合版\\wrf_9km_160_process.csv",
+]
+
+
+def getDataByFaultFlag(FaultFlag: int, pathes: List[str]) -> pd.DataFrame:
+    dfpds = [pd.read_csv(i) for i in pathes]
+    mergepd, err = mergeDataFrames(dfpds)
+    if err:
+        print("在函数 getDataByFaultFlag中 读取失败")
+        exit(1)
+    mergepd: pd.DataFrame
+    respd = mergepd.loc[FAULT_FLAG == FaultFlag].reset_index(drop=True)
+    return respd
+
+
 process_features = [
     "time",
     # "pid",
@@ -106,6 +125,7 @@ excludefaulty = [81, 82, 83, 84, 85]
 
 CPU_FEATURE = "cpu_affinity"
 
+
 # 将一个DataFrame的FAULT_FLAG重值为ff
 def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
     if FAULT_FLAG in df.columns.array:
@@ -123,6 +143,7 @@ if __name__ == "__main__":
     ####################################################################################################################
     print("1. 将所有文件的处理成对应faultFlag".center(40, "*"))
     allpdlists = {}
+    allpdlists[0] = [getDataByFaultFlag(0, dataPathes)]
     for ipath, iflaut in abnormalPathes.items():
         if iflaut in excludefaulty:
             continue
@@ -133,7 +154,7 @@ if __name__ == "__main__":
         tpd = pd.read_csv(ipath)
         # 如果在这个字典里面, 按照核心数提取数据
         if iflaut in includecores.keys():
-            tpd = tpd[ [True if i in includecores[iflaut] else False for i in tpd[CPU_FEATURE]] ]
+            tpd = tpd[[True if i in includecores[iflaut] else False for i in tpd[CPU_FEATURE]]]
             tpd.reset_index(drop=True, inplace=True)
         # 判断这个tpd是否满足不存在空值的条件
         if isEmptyInDataFrame(tpd):
