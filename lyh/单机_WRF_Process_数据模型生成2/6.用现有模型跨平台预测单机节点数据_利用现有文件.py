@@ -115,119 +115,14 @@ if __name__ == "__main__":
         print("shape: {}".format(mergedPd.shape))
         ## 将错误码进行分开
         ####################################################################################################################
-        print("1. 按照错误码将数据进行分割".center(40, "*"))
-        tfaultDict, err = divedeDataFrameByFaultFlag1(mergedPd)
-        if err:
-            print("按照错误码进行数据分割失败")
-            exit(1)
-        # 将文件
-        tpath = os.path.join(savepath, "1.错误码分割")
-        if not os.path.exists(tpath):
-            os.makedirs(tpath)
-        for ifault, ipd in tfaultDict.items():
-            ipd.to_csv(os.path.join(tpath, "{}.csv".format(ifault)), index=False)
-
-        ####################################################################################################################
-        faultDict = {}
-        print("2. 按照核心数将每一个数据进行分割".center(40, "*"))
-        for fault, ipd in tfaultDict.items():
-            tdict, err = splitDFbyCore(ipd)
-            if err:
-                print("{} 错误码按照核心分离失败".format(fault))
-                exit(1)
-            faultDict[fault] = tdict
-
-        # 现在得到的是一个字典类型的数组faultDict[i][j] 代表错误码i 核心为j的数据
-        # 将数据进行保存
-        tpath = os.path.join(savepath, "2.按核分割")
-        if not os.path.exists(tpath):
-            os.makedirs(tpath)
-        for ifault, icoredict in faultDict.items():
-            tfaultpath = os.path.join(tpath, str(ifault))
-            if not os.path.exists(tfaultpath):
-                os.makedirs(tfaultpath)
-            for icore, ipd in icoredict.items():
-                ipd : pd.DataFrame
-                ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
-
-        ####################################################################################################################
-        print("3. 对一些核心数进行处理".center(40, "*"))
-        # 舍弃一些错误码的识别
-        for i in excludefaulty:
-            if i in faultDict.keys():
-                print("删除错误码{}".format(i))
-                del faultDict[i]
-        # 舍弃一些核的数据
-        for fault, icoredict in faultDict.items():
-            if fault in includecores.keys():
-                for icore, ipd in list(icoredict.items()):
-                    if icore not in includecores[fault]:
-                        print("删除核心数据{}-{}".format(fault, icore))
-                        del icoredict[icore]
-        # faultDict 存储的是有用的核心数据
-
-        # 将数据进行保存
-        tpath = os.path.join(savepath, "3.按核去除无用数据")
-        if not os.path.exists(tpath):
-            os.makedirs(tpath)
-        for ifault, icoredict in faultDict.items():
-            tfaultpath = os.path.join(tpath, str(ifault))
-            if not os.path.exists(tfaultpath):
-                os.makedirs(tfaultpath)
-            for icore, ipd in icoredict.items():
-                ipd: pd.DataFrame
-                ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
-
-        ####################################################################################################################
-        allusefulpds = defaultdict(dict)
-        print("4. 特征提取中".format(40, "*"))
-        for ifault, idict in faultDict.items():
-            for i, ipd in idict.items():
-                print("before {}-{}: {}".format(ifault, i, ipd.shape))
-                tpd, err = featureExtraction(ipd, windowSize=WINDOWS_SIZE)
-                if err:
-                    print("{}-{}: {} 提取失败".format(ifault, i, ipd.shape))
-                    exit(1)
-                allusefulpds[ifault][i] = tpd
-                print("after {}-{}: {}\n".format(ifault, i, tpd.shape))
-
-        # 将特征进行提取
-        tpath = os.path.join(savepath, "4. 特征提取")
-        if not os.path.exists(tpath):
-            os.makedirs(tpath)
-        for ifault, icoredict in allusefulpds.items():
-            tfaultpath = os.path.join(tpath, str(ifault))
-            if not os.path.exists(tfaultpath):
-                os.makedirs(tfaultpath)
-            for icore, ipd in icoredict.items():
-                ipd: pd.DataFrame
-                ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
-
-        ####################################################################################################################
         allmergedDict = {}
         tpath = os.path.join(savepath, "4. 特征提取")
-        if not os.path.exists(tpath):
-            os.makedirs(tpath)
-        print("5. 将所有的数据都进行合并".center(40, "*"))
-        for ifault, idict in allusefulpds.items():
-            mergeDF, err = mergeDataFrames(list(idict.values()))
-            if err:
-                print("错误码：{} 合并失败".format(ifault))
-                exit(1)
-            print("错误码{}: 数据量:{}".format(ifault, mergeDF.shape))
-            allmergedDict[ifault] = mergeDF
-            # 将所有数据都保存到步骤四种
-            tfaultpath = os.path.join(tpath, str(ifault))
-            if not os.path.exists(tfaultpath):
-                os.makedirs(tfaultpath)
-            mergeDF : pd.DataFrame
-            mergeDF.to_csv(os.path.join(tfaultpath, "merged.csv"), index=False)
-        # 将所有的数据合并在一起
-        mergedPd, err = mergeDataFrames(list(allmergedDict.values()))
-        mergedPd.to_csv(os.path.join(tpath, "Allmerged.csv"), index=False)
-        if err:
-            print("所有数据合并错误")
-            exit(1)
+        tpahtfile = os.path.join(tpath, "Allmerged.csv")
+        if not os.path.exists(tpahtfile):
+            print("{} - {}: file not exist".format(filedirs[iii], "Allmerged.csv"))
+
+        mergedPd = pd.read_csv()
+
         ####################################################################################################################
         print("6. 模型预测".center(40, "*"))
         reallist = mergedPd[FAULT_FLAG]

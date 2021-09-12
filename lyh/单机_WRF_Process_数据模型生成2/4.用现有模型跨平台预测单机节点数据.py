@@ -1,5 +1,6 @@
 """
-这个文件的主要作用是主要检测grape数据
+这个文件的主要作用是预测另一个平台某个输入的wrf数据
+另一个平台有三个输入数据1km、3km、9km
 """
 import os
 from collections import defaultdict
@@ -69,7 +70,7 @@ excludefaulty = [8]
 savemodulepath = os.path.join(SaveModelPath, str(1))
 
 saverespath = "tmp\\informations"
-savepath = "tmp\\wrf_process_otherplatform"
+savepath = "tmp\\wrf_process_otherplatform_4"
 isreadfile = False
 
 CPU_FEATURE = "cpu_affinity"
