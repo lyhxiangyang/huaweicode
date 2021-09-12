@@ -120,8 +120,9 @@ if __name__ == "__main__":
         tpahtfile = os.path.join(tpath, "Allmerged.csv")
         if not os.path.exists(tpahtfile):
             print("{} - {}: file not exist".format(filedirs[iii], "Allmerged.csv"))
+            exit(1)
 
-        mergedPd = pd.read_csv()
+        mergedPd = pd.read_csv(tpahtfile)
 
         ####################################################################################################################
         print("6. 模型预测".center(40, "*"))
