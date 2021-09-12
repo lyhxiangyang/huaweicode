@@ -75,7 +75,7 @@ def getDataByFaultFlag(FaultFlag: int, pathes: List[str]) -> pd.DataFrame:
         print("在函数 getDataByFaultFlag中 读取失败")
         exit(1)
     mergepd: pd.DataFrame
-    respd = mergepd.loc[FAULT_FLAG == FaultFlag].reset_index(drop=True)
+    respd = mergepd.loc[mergepd[FAULT_FLAG] == FaultFlag].reset_index(drop=True)
     return respd
 
 
