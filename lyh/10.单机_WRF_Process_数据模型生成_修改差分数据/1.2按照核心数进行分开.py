@@ -67,6 +67,8 @@ if __name__ == "__main__":
 
         if not os.path.exists(tpath):
             os.makedirs(tpath)
+        if not os.path.exists(ttpath):
+            os.makedirs(ttpath)
         for i, ipd in idict.items():
             ipd: pd.DataFrame
             tfile = os.path.join(tpath, str(i) + ".csv")
