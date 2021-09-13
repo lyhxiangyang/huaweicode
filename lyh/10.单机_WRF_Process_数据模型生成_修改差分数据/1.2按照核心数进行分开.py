@@ -74,6 +74,7 @@ if __name__ == "__main__":
             tfile = os.path.join(tpath, str(i) + ".csv")
             ipd.to_csv(tfile, index=False)
             # 进行特征处理
+            ipd.reset_index(drop=True, inplace=True)
             ttfile = os.path.join(ttpath, str(i) + ".csv")
             tpd, err = subtractFirstLineFromDataFrame(ipd, subtrctFeature)
             if err:
