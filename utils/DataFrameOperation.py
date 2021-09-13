@@ -223,6 +223,9 @@ def isEmptyInDataFrame(targetDF: pd.DataFrame) -> bool:
 -   功能介绍：
     将一个DataFrame中的所有行中对应的特征值都都剪去第一行，除去time和flagFault
 -   返回值一个DataFrame和一个是否有错误的bool类型
+
+-   重点：传入的参数必须是index=[0, 1, 2]
+    传入前可以通过reset_index(drop=True, inplace=True)
 """
 
 
@@ -235,4 +238,26 @@ def subtractFirstLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[
     for iline in range(1, len(df)):
         df.loc[iline, columns] = df.loc[iline, columns] - df.loc[0, columns]
     df.loc[0, columns] = df.loc[0, columns] - df.loc[0, columns]
+    return df, False
+
+"""
+-   功能介绍：
+    将一个DataFrame中的所有行中对应的特征值都都剪去第一行，除去time和flagFault
+-   返回值一个DataFrame和一个是否有错误的bool类型
+
+-   重点：传入的参数必须是index=[0, 1, 2]
+    传入前可以通过reset_index(drop=True, inplace=True)
+"""
+
+
+def subtractLastLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[
+    Tuple[None, bool], Tuple[pd.DataFrame, bool]]:
+    if len(df) <= 1:
+        return None, True
+    # https://www.jianshu.com/p/72274ccb647a
+    # 注意会出现这种警告
+    for iline in range(len(df) - 1, 0, -1):
+        df.loc[iline, columns] = df.loc[iline, columns] - df.loc[iline - 1, columns]
+
+    df.loc[0, columns] = df.loc[1, columns]
     return df, False

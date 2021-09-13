@@ -8,7 +8,7 @@ from typing import Dict, Tuple, Union
 
 import pandas as pd
 
-from utils.DataFrameOperation import mergeDataFrames, subtractFirstLineFromDataFrame
+from utils.DataFrameOperation import mergeDataFrames, subtractFirstLineFromDataFrame, subtractLastLineFromDataFrame
 from utils.DefineData import WINDOWS_SIZE
 from utils.FeatureExtraction import featureExtraction
 
@@ -16,7 +16,8 @@ CPU_FEATURE = "cpu_affinity"
 
 savepath1_1 = "tmp\\wrf_single_process_step10\\1.1\\"
 savepath1_2 = "tmp\\wrf_single_process_step10\\1.2\\"  # 每个核的原始数据
-savepath1_21 = "tmp\\wrf_single_process_step10\\1.2_特征处理\\"  # 特征提取
+savepath1_21 = "tmp\\wrf_single_process_step10\\1.2_特征处理_减去第一行\\"  # 特征提取
+savepath1_22 = "tmp\\wrf_single_process_step10\\1.2_特征处理_减去前一行\\"  # 特征提取
 
 subtrctFeature = ["user", "system"]
 
@@ -64,11 +65,15 @@ if __name__ == "__main__":
         print("save {}: len {}".format(ifaults, len(idict)))
         tpath = os.path.join(savepath1_2, str(ifaults))
         ttpath = os.path.join(savepath1_21, str(ifaults))
+        tttpath = os.path.join(savepath1_22, str(ifaults))
 
         if not os.path.exists(tpath):
             os.makedirs(tpath)
         if not os.path.exists(ttpath):
             os.makedirs(ttpath)
+        if not os.path.exists(tttpath):
+            os.makedirs(tttpath)
+
         for i, ipd in idict.items():
             ipd: pd.DataFrame
             tfile = os.path.join(tpath, str(i) + ".csv")
@@ -81,5 +86,14 @@ if __name__ == "__main__":
                 print("数据处理失败, subtractFirstLineFromDataFrame")
                 exit(1)
             tpd.to_csv(ttfile, index=False)
+
+            # 每一行都减去前一行
+
+            tttfile = os.path.join(tttpath, str(i)+".csv")
+            ttpd, err = subtractLastLineFromDataFrame(tpd, subtrctFeature)
+            if err:
+                print("数据处理失败, subtractLastLineFromDataFrame")
+                exit(1)
+            ttpd.to_csv(tttfile, index=False)
 
     print("划分结束")
