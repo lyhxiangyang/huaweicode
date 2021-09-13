@@ -40,7 +40,10 @@ if __name__ == "__main__":
         if ifault not in allpds.keys():
             allpds[ifault] = {}
         for icore, corepdlist in ifaultdict.items():
-            allpds[ifault][icore] = mergeDataFrames(allpdslist[ifault][icore])
+            allpds[ifault][icore], err = mergeDataFrames(allpdslist[ifault][icore])
+            if err:
+                print("{}-{}合并错误".format(ifault, icore))
+                exit(1)
 
     ####################################################################################################################
     ## 将生成的文件进行保存
