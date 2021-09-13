@@ -1,4 +1,4 @@
-
+from collections import defaultdict
 from typing import List
 
 """
@@ -51,11 +51,22 @@ def get_metrics(reallist: List, prelist: List, label: int):
     metrics = dict(tp=true_pos, tn=true_neg, fp=false_pos, fn=false_neg, precision=precision, recall=recall,
                    accuracy=accuracy)
     # 添加数量数据，即各个实际标签对应的数量
-    realnums = {}
+    realnums = {} # 总数量
+    numDict = {}
     for i in reallist:
         if i not in realnums.keys():
             realnums[i] = 0
+        if i not in numDict.keys():
+            numDict[i] = {}
+            numDict[i]["pre_num"] = 0
+            numDict[i]["pre_normal_percentage"] = 0
+
         realnums[i] += 1
+        # 正常的数量
+        # if prelist[i] not in numDict[i].keys():
+        #     numDict[i]
+
     metrics["realnums"] = realnums
+
 
     return metrics
