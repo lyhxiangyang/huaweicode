@@ -14,7 +14,7 @@ import pandas as pd
 from utils.DataFrameOperation import isEmptyInDataFrame, judgeSameFrames, mergeDataFrames
 from utils.DefineData import FAULT_FLAG
 
-savepath = "tmp\\wrf_single_process_1\\1.1\\"
+savepath = "tmp\\wrf_single_process_grape\\1.1\\"
 
 abnormalPathes = {
     "D:\\HuaweiMachine\\测试数据\\wrfrst_normal_e5\\result\\normal_single\\wrfrst_e5-43_process-2.csv": 0,
