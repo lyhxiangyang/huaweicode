@@ -36,12 +36,7 @@ def splitDFbyCore(df: pd.DataFrame) -> Union[Tuple[None, bool], Tuple[dict, bool
 if __name__ == "__main__":
     if not os.path.exists(savepath1_2):
         os.makedirs(savepath1_2)
-    if not os.path.exists(savepath1_3):
-        os.makedirs(savepath1_3)
-    if not os.path.exists(savepath1_4):
-        os.makedirs(savepath1_4)
-    if not os.path.exists(savepath1_5):
-        os.makedirs(savepath1_5)
+
     ####################################################################################################################
     # 先将一中的数据进行读取 并且按照核数据提取
     print("1. 按照核心进行数据提取".center(40, "*"))
