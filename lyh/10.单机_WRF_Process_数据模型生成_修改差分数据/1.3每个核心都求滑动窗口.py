@@ -7,10 +7,10 @@ from utils.DataFrameOperation import mergeDataFrames
 from utils.DefineData import WINDOWS_SIZE
 from utils.FeatureExtraction import featureExtraction
 
-savepath1_1 = "tmp\\wrf_single_process_1\\1.1\\"
-savepath1_2 = "tmp\\wrf_single_process_1\\1.2_特征处理_减去前一行\\" # 每个核的原始数据
-savepath1_31 = "tmp\\wrf_single_process_1\\1.3_合并\\" # 特征提取
-savepath1_3 = "tmp\\wrf_single_process_1\\1.3\\" # 特征提取
+savepath1_1 = "tmp\\wrf_single_process_step10\\1.1\\"
+savepath1_2 = "tmp\\wrf_single_process_step10\\1.2_特征处理_减去前一行\\" # 每个核的原始数据
+savepath1_31 = "tmp\\wrf_single_process_step10\\1.3_合并\\" # 特征提取
+savepath1_3 = "tmp\\wrf_single_process_step10\\1.3\\" # 特征提取
 
 
 
