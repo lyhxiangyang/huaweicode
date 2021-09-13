@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 
 import pandas as pd
 
@@ -7,7 +8,8 @@ from utils.DefineData import WINDOWS_SIZE
 from utils.FeatureExtraction import featureExtraction
 
 savepath1_1 = "tmp\\wrf_single_process_1\\1.1\\"
-savepath1_2 = "tmp\\wrf_single_process_1\\1.2\\" # 每个核的原始数据
+savepath1_2 = "tmp\\wrf_single_process_1\\1.2_特征处理_减去前一行\\" # 每个核的原始数据
+savepath1_31 = "tmp\\wrf_single_process_1\\1.3_合并\\" # 特征提取
 savepath1_3 = "tmp\\wrf_single_process_1\\1.3\\" # 特征提取
 
 
@@ -15,19 +17,41 @@ savepath1_3 = "tmp\\wrf_single_process_1\\1.3\\" # 特征提取
 if __name__ == "__main__":
     if not os.path.exists(savepath1_3):
         os.makedirs(savepath1_3)
+    if not os.path.exists(savepath1_31):
+        os.makedirs(savepath1_31)
 
     ####################################################################################################################
-    # 先读取1.2中的生成的文件
-    print("1.读取文件中...".center(40, "*"))
-    allpds = {}
+    #  先读取1.2中生成的文件，将相同错误的的相同核心数的 并合并
+    allpdslist = {}
     for ifault in os.listdir(savepath1_2):
+        tfault = int(ifault) // 10
         tpath = os.path.join(savepath1_2, ifault)
-        if ifault not in allpds.keys():
-            allpds[ifault] = {}
+        if tfault not in allpdslist.keys():
+            allpdslist[tfault] = defaultdict(list)
         for icore in os.listdir(tpath):
             icorenumber = int(os.path.splitext(icore)[0])
             tfilepath = os.path.join(tpath, icore)
-            allpds[ifault][icorenumber] = pd.read_csv(tfilepath)
+            tpd = pd.read_csv(tfilepath)
+            allpdslist[tfault][icorenumber].append(tpd)
+
+    # 进行合并
+    allpds = {}
+    for ifault, ifaultdict in allpdslist.items():
+        if ifault not in allpds.keys():
+            allpds[ifault] = {}
+        for icore, corepdlist in ifaultdict.items():
+            allpds[ifault][icore] = mergeDataFrames(allpdslist[ifault][icore])
+
+    ####################################################################################################################
+    ## 将生成的文件进行保存
+    for ifault, ifaultdict in allpds.items():
+        tpath = os.path.join(savepath1_31, str(ifault))
+        if not os.path.exists(tpath):
+            os.makedirs(tpath)
+        for icore, corepd in ifaultdict.items():
+            corepd : pd.DataFrame
+            tpathfile = os.path.join(tpath, str(icore) + ".csv")
+            corepd.to_csv(tpathfile, index=False)
 
     ####################################################################################################################
     # 将特征进行提取
