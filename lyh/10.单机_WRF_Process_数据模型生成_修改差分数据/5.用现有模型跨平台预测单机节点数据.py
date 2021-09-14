@@ -228,7 +228,7 @@ if __name__ == "__main__":
             tfault = ifault // 10
             if tfault not in tfaultDict:
                 tfaultDict[tfault] = defaultdict(list)
-            for icore, ipd in icoredict.items:
+            for icore, ipd in icoredict.items():
                 ipd: pd.DataFrame
                 tfaultDict[tfault][icore].append(ipd)
         ttfaultDict = {}
@@ -236,7 +236,10 @@ if __name__ == "__main__":
             if ifault not in ttfaultDict:
                 ttfaultDict[ifault] = {}
             for icore, ilist in icorelist.items():
-                ttfaultDict[ifault][icore] = mergeDataFrames(list(tfaultDict[ifault][icore]))
+                ttfaultDict[ifault][icore], err = mergeDataFrames(list(tfaultDict[ifault][icore]))
+                if err:
+                    print("mergeDataFrames 合并错误")
+                    exit(1)
 
         faultDict = ttfaultDict
         ####################################################################################################################
