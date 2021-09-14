@@ -151,13 +151,14 @@ if __name__ == "__main__":
             for icore, ipd in icoredict.items():
                 ipd : pd.DataFrame
                 ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
+
         # 将数据都减去第一行
         for fault, ipd in tfaultDict.items():
             tdict, err = splitDFbyCore(ipd)
             if err:
                 print("{} 错误码按照核心分离失败, 减去第一行过程中".format(fault))
                 exit(1)
-            faultDict[fault] = subtractFirstLineFromDataFrame(faultDict[fault], columns=subtrctFeature)
+            faultDict[fault], err = subtractFirstLineFromDataFrame(faultDict[fault], columns=subtrctFeature)
 
         tpath = os.path.join(savepath, "2.减去第一行")
         if not os.path.exists(tpath):
@@ -174,9 +175,9 @@ if __name__ == "__main__":
         for fault, ipd in tfaultDict.items():
             tdict, err = splitDFbyCore(ipd)
             if err:
-                print("{} 错误码按照核心分离失败, 减去第一行过程中".format(fault))
+                print("{} 错误码按照核心分离失败, 减去前一行过程中".format(fault))
                 exit(1)
-            faultDict[fault] = subtractLastLineFromDataFrame(faultDict[fault], columns=subtrctFeature)
+            faultDict[fault], err = subtractLastLineFromDataFrame(faultDict[fault], columns=subtrctFeature)
 
         tpath = os.path.join(savepath, "2.减去前一行")
         if not os.path.exists(tpath):
