@@ -12,7 +12,7 @@ import pandas as pd
 from Classifiers.ModelPred import select_and_pred
 from Classifiers.ModelTrain import model_train, getTestRealLabels
 from utils.DataFrameOperation import isEmptyInDataFrame, mergeDataFrames, judgeSameFrames, divedeDataFrameByFaultFlag, \
-    divedeDataFrameByFaultFlag1
+    divedeDataFrameByFaultFlag1, subtractFirstLineFromDataFrame, subtractLastLineFromDataFrame
 from utils.DefineData import FAULT_FLAG, WINDOWS_SIZE, SaveModelPath, MODEL_TYPE
 from utils.FeatureExtraction import featureExtraction
 from utils.GetMetrics import get_metrics
@@ -22,6 +22,7 @@ abnormalPathes = [
     "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-3km-单机数据整合版\\wrf_3km_160_process.csv",
     "D:\\HuaweiMachine\\数据修订版\\单机整合数据\\wrf-9km-单机数据整合版\\wrf_9km_160_process.csv",
 ]
+subtrctFeature = ["user", "system"]
 
 process_features = [
     "time",
@@ -116,7 +117,8 @@ if __name__ == "__main__":
         ## 将错误码进行分开
         ####################################################################################################################
         print("1. 按照错误码将数据进行分割".center(40, "*"))
-        tfaultDict, err = divedeDataFrameByFaultFlag1(mergedPd)
+        # 不进行合并
+        tfaultDict, err = divedeDataFrameByFaultFlag1(mergedPd, isMerged=False)
         if err:
             print("按照错误码进行数据分割失败")
             exit(1)
@@ -149,7 +151,45 @@ if __name__ == "__main__":
             for icore, ipd in icoredict.items():
                 ipd : pd.DataFrame
                 ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
+        # 将数据都减去第一行
+        for fault, ipd in tfaultDict.items():
+            tdict, err = splitDFbyCore(ipd)
+            if err:
+                print("{} 错误码按照核心分离失败, 减去第一行过程中".format(fault))
+                exit(1)
+            faultDict[fault] = subtractFirstLineFromDataFrame(faultDict[fault], columns=subtrctFeature)
 
+        tpath = os.path.join(savepath, "2.减去第一行")
+        if not os.path.exists(tpath):
+            os.makedirs(tpath)
+        for ifault, icoredict in faultDict.items():
+            tfaultpath = os.path.join(tpath, str(ifault))
+            if not os.path.exists(tfaultpath):
+                os.makedirs(tfaultpath)
+            for icore, ipd in icoredict.items():
+                ipd: pd.DataFrame
+                ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
+
+        # 将数据减去前一行
+        for fault, ipd in tfaultDict.items():
+            tdict, err = splitDFbyCore(ipd)
+            if err:
+                print("{} 错误码按照核心分离失败, 减去第一行过程中".format(fault))
+                exit(1)
+            faultDict[fault] = subtractLastLineFromDataFrame(faultDict[fault], columns=subtrctFeature)
+
+        tpath = os.path.join(savepath, "2.减去前一行")
+        if not os.path.exists(tpath):
+            os.makedirs(tpath)
+        for ifault, icoredict in faultDict.items():
+            tfaultpath = os.path.join(tpath, str(ifault))
+            if not os.path.exists(tfaultpath):
+                os.makedirs(tfaultpath)
+            for icore, ipd in icoredict.items():
+                ipd: pd.DataFrame
+                ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
+        print("先暂时停顿")
+        exit(1)
         ####################################################################################################################
         print("3. 对一些核心数进行处理".center(40, "*"))
         # 舍弃一些错误码的识别

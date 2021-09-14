@@ -70,7 +70,7 @@ def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
 """
 
 
-def divedeDataFrameByFaultFlag1(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], bool):
+def divedeDataFrameByFaultFlag1(df: pd.DataFrame, isMerged : bool = True) -> (Dict[int, pd.DataFrame], bool):
     # 先判断是否存在Fault_FLag参数，不存在就报错
     if FAULT_FLAG not in list(df.columns.array):
         return None, True
@@ -85,7 +85,8 @@ def divedeDataFrameByFaultFlag1(df: pd.DataFrame) -> (Dict[int, pd.DataFrame], b
 
     # 遍历DataFrame根据 Fault_Flag这一行来分开
     for ifault in sFault_Flag_Colums:
-        tfault = ifault // 10
+        if isMerged:
+            tfault = ifault // 10
         ipd = df.loc[df[FAULT_FLAG] == ifault].copy()
         ipd.reset_index(drop=True, inplace=True)
         ipd = setPDfaultFlag(ipd, tfault)
