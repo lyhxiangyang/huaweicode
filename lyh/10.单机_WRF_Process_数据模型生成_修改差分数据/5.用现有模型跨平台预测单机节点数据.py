@@ -161,7 +161,10 @@ if __name__ == "__main__":
                 os.makedirs(tfaultpath)
             for icore, ipd in list(icoredict.items()):
                 ipd : pd.DataFrame
-                faultDict[ifault][icore] = subtractFirstLineFromDataFrame(ipd, subtrctFeature)
+                faultDict[ifault][icore], err = subtractFirstLineFromDataFrame(ipd, subtrctFeature)
+                if err:
+                    print("{}-{}: 减去第一行处理失败".format(ifault, icore))
+                    exit(1)
                 faultDict[ifault][icore].to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
 
         ## 减去第一行处理
@@ -174,7 +177,10 @@ if __name__ == "__main__":
                 os.makedirs(tfaultpath)
             for icore, ipd in list(icoredict.items()):
                 ipd: pd.DataFrame
-                faultDict[ifault][icore] = subtractLastLineFromDataFrame(ipd, subtrctFeature)
+                faultDict[ifault][icore], err = subtractLastLineFromDataFrame(ipd, subtrctFeature)
+                if err:
+                    print("{}-{}: 减去前一行处理失败".format(ifault, icore))
+                    exit(1)
                 faultDict[ifault][icore].to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
 
         print("先暂时停顿")
