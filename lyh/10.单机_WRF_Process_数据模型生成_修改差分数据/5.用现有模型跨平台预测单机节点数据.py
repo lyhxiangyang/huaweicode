@@ -63,11 +63,19 @@ process_features = [
 
 # 如果只是用某个错误里面的若干核心，就修改下面的includecores变量，比如下面错误2就只是用核心1中的数据
 includecores = {
-    2: [1],
-    3: [0, 1, 2, 3, 4, 5, 6]
+    21: [1],
+    22: [1],
+    23: [1],
+    24: [1],
+    25: [1],
+    31: [0, 1, 2, 3, 4, 5, 6],
+    32: [0, 1, 2, 3, 4, 5, 6],
+    33: [0, 1, 2, 3, 4, 5, 6],
+    34: [0, 1, 2, 3, 4, 5, 6],
+    35: [0, 1, 2, 3, 4, 5, 6],
 }
 # 排除一些错误码的使用，也可以将abnormalPathes中的数据进行注释到达同样的效果
-excludefaulty = [8]
+excludefaulty = [81, 82, 83, 84, 85, 99]
 # 使用模型的路径
 savemodulepath = os.path.join(SaveModelPath, str(1))
 
@@ -167,7 +175,7 @@ if __name__ == "__main__":
                     exit(1)
                 faultDict[ifault][icore].to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
 
-        ## 减去第一行处理
+        ## 减去前一行处理
         tpath = os.path.join(savepath, "2.减去前一行处理")
         if not os.path.exists(tpath):
             os.makedirs(tpath)
@@ -180,11 +188,8 @@ if __name__ == "__main__":
                 faultDict[ifault][icore], err = subtractLastLineFromDataFrame(ipd, subtrctFeature)
                 if err:
                     print("{}-{}: 减去前一行处理失败".format(ifault, icore))
-                    exit(1)
                 faultDict[ifault][icore].to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
 
-        print("先暂时停顿")
-        exit(1)
         ####################################################################################################################
         print("3. 对一些核心数进行处理".center(40, "*"))
         # 舍弃一些错误码的识别
@@ -213,6 +218,25 @@ if __name__ == "__main__":
                 ipd: pd.DataFrame
                 ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
 
+
+        ####################################################################################################################
+        # 将不同强度的信息 进行合并
+        tfaultDict = {}
+        for ifault, icoredict in list(faultDict.items()):
+            tfault = ifault // 10
+            if tfault not in tfaultDict:
+                tfaultDict[tfault] = defaultdict(list)
+            for icore, ipd in icoredict.items:
+                ipd: pd.DataFrame
+                tfaultDict[tfault][icore].append(ipd)
+        ttfaultDict = {}
+        for ifault, icorelist in tfaultDict.items():
+            if ifault not in ttfaultDict:
+                ttfaultDict[ifault] = {}
+            for icore, ilist in icorelist.items():
+                ttfaultDict[ifault][icore] = mergeDataFrames(list(tfaultDict[ifault][icore]))
+
+        faultDict = ttfaultDict
         ####################################################################################################################
         allusefulpds = defaultdict(dict)
         print("4. 特征提取中".format(40, "*"))
