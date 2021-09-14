@@ -191,6 +191,6 @@ if __name__ == "__main__":
     ####################################################################################################################
     # 将错误码进行保存
     for iflaut, ipd in allpds.items():
-        tpd = ipd[process_features]
+        ipd = ipd[process_features]
         tpath = os.path.join(savepath, str(iflaut) + ".csv")
-        tpd.to_csv(tpath, index=False)
+        ipd.to_csv(tpath, index=False)
