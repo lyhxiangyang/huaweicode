@@ -151,44 +151,32 @@ if __name__ == "__main__":
             for icore, ipd in icoredict.items():
                 ipd : pd.DataFrame
                 ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
-
-        # 将数据都减去第一行
-        for fault, ipd in tfaultDict.items():
-            tdict, err = splitDFbyCore(ipd)
-            if err:
-                print("{} 错误码按照核心分离失败, 减去第一行过程中".format(fault))
-                exit(1)
-            faultDict[fault], err = subtractFirstLineFromDataFrame(faultDict[fault], columns=subtrctFeature)
-
-        tpath = os.path.join(savepath, "2.减去第一行")
+        ## 减去第一行处理
+        tpath = os.path.join(savepath, "2.减去第一行处理")
         if not os.path.exists(tpath):
             os.makedirs(tpath)
-        for ifault, icoredict in faultDict.items():
+        for ifault, icoredict in list(faultDict.items()):
             tfaultpath = os.path.join(tpath, str(ifault))
             if not os.path.exists(tfaultpath):
                 os.makedirs(tfaultpath)
-            for icore, ipd in icoredict.items():
-                ipd: pd.DataFrame
-                ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
+            for icore, ipd in list(icoredict.items()):
+                ipd : pd.DataFrame
+                faultDict[ifault][icore] = subtractFirstLineFromDataFrame(ipd, subtrctFeature)
+                faultDict[ifault][icore].to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
 
-        # 将数据减去前一行
-        for fault, ipd in tfaultDict.items():
-            tdict, err = splitDFbyCore(ipd)
-            if err:
-                print("{} 错误码按照核心分离失败, 减去前一行过程中".format(fault))
-                exit(1)
-            faultDict[fault], err = subtractLastLineFromDataFrame(faultDict[fault], columns=subtrctFeature)
-
-        tpath = os.path.join(savepath, "2.减去前一行")
+        ## 减去第一行处理
+        tpath = os.path.join(savepath, "2.减去前一行处理")
         if not os.path.exists(tpath):
             os.makedirs(tpath)
-        for ifault, icoredict in faultDict.items():
+        for ifault, icoredict in list(faultDict.items()):
             tfaultpath = os.path.join(tpath, str(ifault))
             if not os.path.exists(tfaultpath):
                 os.makedirs(tfaultpath)
-            for icore, ipd in icoredict.items():
+            for icore, ipd in list(icoredict.items()):
                 ipd: pd.DataFrame
-                ipd.to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
+                faultDict[ifault][icore] = subtractLastLineFromDataFrame(ipd, subtrctFeature)
+                faultDict[ifault][icore].to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
+
         print("先暂时停顿")
         exit(1)
         ####################################################################################################################
