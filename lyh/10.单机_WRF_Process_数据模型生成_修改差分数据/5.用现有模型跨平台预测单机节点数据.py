@@ -185,10 +185,12 @@ if __name__ == "__main__":
                 os.makedirs(tfaultpath)
             for icore, ipd in list(icoredict.items()):
                 ipd: pd.DataFrame
-                faultDict[ifault][icore], err = subtractLastLineFromDataFrame(ipd, subtrctFeature)
+                ttpd, err = subtractLastLineFromDataFrame(ipd, subtrctFeature)
                 if err:
                     print("{}-{}: 减去前一行处理失败".format(ifault, icore))
-                faultDict[ifault][icore].to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
+                if ttpd != None:
+                    faultDict[ifault][icore] = ttpd
+                    faultDict[ifault][icore].to_csv(os.path.join(tfaultpath, "{}.csv".format(icore)), index=False)
 
         ####################################################################################################################
         print("3. 对一些核心数进行处理".center(40, "*"))
