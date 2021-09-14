@@ -85,6 +85,7 @@ def divedeDataFrameByFaultFlag1(df: pd.DataFrame, isMerged : bool = True) -> (Di
 
     # 遍历DataFrame根据 Fault_Flag这一行来分开
     for ifault in sFault_Flag_Colums:
+        tfault = ifault
         if isMerged:
             tfault = ifault // 10
         ipd = df.loc[df[FAULT_FLAG] == ifault].copy()
