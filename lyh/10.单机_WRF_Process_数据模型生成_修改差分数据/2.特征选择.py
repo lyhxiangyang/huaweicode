@@ -17,7 +17,7 @@ from utils.FeatureSelection import getUsefulFeatureFromAllDataFrames
 savepath1_1 = "tmp\\wrf_single_process_step10\\1.1\\"
 savepath1_2 = "tmp\\wrf_single_process_step10\\1.2\\" # 每个核的原始数据
 savepath1_3 = "tmp\\wrf_single_process_step10\\1.3\\" # 特征提取
-savepath2 = "tmp\\wrf_singlewrf_single_process_step10_process_1\\2\\" # 特征提取
+savepath2 = "tmp\\wrf_single_process_step10\\2\\" # 特征提取
 userfulFeatureName = "userfulfeature.csv"
 
 
