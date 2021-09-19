@@ -12,7 +12,7 @@ import pandas as pd
 
 from utils.DefineData import FAULT_FLAG, CPU_FEATURE
 
-prefixtime = "测试数据_多机_process"
+prefixtime = "single"
 faultprefix = "fault_"
 
 # 是否剔除0数据
