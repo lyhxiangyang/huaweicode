@@ -1,6 +1,8 @@
 """
 处理process数据的目的：是针对测试数据中的多机数据 只有一个文件且这个文件中只有一个一个错误码标志
 
+- 一个文件都是错误码为0。
+
 """
 import os
 from typing import Tuple, Union, List
@@ -13,7 +15,7 @@ prefixtime = "测试数据_多机_process"
 faultprefix = "fault_"
 
 # 是否剔除0数据
-isexcludeNormal = True
+isexcludeNormal = False
 savedatapath = "tmp/Data"
 datapath = [
     "D:/HuaweiMachine/测试数据/wrfrst_normal_e5/result/normal_multi_e5_43/wrfrst_e5-43_process-1.csv",
