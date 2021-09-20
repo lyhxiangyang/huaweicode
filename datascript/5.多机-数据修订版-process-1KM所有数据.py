@@ -184,7 +184,7 @@ def mergeDataFromSamePrefix(datasavepath : str, normalCode : str, prefixstr : st
     if os.path.exists(savenormalpath):
         print("保存正常目录已经存在，删除后重新生成")
         os.rmdir(savenormalpath)
-        os.makedirs(savenormalpath)
+    os.makedirs(savenormalpath)
 
 
     for icore, ipdlist in allDict.items():
