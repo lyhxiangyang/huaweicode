@@ -18,7 +18,7 @@ faultprefix = "fault_"
 
 # 是否剔除0数据
 isexcludeNormal = False
-savedatapath = "tmp/Data"
+savedatapath = "tmp\\Data"
 datapath = [
     "D:/HuaweiMachine/数据修订版/多机整合数据/wrf-1km-多机数据整合版/wrf_1km_160_process.csv",
 ]
