@@ -51,7 +51,8 @@ readpath： 读取的路径
 excludecore: 要排除读取信息的核
 """
 
-
+# 读取某个单独的错误码
+# readpath指的是 包含1.csv的目录
 def readCoresPD(readpath: str, excludecore=None, select_feature: List[str] = None) -> Union[
     Tuple[None, bool], Tuple[dict[int, Any], bool]]:
     if excludecore is None:
@@ -72,8 +73,10 @@ def readCoresPD(readpath: str, excludecore=None, select_feature: List[str] = Non
 
 # 将readpath路径下的所有错误码进行读取，排除excludeFaulty，readDir是每个错误码下的读取目录
 # 返回一个字典 faulty-core-DataFrame
-def readFaultyPD(readpath: str, readDir : str, excludeFaulty=None) -> Union[
+def readFaultyPD(readpath: str, readDir : str, excludeFaulty=None, select_feature=None) -> Union[
     Tuple[None, bool], Tuple[defaultdict[Any, Dict], bool]]:
+    if select_feature is None:
+        select_feature = []
     if excludeFaulty is None:
         excludeFaulty = []
     if not os.path.exists(readpath):
@@ -87,7 +90,7 @@ def readFaultyPD(readpath: str, readDir : str, excludeFaulty=None) -> Union[
         if not os.path.exists(tpath):
             print("{} 不存在".format(tpath))
             continue
-        tdict, err = readCoresPD(tpath)
+        tdict, err = readCoresPD(tpath, select_feature=select_feature)
         if err:
             print("{}核心读取失败".format(ifaulty))
             exit(1)
@@ -160,7 +163,7 @@ if __name__ == "__main__":
     # 数据修订版1KM正常
     datadir = "数据修订版_多机_1KM_process"
 
-    normal_1km, err = readFaultyPD(readpath=datasavepath, readDir=datadir)
+    normal_1km, err = readCoresPD(readpath=datasavepath, readDir=datadir)
     if err:
         print("数据修订版 1KM 读取错误")
         exit(1)
