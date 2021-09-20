@@ -5,6 +5,7 @@
 
 """
 import os
+import shutil
 from collections import defaultdict
 from typing import Tuple, Union, List
 
@@ -175,9 +176,9 @@ def mergeDataFromSamePrefix(datasavepath : str, normalCode : str, prefixstr : st
             allDict[icore].append(tpd)
         # 删除目录
         if isDeleteDir:
-            os.removedirs(tpath)
+            shutil.rmtree(tpath)
 
-    # 将之前的都删除
+            # 将之前的都删除
     # 将所有核心的数据合并
     savenormalpath = os.path.join(tnormalPath, prefixstr)
     if os.path.exists(savenormalpath):
