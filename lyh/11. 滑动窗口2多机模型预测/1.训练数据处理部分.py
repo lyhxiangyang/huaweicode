@@ -60,7 +60,7 @@ if __name__ == "__main__":
     excludeFaulty = [81, 82, 83, 84, 85]
     # 读取所有的数据
     singleexcludeFaulty = [41, 42, 43, 44, 45, 71, 72, 73, 74, 75]
-    faulty_core_pd_dict, err = readFaultyPD(datasavepath, readDir="测试数据_多机_process1", excludeFaulty=singleexcludeFaulty)
+    faulty_core_pd_dict, err = readFaultyPD(datasavepath, readDir="测试数据_多机_process1", excludeFaulty=singleexcludeFaulty, select_feature=process_features)
 
     # 测试数据
     saveFaultyCoreDict(os.path.join(tmpsavepath1, "测试数据_正常_异常"), faulty_core_pd_dict)
