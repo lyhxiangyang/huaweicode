@@ -163,7 +163,7 @@ if __name__ == "__main__":
     # 数据修订版1KM正常
     datadir = "数据修订版_多机_1KM_process"
 
-    normal_1km, err = readCoresPD(readpath=datasavepath, readDir=datadir)
+    normal_1km, err = readCoresPD(readpath=os.path.join(datasavepath, "fault_0", datadir), select_feature=process_features)
     if err:
         print("数据修订版 1KM 读取错误")
         exit(1)
@@ -171,7 +171,7 @@ if __name__ == "__main__":
 
     # 数据修订版3KM正常
     datadir = "数据修订版_多机_3KM_process"
-    normal_3km, err = readFaultyPD(readpath=datasavepath, readDir=datadir)
+    normal_3km, err = readCoresPD(readpath=os.path.join(datasavepath, "fault_0", datadir), select_feature=process_features)
     if err:
         print("数据修订版 3KM 读取错误")
         exit(1)
@@ -179,7 +179,7 @@ if __name__ == "__main__":
 
     # 数据修订版9KM正常
     datadir = "数据修订版_多机_9KM_process"
-    normal_9km, err = readFaultyPD(readpath=datasavepath, readDir=datadir)
+    normal_9km, err = readCoresPD(readpath=os.path.join(datasavepath, "fault_0", datadir), select_feature=process_features)
     if err:
         print("数据修订版 9KM 读取错误")
         exit(1)
