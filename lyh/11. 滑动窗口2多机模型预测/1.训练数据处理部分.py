@@ -155,7 +155,7 @@ if __name__ == "__main__":
     faulty_core_pd_dict, err = readFaultyPD(datasavepath, readDir="测试数据_多机_process1")
 
     # 测试数据
-    saveFaultyDict(os.path.join(tmpsavepath1, "测试数据_正常_异常"), faulty_core_pd_dict)
+    saveFaultyCoreDict(os.path.join(tmpsavepath1, "测试数据_正常_异常"), faulty_core_pd_dict)
 
     # 数据修订版1KM正常
     datadir = "数据修订版_多机_1KM_process"
