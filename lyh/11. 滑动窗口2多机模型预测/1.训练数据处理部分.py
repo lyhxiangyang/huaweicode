@@ -148,7 +148,7 @@ if __name__ == "__main__":
     tmpsavepath = "tmp/11.滑动窗口2多机模型预测"
     tmpsavepath1 = "tmp/11.滑动窗口2多机模型预测/1.训练数据处理部分"
     if not os.path.exists(tmpsavepath1):
-        os.makedirs(tmpsavepath)
+        os.makedirs(tmpsavepath1)
 
 
     # 读取所有的数据
