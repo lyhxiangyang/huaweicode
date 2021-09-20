@@ -67,7 +67,7 @@ def readCoresPD(readpath: str, excludecore=None, select_feature: List[str] = Non
         tpathfile = os.path.join(readpath, score)
         tpd = pd.read_csv(tpathfile)
         if select_feature is not None:
-            tpd = tpd.loc[select_feature]
+            tpd = tpd[select_feature]
         core_pd_Dict[icore] = tpd
     return core_pd_Dict, False
 
