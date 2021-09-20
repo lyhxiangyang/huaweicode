@@ -207,4 +207,4 @@ if __name__ == "__main__":
         DealOneFile(df)
 
     # 将错误码0中的以数据修订版_多机_process开头的数据进行合并
-    mergeDataFromSamePrefix(savedatapath, "0", prefixtime, isDeleteDir=True)
+    mergeDataFromSamePrefix(savedatapath, "fault_0", prefixtime, isDeleteDir=True)
