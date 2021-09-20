@@ -5,13 +5,15 @@
 
 """
 import os
+from collections import defaultdict
 from typing import Tuple, Union, List
 
 import pandas as pd
 
+from utils.DataFrameOperation import mergeDataFrames
 from utils.DefineData import FAULT_FLAG, CPU_FEATURE
 
-prefixtime = "数据修订版_多机_process"
+prefixtime = "数据修订版_多机_1KM_process"
 faultprefix = "fault_"
 
 # 是否剔除0数据
@@ -159,6 +161,42 @@ def subtractLastLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[
     df.loc[:, columns] = dfcolumns_2.shift(periods=1, axis=0, fill_value=0)
     return df, False
 
+def mergeDataFromSamePrefix(datasavepath : str, normalCode : str, prefixstr : str, isDeleteDir : bool = False):
+    # 将错误码0中的以数据修订版_多机_process开头的数据进行合并
+    allDict = defaultdict(list)
+    tnormalPath = os.path.join(datasavepath, normalCode)
+    alldirs = [i for i in os.listdir(tnormalPath) if i.startswith(prefixstr)]
+    for idir in alldirs:
+        tpath = os.path.join(tnormalPath, idir)
+        for strcore in os.listdir(tpath):
+            icore = int(os.path.splitext(strcore)[0])
+            pdpath = os.path.join(tpath, strcore)
+            tpd = pd.read_csv(pdpath)
+            allDict[icore].append(tpd)
+        # 删除目录
+        if isDeleteDir:
+            os.rmdir(tpath)
+
+    # 将之前的都删除
+    # 将所有核心的数据合并
+    savenormalpath = os.path.join(tnormalPath, prefixstr)
+    if os.path.exists(savenormalpath):
+        print("保存正常目录已经存在，删除后重新生成")
+        os.rmdir(savenormalpath)
+        os.makedirs(savenormalpath)
+
+
+    for icore, ipdlist in allDict.items():
+        ipd, err = mergeDataFrames(ipdlist)
+        if err:
+            print("合并失败")
+            exit(1)
+        ipd: pd.DataFrame
+        stpath = os.path.join(savenormalpath, str(icore) + ".csv" )
+        ipd.to_csv(stpath, index=False)
+
+
+
 
 if __name__ == "__main__":
     for ipath in datapath:
@@ -167,3 +205,6 @@ if __name__ == "__main__":
         # 1. 将对应的每个文件的都减去第一行和前一行
         # 数据分割部分
         DealOneFile(df)
+
+    # 将错误码0中的以数据修订版_多机_process开头的数据进行合并
+    mergeDataFromSamePrefix(savedatapath, "0", prefixtime, isDeleteDir=True)
