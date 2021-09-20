@@ -27,7 +27,7 @@ if not os.path.exists(tmpsavepath2):
 def make_dict_featureextraction(faulty_core_pd_dict: Dict[int, Dict[int, pd.DataFrame]]):
     resDict = defaultdict(dict)
     for ifault,icoredict in faulty_core_pd_dict.items():
-        for icore, ipd in icoredict:
+        for icore, ipd in icoredict.items():
             tpd, err = featureExtraction(ipd, windowSize=WINSIZE)
             if err:
                 print("特征提取失败")
