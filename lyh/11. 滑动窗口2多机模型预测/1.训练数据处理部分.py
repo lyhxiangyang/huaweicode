@@ -72,8 +72,10 @@ def readCoresPD(readpath: str, excludecore=None, select_feature: List[str] = Non
 
 # 将readpath路径下的所有错误码进行读取，排除excludeFaulty，readDir是每个错误码下的读取目录
 # 返回一个字典 faulty-core-DataFrame
-def readFaultyPD(readpath: str, readDir : str, excludeFaulty : List[int]) -> Union[
+def readFaultyPD(readpath: str, readDir : str, excludeFaulty=None) -> Union[
     Tuple[None, bool], Tuple[defaultdict[Any, Dict], bool]]:
+    if excludeFaulty is None:
+        excludeFaulty = []
     if not os.path.exists(readpath):
         return None, True
     faultDict = defaultdict(dict)
