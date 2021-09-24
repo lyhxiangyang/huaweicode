@@ -252,6 +252,8 @@ def featureExtraction(featurePD: pd.DataFrame, windowSize: int = 5) -> Union[
         print(resDataFrame.iloc[:, 0:2])
         print("end".center(40, "*"))
 
+    resDataFrame.fillna(0, inplace=True)
+
     return resDataFrame, False
 
 

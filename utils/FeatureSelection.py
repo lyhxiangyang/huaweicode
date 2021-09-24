@@ -125,3 +125,35 @@ def getUsefulFeatureFromAllDataFrames(normalpd: pd.DataFrame, abnormalpd: List[p
     mergedPD = utils.DataFrameOperation.PushLabelToEnd(mergedPD, label=FAULT_FLAG)
 
     return mergedPD, False
+
+
+"""
+选择有用的标签
+"""
+
+def getUsefulFeatureFromNormalAndAbnormal(normalpd: pd.DataFrame, abnormalpd: List[pd.DataFrame]) -> Union[
+    tuple[None, bool], tuple[list, bool]]:
+    allPdList = [normalpd]
+    allPdList.extend(abnormalpd)
+
+    # 判断列表中是否都有相同的数据结构
+    if not utils.DataFrameOperation.judgeSameFrames(allPdList):
+        return None, True
+
+    diffset = set()
+    for ipd in abnormalpd:
+        #  使用KsTest 求出pvalue
+        dicFeaturePvalue, err = getPvalueFromTwoDataFrame(normalpd, ipd)
+        if err:
+            return None, True
+        # Benjamini_Yekutieli 选择需要的特征
+        selectFeatureDict, _ = getFeatureNameByBenjamini_Yekutiel(dicFeaturePvalue)
+
+        selectFeatureSet = set(selectFeatureDict.keys())
+
+        diffset = set.union(diffset, selectFeatureSet)
+
+    userfulFeatureList = list(diffset)
+    userfulFeatureList.sort()
+    return userfulFeatureList, False
+
