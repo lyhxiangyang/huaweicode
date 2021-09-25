@@ -1,6 +1,6 @@
 import os
 from re import T
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple, Union, Dict, Any
 
 import pandas as pd
 
@@ -221,7 +221,8 @@ def subtractLastLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[None
 保证这个df的时间序列是连续的，并且可能包含多个错误类型
 保证带有time 和标签特征
 """
-def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool = True, extraFeature : List[str] = []) -> Dict[int, pd.DataFrame]:
+def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool = True, extraFeature : List[str] = []) -> \
+Union[dict[int, dict], Any]:
     lendf = len(df)
     resDict = {}
     if windowSize > lendf:
@@ -383,11 +384,11 @@ def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool 
             if not ifeaturename.endswith("_diff"):
                 continue
             if len(ilist) >= 2:
-                ilist[0] = ilist[1]
+                resDict[ifaulty][ifeaturename][0] = ilist[1]
 
     # 将resDict 转化为 resDFDict
     resDFDict = {}
-    for ifaulty, featureDict in resDFDict.items():
+    for ifaulty, featureDict in resDict.items():
         resDataFrame = pd.DataFrame(data=featureDict)
         resDataFrame = SortLabels(resDataFrame)
         resDataFrame = PushLabelToFirst(resDataFrame, label=TIME_COLUMN_NAME)
