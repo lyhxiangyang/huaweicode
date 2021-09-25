@@ -472,6 +472,7 @@ def processOneFile(spath: str, filename: str) :
     # 将这个文件中提取到的所有错误码进行保存
     tallsavefaultypath = os.path.join(spath, "所有错误码信息")
     saveFaultyDict(tallsavefaultypath, resFaulty_PD_Dict)
+    return resFaulty_PD_Dict
 
 
 
@@ -481,8 +482,13 @@ def processOneFile(spath: str, filename: str) :
 
 if __name__ == "__main__":
     spath = "tmp/tData"
+    all_faulty_pd_dict = {}
     for ipath in datapath:
         filename = os.path.basename(ipath)
         filename = os.path.splitext(filename)[0]
-        processOneFile(spath=os.path.join(spath, filename), filename=ipath)
-        break
+        onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filename=ipath)
+        all_faulty_pd_dict = mergeTwoDF(onefile_Faulty_PD_Dict, all_faulty_pd_dict)
+
+    # 将所有的信息进行保存
+    tallsavefaultypath = os.path.join(spath, "所有process错误码信息")
+    saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
