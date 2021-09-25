@@ -8,6 +8,43 @@ from utils.DataFrameOperation import SortLabels, PushLabelToFirst, PushLabelToEn
 from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT_FLAG, WINDOWS_SIZE
 from utils.FileSaveRead import saveFaultyDict
 from utils.ProcessData import TranslateTimeToInt
+process_features = [
+    # "time",
+    # "pid",
+    # "status",
+    # "create_time",
+    # "puids_real",
+    # "puids_effective",
+    # "puids_saved",
+    # "pgids_real",
+    # "pgids_effective",
+    # "pgids_saved",
+    "user",
+    "system",
+    # "children_user",
+    # "children_system",
+    "iowait",
+    # "cpu_affinity",  # 依照这个来为数据进行分类
+    "memory_percent",
+    "rss",
+    "vms",
+    "shared",
+    "text",
+    "lib",
+    "data",
+    "dirty",
+    "read_count",
+    "write_count",
+    "read_bytes",
+    "write_bytes",
+    "read_chars",
+    "write_chars",
+    "num_threads",
+    "voluntary",
+    "involuntary",
+    "faultFlag",
+]
+
 
 datapath = [
     "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM\异常数据\wrf_1km_multi_43\wrf_1km_e5-43_process-3.csv",
@@ -182,8 +219,9 @@ def subtractLastLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[None
 
 """
 保证这个df的时间序列是连续的，并且可能包含多个错误类型
+保证带有time 和标签特征
 """
-def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool = True) -> Dict[int, pd.DataFrame]:
+def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool = True, extraFeature : List[str] = []) -> Dict[int, pd.DataFrame]:
     lendf = len(df)
     resDict = {}
     if windowSize > lendf:
@@ -217,11 +255,15 @@ def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool 
     while endLineNumber <= lendf:
 
         tpd = df.iloc[beginLineNumber:endLineNumber, :]
+        nowtime = tpd.loc[beginLineNumber, TIME_COLUMN_NAME]
         realLabel = getRealLabel(tpd.loc[:, FAULT_FLAG])
         if realLabel not in resDict:
            resDict[realLabel] = {}
         # 对每个特征进行选择
         for featurename in mycolumnslist:
+            if featurename not in extraFeature:
+                continue
+
             calSerials = tpd.loc[:, featurename]
 
             #min min_diff
