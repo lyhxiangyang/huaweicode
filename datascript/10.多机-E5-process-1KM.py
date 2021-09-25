@@ -263,6 +263,8 @@ def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool 
         for featurename in mycolumnslist:
             if featurename not in extraFeature:
                 continue
+            if featurename == TIME_COLUMN_NAME or featurename == FAULT_FLAG:
+                continue
 
             calSerials = tpd.loc[:, featurename]
             if TIME_COLUMN_NAME not in resDict[realLabel]:
@@ -456,7 +458,7 @@ def processOneFile(spath: str, filename: str) :
         # 对每一个核心进行处理
         for icore, icorepd in subcorepds:
             print("3.第{}时间段-{}核心处理中".format(i,icore))
-            fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=True)
+            fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=True, extraFeature=process_features)
             # 将第每个核处理之后得到的错误码进行保存
             # tmp/tData/2.第{}时间段分割核心-减去前一行/icore/*
             tcore_fault_savepath = os.path.join(tcoresavepath, str(icore))
