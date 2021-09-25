@@ -79,7 +79,7 @@ index必须是0开头的
 def splitDataFrameByTime(df: pd.DataFrame) -> List[pd.DataFrame]:
     respd = []
     beginLine = 0
-    sbeginLineTime = df.loc[beginLine, [TIME_COLUMN_NAME]]
+    sbeginLineTime = df.loc[beginLine, TIME_COLUMN_NAME]
     ibeginTime = TranslateTimeToInt(sbeginLineTime)
     iLastLineTime = ibeginTime
     for nowline in range(1, len(df)):
