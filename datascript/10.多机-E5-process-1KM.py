@@ -408,7 +408,7 @@ def mergeTwoDF(dic1 :Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> 
     allfauly = list(set(allfaulty))
     resDict = {}
     for ifaulty in allfauly:
-        tpd = dic1[ifaulty]
+        tpd :pd.DataFrame = pd.DataFrame()
         if ifaulty in dic1 and ifaulty in dic2:
             tpd = pd.concat([dic1[ifaulty], dic2[ifaulty]], ignore_index=True)
         elif ifaulty in dic1:
