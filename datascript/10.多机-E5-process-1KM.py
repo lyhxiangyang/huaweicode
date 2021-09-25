@@ -265,6 +265,12 @@ def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool 
                 continue
 
             calSerials = tpd.loc[:, featurename]
+            if TIME_COLUMN_NAME not in resDict[realLabel]:
+                resDict[realLabel][TIME_COLUMN_NAME] = []
+            if FAULT_FLAG not in resDict[realLabel]:
+                resDict[realLabel][FAULT_FLAG] = []
+            resDict[realLabel][TIME_COLUMN_NAME].append(nowtime)
+            resDict[realLabel][FAULT_FLAG].append(realLabel)
 
             #min min_diff
             newfeatureName = featurename + "_min"
