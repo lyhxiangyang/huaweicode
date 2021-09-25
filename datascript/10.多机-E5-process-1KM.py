@@ -94,6 +94,8 @@ def splitDataFrameByTime(df: pd.DataFrame) -> List[pd.DataFrame]:
             respd.append(tpd)
 
         iLastLineTime = inowLineTime
+    tpd = df.loc[beginLine: len(df), :].reset_index(drop=True)
+    respd.append(tpd)
     return respd
 
 
