@@ -260,6 +260,13 @@ Union[dict[int, dict], Any]:
         realLabel = getRealLabel(tpd.loc[:, FAULT_FLAG])
         if realLabel not in resDict:
            resDict[realLabel] = {}
+        # 添加时间
+        if TIME_COLUMN_NAME not in resDict[realLabel]:
+            resDict[realLabel][TIME_COLUMN_NAME] = []
+        if FAULT_FLAG not in resDict[realLabel]:
+            resDict[realLabel][FAULT_FLAG] = []
+        resDict[realLabel][TIME_COLUMN_NAME].append(nowtime)
+        resDict[realLabel][FAULT_FLAG].append(realLabel)
         # 对每个特征进行选择
         for featurename in mycolumnslist:
             if featurename not in extraFeature:
@@ -268,12 +275,7 @@ Union[dict[int, dict], Any]:
                 continue
 
             calSerials = tpd.loc[:, featurename]
-            if TIME_COLUMN_NAME not in resDict[realLabel]:
-                resDict[realLabel][TIME_COLUMN_NAME] = []
-            if FAULT_FLAG not in resDict[realLabel]:
-                resDict[realLabel][FAULT_FLAG] = []
-            resDict[realLabel][TIME_COLUMN_NAME].append(nowtime)
-            resDict[realLabel][FAULT_FLAG].append(realLabel)
+
 
             #min min_diff
             newfeatureName = featurename + "_min"
