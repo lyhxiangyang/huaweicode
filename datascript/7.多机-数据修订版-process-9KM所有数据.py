@@ -93,7 +93,7 @@ def SplitCores(df: pd.DataFrame) -> List[Tuple[int, pd.DataFrame]]:
     coreList = []
     for icore in corelist:
         tpd = df.loc[df[CPU_FEATURE] == icore]
-        tpd.reset_index(drop=True)
+        tpd.reset_index(drop=True, inplace=True)
         # 将CPU_FEATURE去掉
         # coreDict[icore] = tpd.drop(CPU_FEATURE, axis=1)
         tpd = DataProcess(tpd)
