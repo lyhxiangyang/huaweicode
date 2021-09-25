@@ -83,7 +83,7 @@ def splitDataFrameByTime(df: pd.DataFrame) -> List[pd.DataFrame]:
     ibeginTime = TranslateTimeToInt(sbeginLineTime)
     iLastLineTime = ibeginTime
     for nowline in range(1, len(df)):
-        snowLineTime = df.loc[nowline, [TIME_COLUMN_NAME]]
+        snowLineTime = df.loc[nowline, TIME_COLUMN_NAME]
         inowLineTime = TranslateTimeToInt(snowLineTime)
         # 误差在59 - 61s之间
         if not (TIME_INTERVAL - 1 <= inowLineTime - iLastLineTime <= TIME_INTERVAL + 1):
