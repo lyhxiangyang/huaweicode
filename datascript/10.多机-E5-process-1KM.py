@@ -414,7 +414,7 @@ def processOneFile(spath: str, filename: str) :
             resFaulty_PD_Dict = mergeTwoDF(resFaulty_PD_Dict, fefaultDict)
     # 将这个文件中提取到的所有错误码进行保存
     tallsavefaultypath = os.path.join(spath, "所有错误码信息")
-    saveFaultyDict(resFaulty_PD_Dict)
+    saveFaultyDict(tallsavefaultypath, resFaulty_PD_Dict)
 
 
 
