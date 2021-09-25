@@ -85,8 +85,8 @@ def splitDataFrameByTime(df: pd.DataFrame) -> List[pd.DataFrame]:
     for nowline in range(1, len(df)):
         snowLineTime = df.loc[nowline, TIME_COLUMN_NAME]
         inowLineTime = TranslateTimeToInt(snowLineTime)
-        # 误差在59 - 61s之间
-        if not (TIME_INTERVAL - 1 <= inowLineTime - iLastLineTime <= TIME_INTERVAL + 1):
+        # 误差在59 - 61s之间 或者等于0
+        if not (TIME_INTERVAL - 1 <= inowLineTime - iLastLineTime <= TIME_INTERVAL + 1 or inowLineTime - iLastLineTime == 0):
             tpd = df.loc[beginLine: nowline, :].reset_index(drop=True)
             beginLine = nowline
             respd.append(tpd)
