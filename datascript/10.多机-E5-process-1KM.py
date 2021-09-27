@@ -9,6 +9,7 @@ from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT
 from utils.FileSaveRead import saveFaultyDict
 from utils.ProcessData import TranslateTimeToInt, TranslateTimeListStrToStr
 
+accumulationFeatures = ["user_sever", "nice", "system_sever", "idle", "iowait_server", "irq", "softirq", "steal", "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", ]
 process_features = [
     # "time",
     # "pid",
@@ -422,10 +423,9 @@ def mergeTwoDF(dic1: Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> 
 # 处理一个文件
 # 存储的中间文件都在spath中
 
-def processOneFile(spath: str, filename: str):
+def processOneFile(spath: str, filepd: pd.DataFrame):
     if not os.path.exists(spath):
         os.makedirs(spath)
-    filepd = pd.read_csv(filename)
 
     resFaulty_PD_Dict = {}
 
@@ -448,7 +448,7 @@ def processOneFile(spath: str, filename: str):
         # 对每个核心特征进行减去前一行
         subcorepds = []
         for icore, ipd in corepds:
-            tpd = subtractLastLineFromDataFrame(ipd, ["user", "system"])
+            tpd = subtractLastLineFromDataFrame(ipd, accumulationFeatures)
             subcorepds.append((icore, tpd))
 
         # tmp/tData/2.第{}时间段分割核心-减去前一行
@@ -482,6 +482,8 @@ def processOneFile(spath: str, filename: str):
 def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath: str = None) -> pd.DataFrame:
     if spath is not None and not os.path.exists(spath):
         os.makedirs(spath)
+    processpd = processpd.drop()
+    suffixes = ("_server", "_process")
     mergedSeverProcessPD = pd.merge(servrtpd, processpd, how='right', on=[TIME_COLUMN_NAME],
                                     suffixes=("_sever", "_process"))
 
@@ -502,6 +504,8 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
         tspath = os.path.join(spath, "server中有对应时间的数据.csv")
         noNullDF.to_csv(tspath)
     # 将index重新整理一下返回
+    # 需要将 faultFlag_process转化为faultFlag
+    noNullDF.rename(columns={FAULT_FLAG+suffixes[1]:FAULT_FLAG}, inplace=True)
     return noNullDF.reset_index(drop=True)
 
 # 将时间序列的秒这一项都变成秒
@@ -518,23 +522,24 @@ def changeTimeColumns_server(df: pd.DataFrame)-> pd.DataFrame:
 if __name__ == "__main__":
     spath = "tmp/tData"
     all_faulty_pd_dict = {}
-    # for ipath in datapath:
-    #     filename = os.path.basename(ipath)
-    #     filename = os.path.splitext(filename)[0]
-    #     onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filename=ipath)
-    #     all_faulty_pd_dict = mergeTwoDF(onefile_Faulty_PD_Dict, all_faulty_pd_dict)
-    #
-    # # 将所有的信息进行保存
-    # tallsavefaultypath = os.path.join(spath, "所有process错误码信息")
-    # saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
+
     severpd = pd.read_csv(datapathsever)
     changeTimeColumns_server(severpd)
+
     for ipath in datapath:
         filename = os.path.basename(ipath)
         filename = os.path.splitext(filename)[0]
-        filedir = "0.合并server和process数据"
-        srpath = os.path.join(spath, filename, filedir)
+        mergedpath = os.path.join(spath,filename,"0.合并server和process数据")
+
         processpd = pd.read_csv(ipath)
         changeTimeColumns_process(processpd)
-        mergeSeverAndProcess(severpd, processpd, srpath)
-        break
+        server_process_pd = mergeSeverAndProcess(severpd, processpd, mergedpath)
+
+
+        onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filepd=server_process_pd)
+        all_faulty_pd_dict = mergeTwoDF(onefile_Faulty_PD_Dict, all_faulty_pd_dict)
+
+    # 将所有的信息进行保存
+    tallsavefaultypath = os.path.join(spath, "所有process错误码信息")
+    saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
+
