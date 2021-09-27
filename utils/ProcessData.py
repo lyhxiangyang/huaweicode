@@ -17,18 +17,18 @@ def TranslateTimeToInt(stime: str) -> int:
 """
 
 
-def TranslateTimeStrToStr(stime: str, format: str = '%Y-%m-%d %H:%M:%S') -> str:
+def TranslateTimeStrToStr(stime: str, timeformat: str = '%Y-%m-%d %H:%M:%S') -> str:
     stime = stime[0]
-    ttime = time.strptime(stime, format=format)
+    ttime = time.strptime(stime, format=timeformat)
     strtime = time.strftime('%Y-%m-%d %H:%M:00', ttime)
     return strtime
 
 
 # 转变一个列表的字符串
-def TranslateTimeListStrToStr(stime: List[str], format: str = '%Y-%m-%d %H:%M:%S') -> Union[str, list[str]]:
+def TranslateTimeListStrToStr(stime: List[str], timeformat: str = '%Y-%m-%d %H:%M:%S') -> Union[str, list[str]]:
     reslist = []
     for itime in stime:
-        ttime = time.strptime(itime, format = format)
+        ttime = time.strptime(itime, format = timeformat)
         strtime = time.strftime('%Y-%m-%d %H:%M:00', ttime)
         reslist.append(strtime)
     if len(reslist) == 1:
