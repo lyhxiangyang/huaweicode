@@ -58,9 +58,9 @@ process_features = [
     "involuntary",
     "faultFlag",
 ]
-datapathsever = "D:/HuaweiMachine/数据分类/wrf/红区/E5/1KM/异常数据/wrf_1km_160_server.csv"
+datapathsever = "D:/HuaweiMachine/数据分类/wrf/多机/红区/1KM/异常数据/wrf_1km_160_server.csv"
 datapath = [
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_160_process.csv",
+    "D:/HuaweiMachine/数据分类/wrf/多机/红区/1KM/异常数据/wrf_1km_160_process.csv",
 ]
 
 """
