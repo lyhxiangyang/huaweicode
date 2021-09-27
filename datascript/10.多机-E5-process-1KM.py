@@ -7,7 +7,7 @@ import pandas as pd
 from utils.DataFrameOperation import SortLabels, PushLabelToFirst, PushLabelToEnd
 from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT_FLAG, WINDOWS_SIZE
 from utils.FileSaveRead import saveFaultyDict
-from utils.ProcessData import TranslateTimeToInt, TranslateTimeStrTiStr, TranslateTimeListStrToStr
+from utils.ProcessData import TranslateTimeToInt, TranslateTimeListStrToStr
 
 process_features = [
     # "time",
