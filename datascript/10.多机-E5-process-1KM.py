@@ -47,7 +47,7 @@ process_features = [
 ]
 datapathsever = "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_server.csv"
 datapath = [
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-4/_process-3.csv",
+    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-3.csv",
     "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-4.csv",
     "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-5.csv",
     "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-6.csv",
