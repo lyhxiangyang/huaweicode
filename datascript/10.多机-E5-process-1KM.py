@@ -91,7 +91,7 @@ usedFeature = ["time",
                "faultFlag"
                ]
 
-accumulationFeatures = ["user_sever", "nice", "system_sever", "idle", "iowait_sever", "irq", "softirq", "steal",
+accumulationFeatures = ["user_server", "nice", "system_server", "idle", "iowait_server", "irq", "softirq", "steal",
                         "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "user_process", "system_process"]
 
 process_features = [
