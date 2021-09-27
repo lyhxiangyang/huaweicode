@@ -7,7 +7,7 @@ import pandas as pd
 from utils.DataFrameOperation import SortLabels, PushLabelToFirst, PushLabelToEnd
 from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT_FLAG, WINDOWS_SIZE
 from utils.FileSaveRead import saveFaultyDict
-from utils.ProcessData import TranslateTimeToInt
+from utils.ProcessData import TranslateTimeToInt, TranslateTimeStrTiStr, TranslateTimeListStrToStr
 
 process_features = [
     # "time",
@@ -504,6 +504,11 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
     # 将index重新整理一下返回
     return noNullDF.reset_index(drop=True)
 
+# 将时间序列的秒这一项都变成秒
+def changeTimeColumns(df: pd.DataFrame)-> pd.DataFrame:
+    tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list()), axis=0)
+    df.loc[:, TIME_COLUMN_NAME] = tpd.loc[:, TIME_COLUMN_NAME]
+    return df
 
 if __name__ == "__main__":
     spath = "tmp/tData"
@@ -518,11 +523,13 @@ if __name__ == "__main__":
     # tallsavefaultypath = os.path.join(spath, "所有process错误码信息")
     # saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
     severpd = pd.read_csv(datapathsever)
+    changeTimeColumns(severpd)
     for ipath in datapath:
         filename = os.path.basename(ipath)
         filename = os.path.splitext(filename)[0]
         filedir = "0.合并server和process数据"
         srpath = os.path.join(spath, filename, filedir)
         processpd = pd.read_csv(ipath)
+        changeTimeColumns(processpd)
         mergeSeverAndProcess(severpd, processpd, srpath)
         break
