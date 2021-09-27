@@ -9,18 +9,90 @@ from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT
 from utils.FileSaveRead import saveFaultyDict
 from utils.ProcessData import TranslateTimeToInt, TranslateTimeListStrToStr
 
-allfeature = ["time", "user_sever", "nice", "system_sever", "idle", "iowait_sever", "irq", "softirq", "steal", "guest",
+allfeature = ["time", "user_server", "nice", "system_server", "idle", "iowait_server", "irq", "softirq", "steal", "guest",
               "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "freq", "load1", "load5",
               "load15", "total", "available", "percent", "used", "free", "active", "inactive", "buffers", "cached",
-              "handlesNum", "pgpgin", "pgpgout", "fault", "majflt", "pgscank", "pgsteal", "pgfree", "faultFlag_sever",
+              "handlesNum", "pgpgin", "pgpgout", "fault", "majflt", "pgscank", "pgsteal", "pgfree", "faultFlag_server",
               "pid", "status", "create_time", "puids_real", "puids_effective", "puids_saved", "pgids_real",
               "pgids_effective", "pgids_saved", "user_process", "system_process", "children_user", "children_system",
               "iowait_process", "cpu_affinity", "memory_percent", "rss", "vms", "shared", "text", "lib", "data",
               "dirty", "read_count", "write_count", "read_bytes", "write_bytes", "read_chars", "write_chars",
               "num_threads", "voluntary", "involuntary", "faultFlag"]
 
-accumulationFeatures = ["user_sever", "nice", "system_sever", "idle", "iowait_sever", "irq", "softirq", "steal",
+accumulationFeatures = ["user_server", "nice", "system_server", "idle", "iowait_server", "irq", "softirq", "steal",
                         "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "user_process", "system_process"]
+# 用于特征提取的特征
+usedFeature = ["time",
+               "user_server",
+               "nice",
+               "system_server",
+               "idle",
+               "iowait_server",
+               "irq",
+               "softirq",
+               "steal",
+               "guest",
+               "guest_nice",
+               "ctx_switches",
+               "interrupts",
+               "soft_interrupts",
+               "syscalls",
+               "freq",
+               "load1",
+               "load5",
+               "load15",
+               "total",
+               "available",
+               # "percent",
+               "used",
+               "free",
+               "active",
+               "inactive",
+               "buffers",
+               "cached",
+               "handlesNum",
+               "pgpgin",
+               "pgpgout",
+               "fault",
+               "majflt",
+               "pgscank",
+               "pgsteal",
+               "pgfree",
+               "faultFlag_server",
+               # "pid",
+               # "status",
+               # "create_time",
+               # "puids_real",
+               # "puids_effective",
+               # "puids_saved",
+               # "pgids_real",
+               # "pgids_effective",
+               # "pgids_saved",
+               "user_process",
+               "system_process",
+               # "children_user",
+               # "children_system",
+               "iowait_process",
+               # "cpu_affinity",
+               "memory_percent",
+               "rss",
+               "vms",
+               "shared",
+               "text",
+               "lib",
+               "data",
+               "dirty",
+               "read_count",
+               "write_count",
+               "read_bytes",
+               "write_bytes",
+               "read_chars",
+               "write_chars",
+               # "num_threads",
+               "voluntary",
+               "involuntary",
+               "faultFlag"
+               ]
 
 process_features = [
     # "time",
@@ -58,7 +130,7 @@ process_features = [
     "involuntary",
     "faultFlag",
 ]
-datapathsever = "D:/HuaweiMachine/数据分类/wrf/多机/红区/1KM/异常数据/wrf_1km_160_server.csv"
+datapathserver = "D:/HuaweiMachine/数据分类/wrf/多机/红区/1KM/异常数据/wrf_1km_160_server.csv"
 datapath = [
     "D:/HuaweiMachine/数据分类/wrf/多机/红区/1KM/异常数据/wrf_1km_160_process.csv",
 ]
@@ -414,7 +486,7 @@ def processOneFile(spath: str, filepd: pd.DataFrame):
         for icore, icorepd in subcorepds:
             print("3.第{}时间段-{}核心处理中".format(i, icore))
             fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=True,
-                                            extraFeature=process_features)
+                                            extraFeature=usedFeature)
             # 将第每个核处理之后得到的错误码进行保存
             # tmp/tData/2.第{}时间段分割核心-减去前一行/icore/*
             tcore_fault_savepath = os.path.join(tcoresavepath, str(icore))
@@ -439,7 +511,7 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
         os.makedirs(spath)
     suffixes = ("_server", "_process")
     mergedSeverProcessPD = pd.merge(servrtpd, processpd, how='right', on=[TIME_COLUMN_NAME],
-                                    suffixes=("_sever", "_process"))
+                                    suffixes=("_server", "_process"))
 
     # 先获得所有的含有空行数据, index没有从reset
     haveNullDF = mergedSeverProcessPD.loc[mergedSeverProcessPD.isnull().T.any()]
@@ -481,7 +553,7 @@ if __name__ == "__main__":
     spath = "tmp/tData/多机-红区-process-server-1KM"
     all_faulty_pd_dict = {}
 
-    severpd = pd.read_csv(datapathsever)
+    severpd = pd.read_csv(datapathserver)
     changeTimeColumns_server(severpd)
 
     for ipath in datapath:
