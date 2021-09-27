@@ -52,6 +52,8 @@ def model_train(df, model_type, saved_model_path=SaveModelPath, trainedFeature: 
         model = AdaBoostClassifier(base_estimator=estimator_cart, n_estimators=100, random_state=0)
 
     # Split the data into train and test set
+    if TIME_COLUMN_NAME in df.columns:
+        df = df.drop(TIME_COLUMN_NAME, axis=1)
     x = df.drop(FAULT_FLAG, axis=1)
     y = df[FAULT_FLAG]
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.28, random_state=0)
