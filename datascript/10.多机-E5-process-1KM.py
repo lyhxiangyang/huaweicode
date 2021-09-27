@@ -535,7 +535,7 @@ def changeTimeColumns_server(df: pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    spath = "tmp/tData"
+    spath = "tmp/tData/多机-E5-process-server-1KM"
     all_faulty_pd_dict = {}
 
     severpd = pd.read_csv(datapathsever)
