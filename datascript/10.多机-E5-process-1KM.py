@@ -505,8 +505,13 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
     return noNullDF.reset_index(drop=True)
 
 # 将时间序列的秒这一项都变成秒
-def changeTimeColumns(df: pd.DataFrame)-> pd.DataFrame:
+def changeTimeColumns_process(df: pd.DataFrame)-> pd.DataFrame:
     tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list()), axis=0)
+    df.loc[:, TIME_COLUMN_NAME] = tpd.loc[:, TIME_COLUMN_NAME]
+    return df
+
+def changeTimeColumns_server(df: pd.DataFrame)-> pd.DataFrame:
+    tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list(), '%Y-%m-%d %H:%M'), axis=0)
     df.loc[:, TIME_COLUMN_NAME] = tpd.loc[:, TIME_COLUMN_NAME]
     return df
 
@@ -523,13 +528,13 @@ if __name__ == "__main__":
     # tallsavefaultypath = os.path.join(spath, "所有process错误码信息")
     # saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
     severpd = pd.read_csv(datapathsever)
-    changeTimeColumns(severpd)
+    changeTimeColumns_server(severpd)
     for ipath in datapath:
         filename = os.path.basename(ipath)
         filename = os.path.splitext(filename)[0]
         filedir = "0.合并server和process数据"
         srpath = os.path.join(spath, filename, filedir)
         processpd = pd.read_csv(ipath)
-        changeTimeColumns(processpd)
+        changeTimeColumns_process(processpd)
         mergeSeverAndProcess(severpd, processpd, srpath)
         break
