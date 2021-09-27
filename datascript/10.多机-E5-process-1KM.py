@@ -8,6 +8,7 @@ from utils.DataFrameOperation import SortLabels, PushLabelToFirst, PushLabelToEn
 from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT_FLAG, WINDOWS_SIZE
 from utils.FileSaveRead import saveFaultyDict
 from utils.ProcessData import TranslateTimeToInt
+
 process_features = [
     # "time",
     # "pid",
@@ -44,8 +45,7 @@ process_features = [
     "involuntary",
     "faultFlag",
 ]
-
-
+datapathsever =  "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM\异常数据\wrf_1km_multi_43\wrf_1km_e5-43_server.csv",
 datapath = [
     "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM\异常数据\wrf_1km_multi_43\wrf_1km_e5-43_process-3.csv",
     "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM\异常数据\wrf_1km_multi_43\wrf_1km_e5-43_process-4.csv",
@@ -217,16 +217,19 @@ def subtractLastLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[None
     df.loc[:, columns] = dfcolumns_2.shift(periods=1, axis=0, fill_value=0)
     return df
 
+
 """
 保证这个df的时间序列是连续的，并且可能包含多个错误类型
 保证带有time 和标签特征
 """
-def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool = True, extraFeature : List[str] = []) -> \
-Union[dict[int, dict], Any]:
+
+
+def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool = True, extraFeature: List[str] = []) -> \
+        Union[dict[int, dict], Any]:
     lendf = len(df)
     resDict = {}
     if windowSize > lendf:
-       return resDict
+        return resDict
 
     # suffix_name = ["_min", "_max", "_percentage_5", "_percentage_25", "_percentage_50", "_percentage_75",
     #                "_percentage_95", "_mean", "_var", "_std", "_skewness", "_kurtosis"]
@@ -234,21 +237,20 @@ Union[dict[int, dict], Any]:
     # Diff_suffix = "_diff"
     # # 得到所有的特征值
     mycolumnslist = list(df.columns.array)
+
     # mycolumns = [ic + isuffix for ic in mycolumns for isuffix in suffix_name]
     # mycolumns.extend([i + Diff_suffix for i in mycolumns])
-
 
     def getRealLabel(labels: pd.Series) -> int:
         for i in labels:
             if i != 0:
                 return i
         return 0
+
     def getListEnd(list1: List):
         if len(list1) == 0:
             return 0
         return list1[-1]
-
-
 
     beginLineNumber = 0
     endLineNumber = windowSize
@@ -259,7 +261,7 @@ Union[dict[int, dict], Any]:
         nowtime = tpd.loc[beginLineNumber, TIME_COLUMN_NAME]
         realLabel = getRealLabel(tpd.loc[:, FAULT_FLAG])
         if realLabel not in resDict:
-           resDict[realLabel] = {}
+            resDict[realLabel] = {}
         # 添加时间
         if TIME_COLUMN_NAME not in resDict[realLabel]:
             resDict[realLabel][TIME_COLUMN_NAME] = []
@@ -276,8 +278,7 @@ Union[dict[int, dict], Any]:
 
             calSerials = tpd.loc[:, featurename]
 
-
-            #min min_diff
+            # min min_diff
             newfeatureName = featurename + "_min"
             newfeatureNameDiff = newfeatureName + "_diff"
             if newfeatureName not in resDict[realLabel]:
@@ -372,13 +373,12 @@ Union[dict[int, dict], Any]:
             resDict[realLabel][newfeatureName].append(featurevalue)
             resDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
 
-
         if silidWindows:
-           beginLineNumber += windowSize
-           endLineNumber += windowSize
+            beginLineNumber += windowSize
+            endLineNumber += windowSize
         else:
-           beginLineNumber += 1
-           endLineNumber += 1
+            beginLineNumber += 1
+            endLineNumber += 1
 
     # 将所有resDict中的所有数据diff的第一列中的数据替换为第二个
     for ifaulty, featureDict in resDict.items():
@@ -402,13 +402,13 @@ Union[dict[int, dict], Any]:
 
 
 # 合并的两个类型是fault-DataFrame
-def mergeTwoDF(dic1 :Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
+def mergeTwoDF(dic1: Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
     allfaulty = list(dic1.keys())
     allfaulty.extend(list(dic2.keys()))
     allfauly = list(set(allfaulty))
     resDict = {}
     for ifaulty in allfauly:
-        tpd :pd.DataFrame = pd.DataFrame()
+        tpd: pd.DataFrame = pd.DataFrame()
         if ifaulty in dic1 and ifaulty in dic2:
             tpd = pd.concat([dic1[ifaulty], dic2[ifaulty]], ignore_index=True)
         elif ifaulty in dic1:
@@ -419,13 +419,10 @@ def mergeTwoDF(dic1 :Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> 
     return resDict
 
 
-
-
-
 # 处理一个文件
 # 存储的中间文件都在spath中
 
-def processOneFile(spath: str, filename: str) :
+def processOneFile(spath: str, filename: str):
     if not os.path.exists(spath):
         os.makedirs(spath)
     filepd = pd.read_csv(filename)
@@ -442,7 +439,7 @@ def processOneFile(spath: str, filename: str) :
 
     # 对每一个时间段划分
     for i in range(0, len(pdbytime)):
-        print("2.{} 第{}个时间段划分".format(i,i))
+        print("2.{} 第{}个时间段划分".format(i, i))
         corepds = SplitDFByCores(pdbytime[i])
         # 将corepds保存出来 以便观察
         # tmp/tData/2.第{}时间段分割核心
@@ -460,8 +457,9 @@ def processOneFile(spath: str, filename: str) :
 
         # 对每一个核心进行处理
         for icore, icorepd in subcorepds:
-            print("3.第{}时间段-{}核心处理中".format(i,icore))
-            fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=True, extraFeature=process_features)
+            print("3.第{}时间段-{}核心处理中".format(i, icore))
+            fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=True,
+                                            extraFeature=process_features)
             # 将第每个核处理之后得到的错误码进行保存
             # tmp/tData/2.第{}时间段分割核心-减去前一行/icore/*
             tcore_fault_savepath = os.path.join(tcoresavepath, str(icore))
@@ -475,6 +473,40 @@ def processOneFile(spath: str, filename: str) :
     return resFaulty_PD_Dict
 
 
+"""
+将server数据进行合并 
+中间数据存储在spath中
+"""
+
+
+def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath: str = None) -> pd.DataFrame:
+    if spath is not None and not os.path.exists(spath):
+        os.makedirs(spath)
+    mergedSeverProcessPD = pd.merge(servrtpd, processpd, how='right', on=[TIME_COLUMN_NAME], suffixes=("_sever", "_process"))
+
+    # 先获得所有的含有空行数据, index没有从reset
+    haveNullDF = mergedSeverProcessPD.loc[mergedSeverProcessPD.isnull().T.any()]
+    # 获得没有空行的数据
+    noNullDF = mergedSeverProcessPD.dropna()
+
+    # 将数据进行保存
+    haveNullDF : pd.DataFrame
+    noNullDF : pd.DataFrame
+    # spath/server中没有对应时间的数据.csv
+    if len(haveNullDF) != 0:
+        tspath = os.path.join(spath, "server中没有对应时间的数据.csv")
+        haveNullDF.to_csv(tspath)
+
+    if len(noNullDF) != 0:
+        tspath = os.path.join(spath, "server中有对应时间的数据.csv")
+        noNullDF.to_csv(tspath)
+    # 将index重新整理一下返回
+    return noNullDF.reset_index(drop=True)
+
+
+
+
+
 
 
 
@@ -483,12 +515,22 @@ def processOneFile(spath: str, filename: str) :
 if __name__ == "__main__":
     spath = "tmp/tData"
     all_faulty_pd_dict = {}
+    # for ipath in datapath:
+    #     filename = os.path.basename(ipath)
+    #     filename = os.path.splitext(filename)[0]
+    #     onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filename=ipath)
+    #     all_faulty_pd_dict = mergeTwoDF(onefile_Faulty_PD_Dict, all_faulty_pd_dict)
+    #
+    # # 将所有的信息进行保存
+    # tallsavefaultypath = os.path.join(spath, "所有process错误码信息")
+    # saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
+    severpd = pd.read_csv(datapathsever)
     for ipath in datapath:
         filename = os.path.basename(ipath)
         filename = os.path.splitext(filename)[0]
-        onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filename=ipath)
-        all_faulty_pd_dict = mergeTwoDF(onefile_Faulty_PD_Dict, all_faulty_pd_dict)
+        filedir = "0.合并server和process数据"
+        srpath = os.path.join(spath, filename, filedir)
+        processpd = pd.read_csv(ipath)
+        mergeSeverAndProcess(severpd, processpd, srpath)
+        break
 
-    # 将所有的信息进行保存
-    tallsavefaultypath = os.path.join(spath, "所有process错误码信息")
-    saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
