@@ -45,7 +45,7 @@ process_features = [
     "involuntary",
     "faultFlag",
 ]
-datapathsever =  "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_server.csv",
+datapathsever = "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_server.csv"
 datapath = [
     "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-4/_process-3.csv",
     "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-4.csv",
@@ -482,7 +482,8 @@ def processOneFile(spath: str, filename: str):
 def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath: str = None) -> pd.DataFrame:
     if spath is not None and not os.path.exists(spath):
         os.makedirs(spath)
-    mergedSeverProcessPD = pd.merge(servrtpd, processpd, how='right', on=[TIME_COLUMN_NAME], suffixes=("_sever", "_process"))
+    mergedSeverProcessPD = pd.merge(servrtpd, processpd, how='right', on=[TIME_COLUMN_NAME],
+                                    suffixes=("_sever", "_process"))
 
     # 先获得所有的含有空行数据, index没有从reset
     haveNullDF = mergedSeverProcessPD.loc[mergedSeverProcessPD.isnull().T.any()]
@@ -490,8 +491,8 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
     noNullDF = mergedSeverProcessPD.dropna()
 
     # 将数据进行保存
-    haveNullDF : pd.DataFrame
-    noNullDF : pd.DataFrame
+    haveNullDF: pd.DataFrame
+    noNullDF: pd.DataFrame
     # spath/server中没有对应时间的数据.csv
     if len(haveNullDF) != 0:
         tspath = os.path.join(spath, "server中没有对应时间的数据.csv")
@@ -502,14 +503,6 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
         noNullDF.to_csv(tspath)
     # 将index重新整理一下返回
     return noNullDF.reset_index(drop=True)
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
@@ -533,4 +526,3 @@ if __name__ == "__main__":
         processpd = pd.read_csv(ipath)
         mergeSeverAndProcess(severpd, processpd, srpath)
         break
-
