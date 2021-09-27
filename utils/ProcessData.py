@@ -19,7 +19,7 @@ def TranslateTimeToInt(stime: str) -> int:
 
 def TranslateTimeStrToStr(stime: str, timeformat: str = '%Y-%m-%d %H:%M:%S') -> str:
     stime = stime[0]
-    ttime = time.strptime(stime, format=timeformat)
+    ttime = time.strptime(stime, timeformat)
     strtime = time.strftime('%Y-%m-%d %H:%M:00', ttime)
     return strtime
 
@@ -28,7 +28,7 @@ def TranslateTimeStrToStr(stime: str, timeformat: str = '%Y-%m-%d %H:%M:%S') -> 
 def TranslateTimeListStrToStr(stime: List[str], timeformat: str = '%Y-%m-%d %H:%M:%S') -> Union[str, list[str]]:
     reslist = []
     for itime in stime:
-        ttime = time.strptime(itime, format = timeformat)
+        ttime = time.strptime(itime, timeformat)
         strtime = time.strftime('%Y-%m-%d %H:%M:00', ttime)
         reslist.append(strtime)
     if len(reslist) == 1:

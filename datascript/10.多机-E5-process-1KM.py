@@ -511,7 +511,7 @@ def changeTimeColumns_process(df: pd.DataFrame)-> pd.DataFrame:
     return df
 
 def changeTimeColumns_server(df: pd.DataFrame)-> pd.DataFrame:
-    tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list(), '%Y-%m-%d %H:%M'), axis=0)
+    tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list(), '%Y/%m/%d %H:%M'), axis=0)
     df.loc[:, TIME_COLUMN_NAME] = tpd.loc[:, TIME_COLUMN_NAME]
     return df
 
