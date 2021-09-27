@@ -11,20 +11,32 @@ import os
 TestRealLabels: List
 TestPreLabels: List
 
+
 def getTestRealLabels() -> List:
     return TestRealLabels
+
+
 def getTestPreLabels() -> List:
     return TestPreLabels
 
-def model_train(df, model_type, saved_model_path = SaveModelPath):
+
+def model_train(df, model_type, saved_model_path=SaveModelPath, trainedFeature: List[str] = None):
     """
     Train the model of selected type
+    :param saved_model_path:
+    :param trainedFeature:
     :param df: Dataframe of selected features and labels
     :param model_type: The type of model to be trained
     """
     # Remove column "Intensity" if exists
-    header = list(df.columns)
+    if trainedFeature is not None:
+        if FAULT_FLAG not in trainedFeature:
+            trainedFeature.append(FAULT_FLAG)
+        if TIME_COLUMN_NAME not in trainedFeature:
+            trainedFeature.append(TIME_COLUMN_NAME)
+        df = df[trainedFeature]
 
+    header = list(df.columns)
     # 如果有Intensity这个 就使用Intensity
     # if header.count('Intensity'):
     #     header.remove('Intensity')
