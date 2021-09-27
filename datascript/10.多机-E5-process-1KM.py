@@ -9,8 +9,19 @@ from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT
 from utils.FileSaveRead import saveFaultyDict
 from utils.ProcessData import TranslateTimeToInt, TranslateTimeListStrToStr
 
-accumulationFeatures = ["user_sever", "nice", "system_sever", "idle", "iowait_server", "irq", "softirq", "steal",
-                        "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", ]
+allfeature = ["time", "user_sever", "nice", "system_sever", "idle", "iowait_sever", "irq", "softirq", "steal", "guest",
+              "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "freq", "load1", "load5",
+              "load15", "total", "available", "percent", "used", "free", "active", "inactive", "buffers", "cached",
+              "handlesNum", "pgpgin", "pgpgout", "fault", "majflt", "pgscank", "pgsteal", "pgfree", "faultFlag_sever",
+              "pid", "status", "create_time", "puids_real", "puids_effective", "puids_saved", "pgids_real",
+              "pgids_effective", "pgids_saved", "user_process", "system_process", "children_user", "children_system",
+              "iowait_process", "cpu_affinity", "memory_percent", "rss", "vms", "shared", "text", "lib", "data",
+              "dirty", "read_count", "write_count", "read_bytes", "write_bytes", "read_chars", "write_chars",
+              "num_threads", "voluntary", "involuntary", "faultFlag"]
+
+accumulationFeatures = ["user_sever", "nice", "system_sever", "idle", "iowait_sever", "irq", "softirq", "steal",
+                        "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "user_process", "system_process"]
+
 process_features = [
     # "time",
     # "pid",
