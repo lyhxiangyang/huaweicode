@@ -516,7 +516,7 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
         noNullDF.to_csv(tspath)
     # 将index重新整理一下返回
     # 需要将 faultFlag_process转化为faultFlag
-    noNullDF.rename(columns={FAULT_FLAG + suffixes[1]: FAULT_FLAG}, inplace=True)
+    noNullDF = noNullDF.rename(columns={FAULT_FLAG + suffixes[1]: FAULT_FLAG})
     return noNullDF.reset_index(drop=True)
 
 
