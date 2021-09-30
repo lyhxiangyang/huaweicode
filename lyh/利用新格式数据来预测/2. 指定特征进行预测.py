@@ -1,3 +1,6 @@
+"""
+这个文件的主要目的是对E5环境下的全CPU抢占场景进行预测结果的分析
+"""
 import os
 from typing import List, Any, Union
 
@@ -18,18 +21,21 @@ trainedFeatures = [
 trainDataPath = [
     "tmp/tData/多机-E5-process-server-1KM-win5/所有process错误码信息/0.csv",
     "tmp/tData/多机-E5-process-server-1KM-win5/所有process错误码信息/15.csv",
-    "tmp/tData/多机-E5-process-server-1KM-win5/所有process错误码信息/65.csv",
     "tmp/tData/多机-红区-process-server-1KM-win5/所有process错误码信息/0.csv",
 ]
 testDataPath = [
     "tmp/tData/多机-红区-process-server-1KM-win5/所有process错误码信息/0.csv",
     "tmp/tData/多机-红区-process-server-1KM-win5/所有process错误码信息/15.csv",
-    "tmp/tData/多机-红区-process-server-1KM-win5/所有process错误码信息/65.csv",
 ]
 
 
+def get_List_pre_suffix(clist: List[str], prefix: str = "", suffix: str = "") -> List[str]:
+    return [i for i in clist if i.startswith(prefix) and i.endswith(suffix)]
+
+
 # 使用三种模型进行预测信息
-def TrainThree(trainedpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/saved_model/tmp", selectedFeature: List[str] = None):
+def TrainThree(trainedpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/saved_model/tmp",
+               selectedFeature: List[str] = None):
     if not os.path.exists(spath):
         os.makedirs(spath)
     if not os.path.exists(modelpath):
@@ -104,11 +110,13 @@ def ModelTrainAndTest(trainedpd: pd.DataFrame, testpd: pd.DataFrame, spath: str,
 
 
 if __name__ == "__main__":
+    spath = "tmp/E5多机预测红区-单特征load1"
     trainedPDList: list[Union[Union[TextFileReader, Series, DataFrame, None], Any]] = []
     for i in trainDataPath:
         tpd = pd.read_csv(i)
         trainedPDList.append(tpd)
     allTrainedPD, err = mergeDataFrames(trainedPDList)
+    allTrainedPD: pd.DataFrame
     if err:
         print("合并出错")
         exit(1)
@@ -119,6 +127,10 @@ if __name__ == "__main__":
         testPDList.append(tpd)
     allTestPD, err = mergeDataFrames(testPDList)
 
+    # 获得需要训练的特征
+    allfeatureload1_pre = get_List_pre_suffix(list(allTrainedPD.columns.array), prefix="load1_")
+    allfeatureload1_pre_suffix = get_List_pre_suffix(list(allTrainedPD.columns.array), prefix="load1_", suffix="_diff")
 
-
-    ModelTrainAndTest(allTrainedPD, allTestPD, spath="tmp/E5多机预测红区")
+    ModelTrainAndTest(allTrainedPD, allTestPD, spath="tmp/E5多机预测红区-单特征load1_pre", selectedFeature=allfeatureload1_pre, modelpath="Classifiers/saved_model/tmp_load1_pre")
+    ModelTrainAndTest(allTrainedPD, allTestPD, spath="tmp/E5多机预测红区-单特征load1_pre_suffix",
+                      selectedFeature=allfeatureload1_pre_suffix, modelpath="Classifiers/saved_model/tmp_load1_pre_suffix")
