@@ -9,16 +9,19 @@ from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT
 from utils.FileSaveRead import saveFaultyDict
 from utils.ProcessData import TranslateTimeToInt, TranslateTimeListStrToStr
 
-allfeature = ["time", "user_sever", "nice", "system_sever", "idle", "iowait_sever", "irq", "softirq", "steal", "guest",
+allfeature = ["time", "user_server", "nice", "system_server", "idle", "iowait_server", "irq", "softirq", "steal", "guest",
               "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "freq", "load1", "load5",
               "load15", "total", "available", "percent", "used", "free", "active", "inactive", "buffers", "cached",
-              "handlesNum", "pgpgin", "pgpgout", "fault", "majflt", "pgscank", "pgsteal", "pgfree", "faultFlag_sever",
+              "handlesNum", "pgpgin", "pgpgout", "fault", "majflt", "pgscank", "pgsteal", "pgfree", "faultFlag_server",
               "pid", "status", "create_time", "puids_real", "puids_effective", "puids_saved", "pgids_real",
               "pgids_effective", "pgids_saved", "user_process", "system_process", "children_user", "children_system",
               "iowait_process", "cpu_affinity", "memory_percent", "rss", "vms", "shared", "text", "lib", "data",
               "dirty", "read_count", "write_count", "read_bytes", "write_bytes", "read_chars", "write_chars",
               "num_threads", "voluntary", "involuntary", "faultFlag"]
 
+accumulationFeatures = ["user_server", "nice", "system_server", "idle", "iowait_server", "irq", "softirq", "steal",
+                        "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "user_process", "system_process"]
+# 用于特征提取的特征
 usedFeature = ["time",
                "user_server",
                "nice",
@@ -91,9 +94,6 @@ usedFeature = ["time",
                "faultFlag"
                ]
 
-accumulationFeatures = ["user_server", "nice", "system_server", "idle", "iowait_server", "irq", "softirq", "steal",
-                        "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "user_process", "system_process"]
-
 process_features = [
     # "time",
     # "pid",
@@ -130,66 +130,9 @@ process_features = [
     "involuntary",
     "faultFlag",
 ]
-datapathsever = "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_server.csv"
+datapathserver = "D:/HuaweiMachine/数据分类/wrf/多机/红区/1KM/异常数据/wrf_1km_160_server.csv"
 datapath = [
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-3.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-4.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-5.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-6.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-7.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-8.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-9.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-10.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-11.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-12.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-13.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-14.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-15.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-16.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-17.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-18.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-19.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-20.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-21.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-22.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-23.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-24.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-25.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-26.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-27.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-28.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-29.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-30.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-31.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-32.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-33.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-34.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-35.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-36.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-37.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-38.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-39.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-40.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-41.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-42.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-43.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-44.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-45.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-46.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-47.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-48.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-49.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-50.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-51.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-52.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-53.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-54.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-55.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-56.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-57.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-58.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-59.csv",
-    "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_1km_e5-43_process-60.csv",
+    "D:/HuaweiMachine/数据分类/wrf/多机/红区/1KM/异常数据/wrf_1km_160_process.csv",
 ]
 
 """
@@ -507,7 +450,7 @@ def mergeTwoDF(dic1: Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> 
 # 处理一个文件
 # 存储的中间文件都在spath中
 
-def processOneFile(spath: str, filepd: pd.DataFrame):
+def processOneFile(spath: str, filepd: pd.DataFrame, isSlide :bool = True):
     if not os.path.exists(spath):
         os.makedirs(spath)
 
@@ -542,7 +485,7 @@ def processOneFile(spath: str, filepd: pd.DataFrame):
         # 对每一个核心进行处理
         for icore, icorepd in subcorepds:
             print("3.第{}时间段-{}核心处理中".format(i, icore))
-            fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=True,
+            fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=isSlide,
                                             extraFeature=usedFeature)
             # 将第每个核处理之后得到的错误码进行保存
             # tmp/tData/2.第{}时间段分割核心-减去前一行/icore/*
@@ -594,7 +537,7 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
 
 # 将时间序列的秒这一项都变成秒
 def changeTimeColumns_process(df: pd.DataFrame) -> pd.DataFrame:
-    tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list()), axis=0)
+    tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list(), '%Y/%m/%d %H:%M'), axis=0)
     df.loc[:, TIME_COLUMN_NAME] = tpd.loc[:, TIME_COLUMN_NAME]
     return df
 
@@ -607,10 +550,11 @@ def changeTimeColumns_server(df: pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    spath = "tmp/tData/多机-E5-process-server-1KM"
+    spath = "tmp/tData/多机-红区-process-server-1KM"
     all_faulty_pd_dict = {}
+    isSlideWin = True  # True代表这个step为win， False代表step为1
 
-    severpd = pd.read_csv(datapathsever)
+    severpd = pd.read_csv(datapathserver)
     changeTimeColumns_server(severpd)
 
     for ipath in datapath:
@@ -622,7 +566,7 @@ if __name__ == "__main__":
         changeTimeColumns_process(processpd)
         server_process_pd = mergeSeverAndProcess(severpd, processpd, mergedpath)
 
-        onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filepd=server_process_pd)
+        onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filepd=server_process_pd, isSlide=isSlideWin)
         all_faulty_pd_dict = mergeTwoDF(onefile_Faulty_PD_Dict, all_faulty_pd_dict)
 
     # 将所有的信息进行保存
