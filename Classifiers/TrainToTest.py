@@ -67,7 +67,7 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
     savefilename = "1.预测数据信息统计.csv"
     itpd.to_csv(os.path.join(spath, savefilename))
 
-    ittpd = pd.DataFrame(data=resDict).T
+    ittpd = pd.DataFrame(data=resDict)
     savefilename = "2.三种模型预测值比较.csv"
     ittpd.to_csv(os.path.join(spath, savefilename))
 
