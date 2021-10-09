@@ -44,8 +44,8 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
         os.makedirs(modelpath)
     tDic = {}
     reallist = testpd[FAULT_FLAG]
-    resDict = []
-    resDict["真实标签"] = reallist
+    resDict = {}
+    resDict["真实标签"] = list(reallist)
     for itype in MODEL_TYPE:
         prelist = select_and_pred(testpd, model_type=itype, saved_model_path=modelpath)
         resDict[itype + "预测值"] = prelist
