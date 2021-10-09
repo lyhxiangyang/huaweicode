@@ -20,13 +20,13 @@ trainedFeatures = [
 ]
 
 trainDataPath = [
-    "tmp/tData_10_9/多机-E5-process-server-1KM-win3_step1/原始数据-标准化数据/0.csv",
-    "tmp/tData_10_9/多机-E5-process-server-1KM-win3_step1/原始数据-标准化数据/15.csv",
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3_step1/原始数据-标准化数据/0.csv"
+    "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据/0.csv",
+    "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据/15.csv",
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据/0.csv"
 ]
 testDataPath = [
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3_step1/原始数据-标准化数据/0.csv",
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3_step1/原始数据-标准化数据/15.csv"
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据/0.csv",
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据/15.csv"
 ]
 
 
