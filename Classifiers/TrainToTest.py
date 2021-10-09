@@ -45,10 +45,10 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
     tDic = {}
     reallist = testpd[FAULT_FLAG]
     resDict = {}
-    resDict["真实标签"] = list(reallist)
+    resDict["rightlabels"] = list(reallist)
     for itype in MODEL_TYPE:
         prelist = select_and_pred(testpd, model_type=itype, saved_model_path=modelpath)
-        resDict[itype + "预测值"] = prelist
+        resDict[itype + "_labels"] = prelist
         anumber = len(prelist)
         rightnumber = len([i for i in range(0, len(prelist)) if prelist[i] == reallist[i]])
         print("{}: 一共预测{}数据，其中预测正确{}数量, 正确率{}".format(itype, anumber, rightnumber, rightnumber / anumber))
