@@ -582,7 +582,7 @@ def processOneFile(spath: str, filepd: pd.DataFrame, isSlide: bool = True):
             fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=isSlide,
                                             extraFeature=usedFeature)
             # 将第每个核处理之后得到的错误码进行保存
-            # tmp/tData/2.第{}时间段分割核心-减去前一行/icore/*
+            # tmp/tData/3.第{}时间段分割核心-减去前一行/icore/*
             tcore_fault_savepath = os.path.join(tcoresavepath, str(icore))
             saveFaultyDict(tcore_fault_savepath, fefaultDict)
             #

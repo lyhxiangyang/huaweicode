@@ -246,9 +246,6 @@ def subtractLastLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[None
     return df
 
 
-
-
-
 """
 将原始数据提取出来
 """
@@ -268,9 +265,6 @@ def featureExtractionOriginalData(df: pd.DataFrame, extraFeature: List[str] = []
         fdf = df.loc[df.loc[:, FAULT_FLAG] == ifault, :]
         resFaultDF[ifault] = fdf
     return resFaultDF
-
-
-
 
 
 
@@ -522,7 +516,7 @@ def processOneFile(spath: str, filepd: pd.DataFrame, isSlide: bool = True):
             fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=isSlide,
                                             extraFeature=usedFeature)
             # 将第每个核处理之后得到的错误码进行保存
-            # tmp/tData/2.第{}时间段分割核心-减去前一行/icore/*
+            # tmp/tData/3.第{}时间段分割核心-减去前一行/icore/*
             tcore_fault_savepath = os.path.join(tcoresavepath, str(icore))
             saveFaultyDict(tcore_fault_savepath, fefaultDict)
             #
@@ -537,6 +531,7 @@ def processOneFile(spath: str, filepd: pd.DataFrame, isSlide: bool = True):
     saveFaultyDict(tallsavefaultypath, resFaulty_PD_Dict)
     # 返回一个包含所有特征提取的数据Dict， 一个原始数据的提取
     return resFaulty_PD_Dict, resOrignalFaulty_PD_Dict
+
 
 
 """
@@ -576,7 +571,7 @@ def mergeSeverAndProcess(servrtpd: pd.DataFrame, processpd: pd.DataFrame, spath:
 
 # 将时间序列的秒这一项都变成秒
 def changeTimeColumns_process(df: pd.DataFrame) -> pd.DataFrame:
-    tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list()), axis=0)
+    tpd = df.loc[:, [TIME_COLUMN_NAME]].apply(lambda x: TranslateTimeListStrToStr(x.to_list(), '%Y/%m/%d %H:%M'), axis=0)
     df.loc[:, TIME_COLUMN_NAME] = tpd.loc[:, TIME_COLUMN_NAME]
     return df
 
@@ -588,16 +583,11 @@ def changeTimeColumns_server(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-"""
-1. 合并server和process数据
-2. 将每个process的每个核的每个错误码进行输出
-3. 合并所有的错误码
-"""
-
 if __name__ == "__main__":
-    spath = "tmp/tData/多机-E5-process-server-1KM"
+    spath = "tmp/tData/多机-红区-process-server-1KM"
     all_faulty_pd_dict = {}
     orginal_all_faulty_pd_dict = {}
+
     isSlideWin = True  # True代表这个step为win， False代表step为1
 
     severpd = pd.read_csv(datapathserver)
@@ -623,3 +613,4 @@ if __name__ == "__main__":
     # 将所有的信息进行保存
     tallsavefaultypath = os.path.join(spath, "所有process错误码信息-原始数据")
     saveFaultyDict(tallsavefaultypath, orginal_all_faulty_pd_dict)
+
