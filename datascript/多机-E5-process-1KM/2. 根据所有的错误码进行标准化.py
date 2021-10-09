@@ -115,7 +115,7 @@ if __name__ == "__main__":
     fault_pd_Dict[standardized_normalflag] = standardNormalPd
 
     # 计算平均值
-    meanValue = standardNormalPd.loc[:, standardFeature].mean()
+    meanValue = normalpd.loc[:, standardFeature].mean()
 
     for ifault in standardized_abnormalflag:
         filename = str(ifault) + ".csv"
