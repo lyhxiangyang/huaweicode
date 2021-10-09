@@ -11,8 +11,8 @@ import pandas as pd
 # 需要标准化的错误码
 from utils.FileSaveRead import saveFaultyDict
 from utils.ProcessData import standardPDfromOriginal
-
-standardized_flag = [0, 15]
+standardized_normalflag = 0
+standardized_abnormalflag = [15]
 # 需要标准化的特征
 allFeature = ["time",
                "user_server",
@@ -103,19 +103,28 @@ if __name__ == "__main__":
     standardFeature = ["load1"]
 
     fault_pd_Dict = {}
-    for ifault in standardized_flag:
+    # 将normal的加入进来，并且计算平均值
+    filepath = os.path.join(standardized_path, str(standardized_normalflag) + ".csv")
+    if os.path.exists(filepath):
+        print("正常文件不存在")
+        exit(1)
+    normalpd = pd.read_csv(filepath)
+    standardNormalPd = standardPDfromOriginal(normalpd, standardFeatures=standardFeature)
+    fault_pd_Dict[standardized_normalflag] = standardNormalPd
+
+    # 计算平均值
+    meanValue = standardNormalPd.loc[:, standardFeature].mean()
+
+    for ifault in standardized_abnormalflag:
         filename = str(ifault) + ".csv"
         filepath = os.path.join(standardized_path, filename)
         if not os.path.exists(filepath):
             print("{}文件不存在".format(filename))
             continue
         filepd = pd.read_csv(filepath)
-        standardPD = standardPDfromOriginal(filepd, standardFeatures=standardFeature)
+        standardPD = standardPDfromOriginal(filepd, standardFeatures=standardFeature, meanValue=meanValue)
         fault_pd_Dict[ifault] = standardPD
     saveFaultyDict(spath, fault_pd_Dict)
-
-
-
 
 
 

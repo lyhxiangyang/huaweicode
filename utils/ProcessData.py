@@ -47,10 +47,14 @@ def TranslateTimeListStrToStr(stime: List[str], timeformat: str = '%Y-%m-%d %H:%
 """
 
 
-def standardPDfromOriginal(df: pd.DataFrame, standardFeatures: List[str]) -> pd.DataFrame:
+def standardPDfromOriginal(df: pd.DataFrame, standardFeatures=None, meanValue=None) -> pd.DataFrame:
+    if standardFeatures is None:
+        standardFeatures = []
     nostandardDf = df.loc[:, standardFeatures]
     nostandardDf: pd.DataFrame
-    meanValue = nostandardDf.mean()
+    # 如果为空 代表使用自己的mean
+    if meanValue is None:
+        meanValue = nostandardDf.mean()
     # 进行标准化
     standardDf = (nostandardDf / meanValue * 100).astype("int64")
     if TIME_COLUMN_NAME in df.columns.array:
