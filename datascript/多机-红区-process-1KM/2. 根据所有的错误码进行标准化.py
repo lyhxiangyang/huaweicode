@@ -114,7 +114,7 @@ if __name__ == "__main__":
     for ifault in standardized_flag:
         filename = str(ifault) + ".csv"
         filepath = os.path.join(standardized_path, filename)
-        if os.path.exists(filepath):
+        if not os.path.exists(filepath):
             print("{}文件不存在".format(filename))
             continue
         filepd = pd.read_csv(filepath)
