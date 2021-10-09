@@ -9,7 +9,9 @@ import pandas as pd
 
 
 # 需要标准化的错误码
+from utils.DefineData import TIME_COLUMN_NAME, FAULT_FLAG
 from utils.FileSaveRead import saveFaultyDict
+from utils.ProcessData import standardPDfromOriginal
 
 standardized_flag = [0, 15]
 # 需要标准化的特征
@@ -89,16 +91,6 @@ allFeature = ["time",
 
 
 
-"""
-只返回标准化之后的数据特征， 没有标准化的不返回
-"""
-def standardPDfromOriginal(df : pd.DataFrame, standardFeatures: List[str]) -> pd.DataFrame:
-    nostandardDf = df.loc[:, standardFeatures]
-    nostandardDf : pd.DataFrame
-    meanValue = nostandardDf.mean()
-    # 进行标准化
-    standardDf = (nostandardDf / meanValue * 100).astype("int64")
-    return standardDf
 
 """
 目前对标准化

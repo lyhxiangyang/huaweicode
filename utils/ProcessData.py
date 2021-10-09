@@ -1,6 +1,10 @@
 import time
 from typing import List, Union
 
+import pandas as pd
+
+from utils.DefineData import TIME_COLUMN_NAME, FAULT_FLAG
+
 """
 将时间格式转化为int
 "2021/8/29 0:54:08"
@@ -35,3 +39,21 @@ def TranslateTimeListStrToStr(stime: List[str], timeformat: str = '%Y-%m-%d %H:%
         return reslist[0]
     return reslist
 
+
+"""
+只返回标准化之后的数据特征， 没有标准化的不返回
+# 保留time和label
+"""
+
+
+def standardPDfromOriginal(df: pd.DataFrame, standardFeatures: List[str]) -> pd.DataFrame:
+    nostandardDf = df.loc[:, standardFeatures]
+    nostandardDf: pd.DataFrame
+    meanValue = nostandardDf.mean()
+    # 进行标准化
+    standardDf = (nostandardDf / meanValue * 100).astype("int64")
+    if TIME_COLUMN_NAME in df.columns.array:
+        standardDf[TIME_COLUMN_NAME] = df[TIME_COLUMN_NAME]
+    if FAULT_FLAG in df.columns.array:
+        standardDf[FAULT_FLAG] = df[FAULT_FLAG]
+    return standardDf
