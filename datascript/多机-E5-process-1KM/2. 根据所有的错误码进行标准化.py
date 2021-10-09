@@ -98,7 +98,7 @@ allFeature = ["time",
 """
 if __name__ == "__main__":
     # readpath
-    standardized_path = "tmp/tData_10_9/多机-E5-process-server-1KM-win3_step1/所有process错误码信息-原始数据"
+    standardized_path = "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/所有process错误码信息-原始数据"
     spath = "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据"
     # 需要标准化的特征
     standardFeature = ["load1"]
