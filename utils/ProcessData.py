@@ -3,7 +3,7 @@ from typing import List, Union
 
 import pandas as pd
 
-from utils.DataFrameOperation import PushLabelToEnd, PushLabelToFirst
+from utils.DataFrameOperation import PushLabelToEnd, PushLabelToFirst, SortLabels
 from utils.DefineData import TIME_COLUMN_NAME, FAULT_FLAG
 
 """
@@ -55,8 +55,10 @@ def standardPDfromOriginal(df: pd.DataFrame, standardFeatures: List[str]) -> pd.
     standardDf = (nostandardDf / meanValue * 100).astype("int64")
     if TIME_COLUMN_NAME in df.columns.array:
         standardDf[TIME_COLUMN_NAME] = df[TIME_COLUMN_NAME]
-        PushLabelToFirst(standardDf, TIME_COLUMN_NAME)
     if FAULT_FLAG in df.columns.array:
         standardDf[FAULT_FLAG] = df[FAULT_FLAG]
-        PushLabelToEnd(standardDf, FAULT_FLAG)
+
+    standardDf = SortLabels(standardDf)
+    standardDf = PushLabelToFirst(standardDf, TIME_COLUMN_NAME)
+    standardDf = PushLabelToEnd(standardDf, FAULT_FLAG)
     return standardDf
