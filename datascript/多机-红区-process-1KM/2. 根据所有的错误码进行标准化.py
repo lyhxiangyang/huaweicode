@@ -105,7 +105,7 @@ if __name__ == "__main__":
     fault_pd_Dict = {}
     # 将normal的加入进来，并且计算平均值
     filepath = os.path.join(standardized_path, str(standardized_normalflag) + ".csv")
-    if os.path.exists(filepath):
+    if not os.path.exists(filepath):
         print("正常文件不存在")
         exit(1)
     normalpd = pd.read_csv(filepath)
