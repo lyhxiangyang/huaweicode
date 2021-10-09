@@ -1,4 +1,6 @@
+import errno
 import os
+from collections import defaultdict
 from re import T
 from typing import List, Tuple, Union, Dict, Any
 
@@ -92,7 +94,8 @@ usedFeature = ["time",
                ]
 
 accumulationFeatures = ["user_server", "nice", "system_server", "idle", "iowait_server", "irq", "softirq", "steal",
-                        "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls", "user_process", "system_process"]
+                        "guest", "guest_nice", "ctx_switches", "interrupts", "soft_interrupts", "syscalls",
+                        "user_process", "system_process"]
 
 process_features = [
     # "time",
@@ -303,6 +306,35 @@ def subtractLastLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[None
     return df
 
 
+
+
+
+"""
+将原始数据提取出来
+"""
+
+
+def featureExtractionOriginalData(df: pd.DataFrame, extraFeature: List[str] = []) -> \
+        Union[dict[int, dict], Any]:
+    # 获得这个df中所有的错误码的类型
+    if FAULT_FLAG not in df.columns.array:
+        print("featureExtractionOriginalData 中没有错误标签")
+        exit(1)
+    # 获得所有的错误码标识
+    faults = list(set(list(df.loc[:, FAULT_FLAG])))
+    resFaultDF = {}
+    for ifault in faults:
+        selectLine = df.loc[:]
+        fdf = df.loc[df.loc[:, FAULT_FLAG] == ifault, :]
+        resFaultDF[ifault] = fdf
+    return resFaultDF
+
+
+
+
+
+
+
 """
 保证这个df的时间序列是连续的，并且可能包含多个错误类型
 保证带有time 和标签特征
@@ -507,11 +539,13 @@ def mergeTwoDF(dic1: Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> 
 # 处理一个文件
 # 存储的中间文件都在spath中
 
-def processOneFile(spath: str, filepd: pd.DataFrame, isSlide :bool = True):
+def processOneFile(spath: str, filepd: pd.DataFrame, isSlide: bool = True):
     if not os.path.exists(spath):
         os.makedirs(spath)
 
     resFaulty_PD_Dict = {}
+    resOrignalFaulty_PD_Dict = {}
+
 
     # 先按照时间段划分
     pdbytime = splitDataFrameByTime(filepd)
@@ -540,21 +574,29 @@ def processOneFile(spath: str, filepd: pd.DataFrame, isSlide :bool = True):
         saveCoreDFToFiles(tcoresavepath, subcorepds)
 
         # 对每一个核心进行处理
+        tcoresavepath_originData = os.path.join(spath, "3.第{}时间段分割核心-减去前一行-分割错误码原始数据".format(i))
+        tcoresavepath = os.path.join(spath, "3.第{}时间段分割核心-减去前一行-分割错误码特征提取".format(i))
         for icore, icorepd in subcorepds:
             print("3.第{}时间段-{}核心处理中".format(i, icore))
+            orignalFaultDict = featureExtractionOriginalData(icorepd, extraFeature=usedFeature)
             fefaultDict = featureExtraction(icorepd, windowSize=WINDOWS_SIZE, silidWindows=isSlide,
                                             extraFeature=usedFeature)
             # 将第每个核处理之后得到的错误码进行保存
             # tmp/tData/2.第{}时间段分割核心-减去前一行/icore/*
             tcore_fault_savepath = os.path.join(tcoresavepath, str(icore))
             saveFaultyDict(tcore_fault_savepath, fefaultDict)
+            #
+            tcore_fault_savepath = os.path.join(tcoresavepath_originData, str(icore))
+            saveFaultyDict(tcore_fault_savepath, orignalFaultDict)
 
             # 合并总的错误
             resFaulty_PD_Dict = mergeTwoDF(resFaulty_PD_Dict, fefaultDict)
+            resOrignalFaulty_PD_Dict = mergeTwoDF(resOrignalFaulty_PD_Dict, orignalFaultDict)
     # 将这个文件中提取到的所有错误码进行保存
     tallsavefaultypath = os.path.join(spath, "所有错误码信息")
     saveFaultyDict(tallsavefaultypath, resFaulty_PD_Dict)
-    return resFaulty_PD_Dict
+    # 返回一个包含所有特征提取的数据Dict， 一个原始数据的提取
+    return resFaulty_PD_Dict, resOrignalFaulty_PD_Dict
 
 
 """
@@ -605,6 +647,7 @@ def changeTimeColumns_server(df: pd.DataFrame) -> pd.DataFrame:
     df.loc[:, TIME_COLUMN_NAME] = tpd.loc[:, TIME_COLUMN_NAME]
     return df
 
+
 """
 1. 合并server和process数据
 2. 将每个process的每个核的每个错误码进行输出
@@ -614,7 +657,8 @@ def changeTimeColumns_server(df: pd.DataFrame) -> pd.DataFrame:
 if __name__ == "__main__":
     spath = "tmp/tData/多机-E5-process-server-1KM"
     all_faulty_pd_dict = {}
-    isSlideWin = True # True代表这个step为win， False代表step为1
+    orginal_all_faulty_pd_dict = {}
+    isSlideWin = True  # True代表这个step为win， False代表step为1
 
     severpd = pd.read_csv(datapathsever)
     changeTimeColumns_server(severpd)
@@ -629,9 +673,13 @@ if __name__ == "__main__":
         changeTimeColumns_process(processpd)
         server_process_pd = mergeSeverAndProcess(severpd, processpd, mergedpath)
 
-        onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filepd=server_process_pd, isSlide=isSlideWin)
+        onefile_Faulty_PD_Dict, orginal_onefile_Faulty_PD_Dict = processOneFile(spath=os.path.join(spath, filename), filepd=server_process_pd,
+                                                isSlide=isSlideWin)
         all_faulty_pd_dict = mergeTwoDF(onefile_Faulty_PD_Dict, all_faulty_pd_dict)
-
+        orginal_all_faulty_pd_dict = mergeTwoDF(orginal_all_faulty_pd_dict, orginal_onefile_Faulty_PD_Dict)
     # 将所有的信息进行保存
     tallsavefaultypath = os.path.join(spath, "所有process错误码信息")
     saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
+    # 将所有的信息进行保存
+    tallsavefaultypath = os.path.join(spath, "所有process错误码信息-原始数据")
+    saveFaultyDict(tallsavefaultypath, orginal_all_faulty_pd_dict)

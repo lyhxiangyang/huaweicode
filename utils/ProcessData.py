@@ -34,3 +34,4 @@ def TranslateTimeListStrToStr(stime: List[str], timeformat: str = '%Y-%m-%d %H:%
     if len(reslist) == 1:
         return reslist[0]
     return reslist
+
