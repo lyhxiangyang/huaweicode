@@ -118,7 +118,7 @@ if __name__ == "__main__":
     allTrainedPD, err = mergeDataFrames(trainedPDList)
     allTrainedPD: pd.DataFrame
     if err:
-        print("合并出错")
+        print("train合并出错")
         exit(1)
 
     testPDList = []
@@ -126,6 +126,9 @@ if __name__ == "__main__":
         tpd = pd.read_csv(i)
         testPDList.append(tpd)
     allTestPD, err = mergeDataFrames(testPDList)
+    if err:
+        print("test合并出错")
+        exit(1)
 
     # 获得需要训练的特征
     allfeatureload1_pre = get_List_pre_suffix(list(allTrainedPD.columns.array), prefix="load1_")
