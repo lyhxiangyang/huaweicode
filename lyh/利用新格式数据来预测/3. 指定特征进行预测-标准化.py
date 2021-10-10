@@ -36,6 +36,9 @@ def get_List_pre_suffix(clist: List[str], prefix: str = "", suffix: str = "") ->
 
 
 # 指定特征，使用标准化的原始数据来进行模型的预测
+"""
+1. 目前只是使用原始数据这一个特征来进行预测
+"""
 if __name__ == "__main__":
     spath = "tmp/E5多机预测红区-单特征load1"
     modelsavepath = "Classifiers/saved_model/tmp_load1_pre"

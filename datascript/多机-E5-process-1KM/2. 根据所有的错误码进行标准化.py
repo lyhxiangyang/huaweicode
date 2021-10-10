@@ -89,13 +89,12 @@ allFeature = ["time",
 ]
 
 
-
-
-
-
 """
-目前对标准化
+目前是从所有原始数据中对指定特征进行标准化
+10-9: 目前只针对load1特征进行标准化
 """
+
+
 if __name__ == "__main__":
     # readpath
     standardized_path = "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/所有process错误码信息-原始数据"
