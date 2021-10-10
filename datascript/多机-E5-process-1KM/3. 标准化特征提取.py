@@ -207,7 +207,7 @@ if __name__ == "__main__":
     isSlideWin = True  # True代表这个step为win， False代表step为1
     winsize = 3
 
-    for ifault in extractionFeatures:
+    for ifault in extractionFaulty:
         filename = str(ifault) + ".csv"
         faultfilepath = os.path.join(rpath, filename)
         if not os.path.exists(faultfilepath):
