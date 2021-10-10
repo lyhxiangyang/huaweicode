@@ -200,8 +200,8 @@ def featureExtraction(df: pd.DataFrame, windowSize: int = 5, silidWindows: bool 
 
 
 if __name__ == "__main__":
-    rpath = "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据"
-    spath = "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取"
+    rpath = "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据"
+    spath = "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取"
     extractionFaulty = [0, 15]
     extractionFeatures = ["load1"]
     isSlideWin = False  # True代表这个step为win， False代表step为1
