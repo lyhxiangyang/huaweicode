@@ -67,6 +67,7 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
             tDic[i]["per_normal_" + itype] = tmetrics["per_normal"]
             tDic[i]["per_samefault_" + itype] = tmetrics["per_samefault"]
             tDic[i]["per_fault_" + itype] = tmetrics["per_fault"]
+            print("{}-fault:{}-per_normal:{} + per_fault:{} == {} 理论应该等1".format(itype, i, tmetrics["per_normal"], tmetrics["per_fault"], tmetrics["per_normal"] + tmetrics["per_fault"]))
 
     itpd = pd.DataFrame(data=tDic).T
     savefilename = "1.预测数据信息统计.csv"

@@ -86,5 +86,5 @@ def get_metrics(reallist: List, prelist: List, label: int):
     metrics["per_itself"] = num_pre_itself / len(reallist) # 预测为11的百分比
     metrics["per_normal"] = num_pre_normal / len(reallist) # 预测为0的百分比
     metrics["per_samefault"] = num_pre_samefault / len(reallist) # 预测为11、12、13、14、15的百分比
-    metrics["per_fault"] =  num_pre_fault / len(reallist) # 预测为非0的百分比
+    metrics["per_fault"] = num_pre_fault / len(reallist) # 预测为非0的百分比
     return metrics
