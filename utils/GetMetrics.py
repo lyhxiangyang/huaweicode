@@ -25,6 +25,9 @@ def get_metrics(reallist: List, prelist: List, label: int):
     :param label: Label to be selected
     :return: tp, fp, fn and tn etc
     """
+    if len(reallist) == len(prelist):
+        print("预测列表和真实标签的列表长度不一致")
+        exit(1)
     true_pos, true_neg = 0, 0
     false_pos, false_neg = 0, 0
     rightnumber = 0
@@ -52,21 +55,36 @@ def get_metrics(reallist: List, prelist: List, label: int):
                    accuracy=accuracy)
     # 添加数量数据，即各个实际标签对应的数量
     realnums = {} # 总数量
-    numDict = {}
-    for i in reallist:
-        if i not in realnums.keys():
-            realnums[i] = 0
-        if i not in numDict.keys():
-            numDict[i] = {}
-            numDict[i]["pre_num"] = 0
-            numDict[i]["pre_normal_percentage"] = 0
+    # 假设当前预测的的标签是11
+    num_pre_itself = 0 # 表示预测值为11的数量
+    num_pre_normal = 0 # 表示预测值为0的数量
+    num_pre_samefault = 0 # 表示预测值为11、12、13、14、15的数量
+    num_pre_fault = 0 # 表示预测为非0的数量
 
-        realnums[i] += 1
+    NORMAL_LABEL = 0 # 代表正常类型的标签
+    for i in range(len(reallist)):
+        if reallist[i] not in realnums.keys():
+            realnums[reallist[i]] = 0
+        realnums[reallist[i]] += 1
         # 正常的数量
         # if prelist[i] not in numDict[i].keys():
         #     numDict[i]
+        if reallist[i] != label:
+            continue
+        if prelist[i] == label:
+            num_pre_itself += 1
+        if prelist[i] == NORMAL_LABEL:
+            num_pre_normal += 1
+        if prelist[i] // 10 == label // 10:
+            num_pre_samefault += 1
+        if prelist[i] != NORMAL_LABEL:
+            num_pre_fault += 1
+
 
     metrics["realnums"] = realnums
-
-
+    # 假设我们预测的标签时11
+    metrics["per_itself"] = num_pre_itself / len(reallist) # 预测为11的百分比
+    metrics["per_normal"] = num_pre_normal / len(reallist) # 预测为0的百分比
+    metrics["per_samefault"] = num_pre_samefault / len(reallist) # 预测为11、12、13、14、15的百分比
+    metrics["per_fault"] =  num_pre_fault / len(reallist) # 预测为非0的百分比
     return metrics

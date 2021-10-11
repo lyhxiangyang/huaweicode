@@ -63,6 +63,11 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
             tDic[i]["accuracy_" + itype] = tmetrics["accuracy"]
             tDic[i]["precision_" + itype] = tmetrics["precision"]
             tDic[i]["recall_" + itype] = tmetrics["recall"]
+            tDic[i]["per_itself_" + itype] = tmetrics["per_itself"]
+            tDic[i]["per_normal_" + itype] = tmetrics["per_normal"]
+            tDic[i]["per_samefault_" + itype] = tmetrics["per_samefault"]
+            tDic[i]["per_fault_" + itype] = tmetrics["per_fault"]
+
     itpd = pd.DataFrame(data=tDic).T
     savefilename = "1.预测数据信息统计.csv"
     itpd.to_csv(os.path.join(spath, savefilename))
