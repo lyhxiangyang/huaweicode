@@ -25,7 +25,7 @@ def get_metrics(reallist: List, prelist: List, label: int):
     :param label: Label to be selected
     :return: tp, fp, fn and tn etc
     """
-    if len(reallist) == len(prelist):
+    if len(reallist) != len(prelist):
         print("预测列表和真实标签的列表长度不一致")
         exit(1)
     true_pos, true_neg = 0, 0
