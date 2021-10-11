@@ -83,7 +83,7 @@ def get_metrics(reallist: List, prelist: List, label: int):
 
     metrics["realnums"] = realnums
     # 假设我们预测的标签时11
-    labelnum = realnums[reallist[label]]
+    labelnum = realnums[label]
     metrics["per_itself"] = num_pre_itself / labelnum # 预测为11的百分比
     metrics["per_normal"] = num_pre_normal / labelnum # 预测为0的百分比
     metrics["per_samefault"] = num_pre_samefault / labelnum # 预测为11、12、13、14、15的百分比
