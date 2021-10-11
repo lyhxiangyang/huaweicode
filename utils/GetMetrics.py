@@ -88,4 +88,9 @@ def get_metrics(reallist: List, prelist: List, label: int):
     metrics["per_normal"] = num_pre_normal / labelnum # 预测为0的百分比
     metrics["per_samefault"] = num_pre_samefault / labelnum # 预测为11、12、13、14、15的百分比
     metrics["per_fault"] = num_pre_fault / labelnum # 预测为非0的百分比
+    print("统计数据-{}".format(label).center(40, "*"))
+    print("num: {}".format(labelnum))
+    print("num_normal".format(num_pre_normal))
+    print("num_fault".format(num_pre_fault))
+    print("统计数据结束".center(40, "*"))
     return metrics
