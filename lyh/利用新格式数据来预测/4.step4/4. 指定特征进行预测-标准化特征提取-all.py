@@ -14,15 +14,15 @@ trainDataPath = [
     "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/13.csv",
     "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/14.csv",
     "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/15.csv",
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/0.csv"
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/0.csv",
 ]
 testDataPath = [
     "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/0.csv",
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/11.csv"
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/12.csv"
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/13.csv"
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/14.csv"
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/15.csv"
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/11.csv",
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/12.csv",
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/13.csv",
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/14.csv",
+    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/15.csv",
 ]
 
 
