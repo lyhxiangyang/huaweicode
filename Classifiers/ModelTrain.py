@@ -36,7 +36,6 @@ def model_train(df, model_type, saved_model_path=SaveModelPath, trainedFeature: 
             trainedFeature.append(TIME_COLUMN_NAME)
         df = df[trainedFeature]
 
-    header = list(df.columns)
     # 如果有Intensity这个 就使用Intensity
     # if header.count('Intensity'):
     #     header.remove('Intensity')
