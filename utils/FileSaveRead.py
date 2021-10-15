@@ -103,3 +103,107 @@ def readFaultyCoreDict(savepath: str) -> Dict[int, Dict[int, pd.DataFrame]]:
             faulty_core_dict[ifault][icorename] = pd.read_csv(tfaultcorefile)
     return faulty_core_dict
 
+
+# 保存 str-int-int类型
+# 文件-时间段-核心PD
+
+def saveFilename_Time_Core_pdDict(savepath: str, ftcPD: Dict):
+    for filename, time_core_pdDict in ftcPD.items():
+        for time, core_pdDict in time_core_pdDict.items():
+            for icore, tpd in core_pdDict.items():
+                tpath = os.path.join(savepath, filename, str(time), str(icore) + ".csv")
+                if not os.path.exists(tpath):
+                    os.makedirs(tpath)
+                tpd : pd.DataFrame
+                tpd.to_csv(tpath)
+def readFilename_Time_Core_pdDict(readpath: str) -> Dict:
+    filename_time_corePd = {}
+    filenames = os.listdir(readpath)
+    for istrfilename in filenames:
+        filepath = os.path.join(readpath, istrfilename)
+        ifilename = int(istrfilename)
+        times = os.listdir(filepath)
+        filename_time_corePd[ifilename]={}
+        for istrtime in times:
+            file_timepath = os.path.join(filepath, istrtime)
+            itime = int(istrtime)
+            coresname = os.listdir(file_timepath)
+            filename_time_corePd[ifilename][itime] = {}
+            for istrcorename in coresname:
+                score = os.path.splitext(istrcorename)[0]
+                icore = int(score)
+                file_time_corepath = os.path.join(file_timepath, istrcorename)
+                filename_time_corePd[ifilename][itime][icore] = pd.read_csv(file_time_corepath)
+    return filename_time_corePd
+
+# 保存 str-int-int-int类型
+# 文件-时间段-核心-错误PD
+
+def saveFilename_Time_Core_Faulty_pdDict(savepath: str, ftcPD: Dict):
+    def saveFilename_Time_Core_pdDict(savepath: str, ftcPD: Dict):
+        for filename, time_core_pdDict in ftcPD.items():
+            for time, core_pdDict in time_core_pdDict.items():
+                for icore, faultypdDict in core_pdDict.items():
+                    for ifault, tpd in faultypdDict.items():
+                        tpath = os.path.join(savepath, filename, str(time), str(icore), str(ifault) + ".csv")
+                        if not os.path.exists(tpath):
+                            os.makedirs(tpath)
+                        tpd.to_csv(tpath)
+def readFilename_Time_Core_Faulty_pdDict(readpath: str) -> Dict:
+    filename_time_core_faultPd = {}
+    filenames = os.listdir(readpath)
+    for istrfilename in filenames:
+        filepath = os.path.join(readpath, istrfilename)
+        ifilename = int(istrfilename)
+        times = os.listdir(filepath)
+        filename_time_core_faultPd[ifilename]={}
+        for istrtime in times:
+            file_timepath = os.path.join(filepath, istrtime)
+            itime = int(istrtime)
+            coresname = os.listdir(file_timepath)
+            filename_time_core_faultPd[ifilename][itime] = {}
+            for istrcore in coresname:
+                icore = int(istrcore)
+                file_time_corepath = os.path.join(file_timepath, istrcore)
+                filename_time_core_faultPd[ifilename][itime][icore]={}
+                faultys = os.listdir(file_time_corepath)
+                for istrfaultyname in faultys:
+                    sfaulty = os.path.splitext(istrfaultyname)[0]
+                    ifaulty = int(sfaulty)
+                    file_timr_core_faultpath = os.path.join(file_time_corepath, istrfaultyname)
+                    filename_time_core_faultPd[ifilename][itime][icore][ifaulty] = pd.read_csv(file_timr_core_faultpath)
+    return filename_time_core_faultPd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
