@@ -688,7 +688,7 @@ if __name__ == "__main__":
 
     #将filename-时间段-core存储
     ftcpath = os.path.join(spath, "2.Filename_Time_Core")
-    saveFilename_Time_Core_pdDict(ftcpath, time_core_pdDict)
+    saveFilename_Time_Core_pdDict(ftcpath, filename_time_core_pdDict)
     # 将filename-时间段-core-faulty
     ftcfpath = os.path.join(spath, "3.Filename_Time_Core_Fault")
-    saveFilename_Time_Core_Faulty_pdDict(ftcfpath, time_core_faultDict)
+    saveFilename_Time_Core_Faulty_pdDict(ftcfpath, filename_time_core_faultDict)
