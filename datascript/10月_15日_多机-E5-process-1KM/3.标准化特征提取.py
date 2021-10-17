@@ -231,7 +231,7 @@ def featureExtraction(df: pd.DataFrame, windowSize: int = 5, windowRealSize: int
             resPD[newfeatureName].append(featurevalue)
             resPD[newfeatureNameDiff].append(featurevaluediff)
 
-        if silidWindows:
+        if not silidWindows:
             beginLineNumber += windowSize
             endLineNumber += windowSize
         else:
