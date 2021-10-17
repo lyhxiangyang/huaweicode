@@ -496,7 +496,7 @@ if __name__ == "__main__":
         filename = os.path.basename(ipath)
         filename = os.path.splitext(filename)[0]
         # tmp/{}/0.合并server和process数据
-        mergedpath = os.path.join(spath, filename, "0.合并server和process数据")
+        mergedpath = os.path.join(spath, "所有文件处理过程", filename, "0.合并server和process数据")
 
         processpd = pd.read_csv(ipath)
         # 改变一个文件的时间， 因为server文件和process文件文件中的时间不对
