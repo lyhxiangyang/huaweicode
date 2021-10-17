@@ -8,7 +8,7 @@ import pandas as pd
 
 from utils.DataFrameOperation import SortLabels, PushLabelToFirst, PushLabelToEnd
 from utils.DefineData import TIME_COLUMN_NAME, TIME_INTERVAL, CPU_FEATURE, FAULT_FLAG, WINDOWS_SIZE
-from utils.FileSaveRead import saveFaultyDict
+from utils.FileSaveRead import saveFaultyDict, saveFilename_Time_Core_pdDict, saveFilename_Time_Core_Faulty_pdDict
 from utils.ProcessData import TranslateTimeToInt, TranslateTimeListStrToStr
 
 allfeature = ["time", "user_sever", "nice", "system_sever", "idle", "iowait_sever", "irq", "softirq", "steal", "guest",
@@ -512,4 +512,10 @@ if __name__ == "__main__":
     tallsavefaultypath = os.path.join(spath, "1. 所有process错误码信息")
     saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
 
-    #
+    #将filename-time-core进行保存
+    sspath = os.path.join(spath, "filename-time-core")
+    saveFilename_Time_Core_pdDict(sspath, filename_time_core_pdDict)
+
+    # 将filename-time-core进行保存
+    sspath = os.path.join(spath, "filename-time-core-faulty")
+    saveFilename_Time_Core_Faulty_pdDict(sspath, filename_time_core_faultDict)
