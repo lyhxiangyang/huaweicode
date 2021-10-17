@@ -744,17 +744,17 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
     # 将resDict 转化为 resDFDict
     resDFDict = {}
     for ifaulty, featureDict in resFaulty_PDDict.items():
-        resDataFrame = pd.DataFrame(data=featureDict).astype("int64")
+        resDataFrame = pd.DataFrame(data=featureDict)
+        resDataFrame = resDataFrame.fillna(0).astype("int64")
         resDataFrame = SortLabels(resDataFrame)
         resDataFrame = PushLabelToFirst(resDataFrame, label=TIME_COLUMN_NAME)
         resDataFrame = PushLabelToEnd(resDataFrame, label=FAULT_FLAG)
-        resDataFrame.fillna(0, inplace=True)
         resDFDict[ifaulty] = resDataFrame
     # 原始文件的变化
-    originDF = pd.DataFrame(data=resPD).astype("int64")
+    originDF = pd.DataFrame(data=resPD)
+    originDF = originDF.fillna(0).astype("int64")
     originDF = SortLabels(originDF)
     originDF = PushLabelToFirst(originDF, label=TIME_COLUMN_NAME)
     originDF = PushLabelToEnd(originDF, label=FAULT_FLAG)
-    originDF.fillna(0, inplace=True)
     # 原始文件的处理， 以及其中的错误码
     return originDF, resDFDict
