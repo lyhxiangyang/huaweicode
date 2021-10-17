@@ -154,6 +154,7 @@ if __name__ == "__main__":
     file_time_corePath = "tmp/tData-10-18/多机-E5-process-server-1KM/2.filename-time-core"
     file_time_core_faultyPath: str = "tmp/tData-10-18/多机-E5-process-server-1KM/3.filename-time-core-faulty"
     spath = "tmp/tData-10-18/多机-E5-process-server-1KM"
+    standardfeatur = ["load1"]
 
     # 获得所有正常情况下各个特征的平均值
     nomalpd = pd.read_csv(normalpath)
@@ -169,8 +170,8 @@ if __name__ == "__main__":
     print("结束读取file_time_core_faulty信息".center(40, "*"))
 
     print("标准化开始处理".center(40, "*"))
-    file_time_corePDDict = standard_file_time_coreDict(file_time_corePDDict, standardFeature=allFeature, meanvalue=normalmean)
-    file_time_core_faultyPDDict = standard_file_time_core_faultyDict(file_time_core_faultyPDDict, standardFeature=allFeature, meanvalue=normalmean)
+    file_time_corePDDict = standard_file_time_coreDict(file_time_corePDDict, standardFeature=standardfeatur, meanvalue=normalmean)
+    file_time_core_faultyPDDict = standard_file_time_core_faultyDict(file_time_core_faultyPDDict, standardFeature=standardfeatur, meanvalue=normalmean)
     print("标准化处理结束".center(40, "*"))
 
     #将filename-time-core进行保存
