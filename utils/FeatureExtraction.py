@@ -600,7 +600,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
             resPD[newfeatureName].append(featurevalue)
-            resPD[newfeatureNameDiff].append(featurevaluediff)
+            resPD[newfeatureNameDiff].append(featurevalue - getListEnd(resPD[newfeatureName]))
             # max max_diff
             newfeatureName = featurename + "_max"
             newfeatureNameDiff = newfeatureName + "_diff"
@@ -617,7 +617,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
             resPD[newfeatureName].append(featurevalue)
-            resPD[newfeatureNameDiff].append(featurevaluediff)
+            resPD[newfeatureNameDiff].append(featurevalue - getListEnd(resPD[newfeatureName]))
 
             # percentage_50
             newfeatureName = featurename + "_percentage_50"
@@ -635,7 +635,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
             resPD[newfeatureName].append(featurevalue)
-            resPD[newfeatureNameDiff].append(featurevaluediff)
+            resPD[newfeatureNameDiff].append(featurevalue - getListEnd(resPD[newfeatureName]))
 
             # var
             newfeatureName = featurename + "_var"
@@ -653,8 +653,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
             resPD[newfeatureName].append(featurevalue)
-            resPD[newfeatureNameDiff].append(featurevaluediff)
-
+            resPD[newfeatureNameDiff].append(featurevalue - getListEnd(resPD[newfeatureName]))
             # std
             newfeatureName = featurename + "_std"
             newfeatureNameDiff = newfeatureName + "_diff"
@@ -671,7 +670,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
             resPD[newfeatureName].append(featurevalue)
-            resPD[newfeatureNameDiff].append(featurevaluediff)
+            resPD[newfeatureNameDiff].append(featurevalue - getListEnd(resPD[newfeatureName]))
 
             # mean
             newfeatureName = featurename + "_mean"
@@ -689,7 +688,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
             resPD[newfeatureName].append(featurevalue)
-            resPD[newfeatureNameDiff].append(featurevaluediff)
+            resPD[newfeatureNameDiff].append(featurevalue - getListEnd(resPD[newfeatureName]))
 
             # skewness
             newfeatureName = featurename + "_skewness"
@@ -709,7 +708,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
             resPD[newfeatureName].append(featurevalue)
-            resPD[newfeatureNameDiff].append(featurevaluediff)
+            resPD[newfeatureNameDiff].append(featurevalue - getListEnd(resPD[newfeatureName]))
 
             # kurtosis
             newfeatureName = featurename + "_kurtosis"
@@ -729,7 +728,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
             resPD[newfeatureName].append(featurevalue)
-            resPD[newfeatureNameDiff].append(featurevaluediff)
+            resPD[newfeatureNameDiff].append(featurevalue - getListEnd(resPD[newfeatureName]))
 
         if not silidWindows:
             beginLineNumber += windowSize
@@ -739,12 +738,17 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             endLineNumber += 1
 
     # # 将所有resDict中的所有数据diff的第一列中的数据替换为第二个
-    # for ifaulty, featureDict in resFaulty_PDDict.items():
-    #     for ifeaturename, ilist in featureDict.items():
-    #         if not ifeaturename.endswith("_diff"):
-    #             continue
-    #         if len(ilist) >= 2:
-    #             resFaulty_PDDict[ifaulty][ifeaturename][0] = ilist[1]
+    for ifaulty, featureDict in resFaulty_PDDict.items():
+        for ifeaturename, ilist in featureDict.items():
+            if not ifeaturename.endswith("_diff"):
+                continue
+            if len(ilist) >= 2:
+                resFaulty_PDDict[ifaulty][ifeaturename][0] = ilist[1]
+    for ifeaturename, ilist in resPD.items():
+        if not ifeaturename.endswith("_diff"):
+            continue
+        if len(ilist) >= 2:
+            resPD[ifeaturename][0] = ilist[1]
 
     # 将resDict 转化为 resDFDict
     resDFDict = {}
