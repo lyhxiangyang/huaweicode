@@ -158,7 +158,7 @@ if __name__ == "__main__":
 
     # 获得所有正常情况下各个特征的平均值
     nomalpd = pd.read_csv(normalpath)
-    normalmean = getDFmean(nomalpd, standardFeatures=allFeature)
+    normalmean = getDFmean(nomalpd, standardFeatures=standardfeatur)
     print(normalmean)
 
     # 读取所有的文件到字典中
