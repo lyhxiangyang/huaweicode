@@ -88,6 +88,11 @@ allFeature = ["time",
 ]
 
 def standardPDfromOriginal(df: pd.DataFrame, standardFeatures=None, meanValue=None) -> pd.DataFrame:
+    if standardFeatures is not None:
+        if FAULT_FLAG in standardFeatures:
+            standardFeatures.remove(FAULT_FLAG)
+        if TIME_COLUMN_NAME in standardFeatures:
+            standardFeatures.remove(TIME_COLUMN_NAME)
     if standardFeatures is None:
         standardFeatures = []
     nostandardDf = df.loc[:, standardFeatures]
@@ -107,6 +112,12 @@ def standardPDfromOriginal(df: pd.DataFrame, standardFeatures=None, meanValue=No
     standardDf = PushLabelToEnd(standardDf, FAULT_FLAG)
     return standardDf
 
+def getDFmean(df: pd.DataFrame, standardFeatures: List[str]) -> pd.Series:
+    if FAULT_FLAG in standardFeatures:
+        standardFeatures.remove(FAULT_FLAG)
+    if TIME_COLUMN_NAME in standardFeatures:
+        standardFeatures.remove(TIME_COLUMN_NAME)
+    return df[:, standardFeatures].mean()
 
 
 
@@ -117,7 +128,7 @@ if __name__ == "__main__":
 
     # 获得所有正常情况下各个特征的平均值
     nomalpd = pd.read_csv(normalpath)
-    normalmean = nomalpd.mean()
+    normalmean = getDFmean(nomalpd, standardFeatures=allFeature)
 
     #读取所有的文件到字典中
     print("开始读取file_time_core信息".center(40, "*"))
