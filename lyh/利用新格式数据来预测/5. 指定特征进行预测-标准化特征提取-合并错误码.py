@@ -9,24 +9,24 @@ from utils.DataFrameOperation import mergeDataFrames
 from utils.DefineData import FAULT_FLAG
 
 trainNormalDataPath = [
-    "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/0.csv",
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/0.csv",
+    "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/0.csv",
+    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/0.csv",
 ]
 
 trainAbnormalDataPath = [
-    "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/13.csv",
-    "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/14.csv",
-    "tmp/tData_10_9/多机-E5-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/15.csv",
+    "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/13.csv",
+    "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/14.csv",
+    "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/15.csv",
 ]
 
 testNormalDataPath = [
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/0.csv",
+    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/0.csv",
 ]
 
 testAbnormalDataPath = [
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/13.csv",
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/14.csv",
-    "tmp/tData_10_9/多机-红区-process-server-1KM-win3-step1/原始数据-标准化数据-特征提取/15.csv",
+    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/13.csv",
+    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/14.csv",
+    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/15.csv",
 ]
 
 def get_List_pre_suffix(clist: List[str], prefix: str = "", suffix: str = "") -> List[str]:
@@ -109,6 +109,7 @@ if __name__ == "__main__":
 
     # 获得需要训练的特征
     allfeatureload1_nosuffix = get_List_nosuffix(list(allTrainedPD.columns.array), suffix="_diff")
+
     print("选择的特征：{}".format(str(allfeatureload1_nosuffix)))
     ModelTrainAndTest(allTrainedPD, allTestPD, spath=spath, selectedFeature=allfeatureload1_nosuffix, modelpath="Classifiers/saved_model/tmp_load1_nosuffix")
 
