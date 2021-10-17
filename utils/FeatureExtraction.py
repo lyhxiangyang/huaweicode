@@ -3,6 +3,7 @@
 比如：
 1. 将滑动窗口设置，然后提取最小值、最大值等数值
 """
+from numpy import nan
 from typing import Tuple, Union, List, Any
 
 import pandas as pd
@@ -702,7 +703,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
             featurevalue = calSerials.skew()
-            if featurevalue is not None:
+            if featurevalue is not nan:
                 featurevalue = int(featurevalue)
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
@@ -722,7 +723,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
             featurevalue = calSerials.kurtosis()
-            if featurevalue is not None:
+            if featurevalue is not nan:
                 featurevalue = int(featurevalue)
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
