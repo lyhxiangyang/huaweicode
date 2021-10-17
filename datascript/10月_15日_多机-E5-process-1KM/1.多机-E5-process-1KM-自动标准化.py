@@ -482,7 +482,7 @@ def changeTimeColumns_server(df: pd.DataFrame) -> pd.DataFrame:
 """
 
 if __name__ == "__main__":
-    spath = "tmp/tData/10-15-多机-E5-process-server-1KM"
+    spath = "tmp/tData-10-18/多机-E5-process-server-1KM"
     all_faulty_pd_dict = {}
     orginal_all_faulty_pd_dict = {}
     isSlideWin = True  # True代表这个step为win， False代表step为1
