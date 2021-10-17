@@ -353,6 +353,15 @@ def mergeTwoDF(dic1: Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> 
         resDict[ifaulty] = tpd
     return resDict
 
+# # 得到一个df
+#
+# def get_time_core_and_faulty(spath : str, filepd: pd.DataFrame):
+#     if not os.path.exists(spath):
+#         os.makedirs(spath)
+#     # 先按照时间段划分
+#     pdbytime = splitDataFrameByTime(filepd)
+#
+
 
 # 处理一个文件
 # 存储的中间文件都在spath中
