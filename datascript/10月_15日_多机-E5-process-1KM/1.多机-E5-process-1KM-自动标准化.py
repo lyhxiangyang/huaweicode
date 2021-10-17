@@ -496,26 +496,26 @@ if __name__ == "__main__":
         filename = os.path.basename(ipath)
         filename = os.path.splitext(filename)[0]
         # tmp/{}/0.合并server和process数据
-        mergedpath = os.path.join(spath, "所有文件处理过程", filename, "0.合并server和process数据")
+        mergedpath = os.path.join(spath, "0.所有文件处理过程", filename, "0.合并server和process数据")
 
         processpd = pd.read_csv(ipath)
         # 改变一个文件的时间， 因为server文件和process文件文件中的时间不对
         changeTimeColumns_process(processpd)
         server_process_pd = mergeSeverAndProcess(severpd, processpd, mergedpath)
         # tmp/{filename}
-        onefile_Faulty_PD_Dict, time_core_pdDict, time_core_faultDict = processOneFile(spath=os.path.join(spath, "所有文件处理过程", filename), filepd=server_process_pd,
+        onefile_Faulty_PD_Dict, time_core_pdDict, time_core_faultDict = processOneFile(spath=os.path.join(spath, "0.所有文件处理过程", filename), filepd=server_process_pd,
                                                 isSlide=isSlideWin)
         all_faulty_pd_dict = mergeTwoDF(onefile_Faulty_PD_Dict, all_faulty_pd_dict)
         filename_time_core_pdDict[filename] = time_core_pdDict
         filename_time_core_faultDict[filename] = time_core_faultDict
     # 将所有的信息进行保存
-    tallsavefaultypath = os.path.join(spath, "1. 所有process错误码信息")
+    tallsavefaultypath = os.path.join(spath, "1.所有process错误码信息")
     saveFaultyDict(tallsavefaultypath, all_faulty_pd_dict)
 
     #将filename-time-core进行保存
-    sspath = os.path.join(spath, "filename-time-core")
+    sspath = os.path.join(spath, "2.filename-time-core")
     saveFilename_Time_Core_pdDict(sspath, filename_time_core_pdDict)
 
     # 将filename-time-core进行保存
-    sspath = os.path.join(spath, "filename-time-core-faulty")
+    sspath = os.path.join(spath, "3.filename-time-core-faulty")
     saveFilename_Time_Core_Faulty_pdDict(sspath, filename_time_core_faultDict)
