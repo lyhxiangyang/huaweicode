@@ -594,7 +594,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
                 resPD[newfeatureName] = []
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
-            featurevalue = calSerials.min()
+            featurevalue = int(calSerials.min())
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
@@ -611,7 +611,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
                 resPD[newfeatureName] = []
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
-            featurevalue = calSerials.max()
+            featurevalue = int(calSerials.max())
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
@@ -629,7 +629,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
                 resPD[newfeatureName] = []
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
-            featurevalue = calSerials.quantile(0.5)
+            featurevalue = int(calSerials.quantile(0.5))
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
@@ -647,7 +647,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
                 resPD[newfeatureName] = []
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
-            featurevalue = calSerials.var()
+            featurevalue = int(calSerials.var())
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
@@ -665,7 +665,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
                 resPD[newfeatureName] = []
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
-            featurevalue = calSerials.std()
+            featurevalue = int(calSerials.std())
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
@@ -683,7 +683,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
                 resPD[newfeatureName] = []
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
-            featurevalue = calSerials.mean()
+            featurevalue = int(calSerials.mean())
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
@@ -702,6 +702,8 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
             featurevalue = calSerials.skew()
+            if featurevalue is not None:
+                featurevalue = int(featurevalue)
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
@@ -720,6 +722,8 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             if newfeatureNameDiff not in resPD:
                 resPD[newfeatureNameDiff] = []
             featurevalue = calSerials.kurtosis()
+            if featurevalue is not None:
+                featurevalue = int(featurevalue)
             featurevaluediff = featurevalue - getListEnd(resFaulty_PDDict[realLabel][newfeatureName])
             resFaulty_PDDict[realLabel][newfeatureName].append(featurevalue)
             resFaulty_PDDict[realLabel][newfeatureNameDiff].append(featurevaluediff)
@@ -745,16 +749,16 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
     resDFDict = {}
     for ifaulty, featureDict in resFaulty_PDDict.items():
         resDataFrame = pd.DataFrame(data=featureDict)
-        resDataFrame = resDataFrame.fillna(0).astype("int64")
         resDataFrame = SortLabels(resDataFrame)
         resDataFrame = PushLabelToFirst(resDataFrame, label=TIME_COLUMN_NAME)
         resDataFrame = PushLabelToEnd(resDataFrame, label=FAULT_FLAG)
+        resDataFrame.fillna(0, inplace=True)
         resDFDict[ifaulty] = resDataFrame
     # 原始文件的变化
     originDF = pd.DataFrame(data=resPD)
-    originDF = originDF.fillna(0).astype("int64")
     originDF = SortLabels(originDF)
     originDF = PushLabelToFirst(originDF, label=TIME_COLUMN_NAME)
     originDF = PushLabelToEnd(originDF, label=FAULT_FLAG)
+    originDF.fillna(0, inplace=True)
     # 原始文件的处理， 以及其中的错误码
     return originDF, resDFDict
