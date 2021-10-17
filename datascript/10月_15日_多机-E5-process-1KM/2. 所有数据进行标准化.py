@@ -14,7 +14,8 @@ from utils.ProcessData import standardPDfromOriginal
 standardized_normalflag = 0
 standardized_abnormalflag = [15]
 # 需要标准化的特征
-allFeature = ["time",
+allFeature = [
+              #"time",
               "user_server",
               "nice",
               "system_server",
@@ -83,7 +84,7 @@ allFeature = ["time",
               # "num_threads",
               "voluntary",
               "involuntary",
-              "faultFlag"
+             # "faultFlag"
               ]
 
 
