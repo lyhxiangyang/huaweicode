@@ -117,7 +117,7 @@ def getDFmean(df: pd.DataFrame, standardFeatures: List[str]) -> pd.Series:
         standardFeatures.remove(FAULT_FLAG)
     if TIME_COLUMN_NAME in standardFeatures:
         standardFeatures.remove(TIME_COLUMN_NAME)
-    return df[:, standardFeatures].mean()
+    return df.loc[:, standardFeatures].mean()
 
 
 
