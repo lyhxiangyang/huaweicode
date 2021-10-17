@@ -121,7 +121,7 @@ def saveFilename_Time_Core_pdDict(savepath: str, ftcPD: Dict):
                 tfilename = os.path.join(tpath, str(icore) + ".csv")
                 if not os.path.exists(tpath):
                     os.makedirs(tpath)
-                tpd.to_csv(tfilename)
+                tpd.to_csv(tfilename, index=False)
 
 
 def readFilename_Time_Core_pdDict(readpath: str) -> Dict:
@@ -157,7 +157,7 @@ def saveFilename_Time_Core_Faulty_pdDict(savepath: str, ftcPD: Dict):
                     tfilename = os.path.join(tpath, str(ifault) + ".csv")
                     if not os.path.exists(tpath):
                         os.makedirs(tpath)
-                    tpd.to_csv(tfilename)
+                    tpd.to_csv(tfilename, index=False)
 
 
 def readFilename_Time_Core_Faulty_pdDict(readpath: str) -> Dict:
