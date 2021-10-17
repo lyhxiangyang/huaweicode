@@ -149,16 +149,15 @@ def readFilename_Time_Core_pdDict(readpath: str) -> Dict:
 # 文件-时间段-核心-错误PD
 
 def saveFilename_Time_Core_Faulty_pdDict(savepath: str, ftcPD: Dict):
-    def saveFilename_Time_Core_pdDict(savepath: str, ftcPD: Dict):
-        for filename, time_core_pdDict in ftcPD.items():
-            for time, core_pdDict in time_core_pdDict.items():
-                for icore, faultypdDict in core_pdDict.items():
-                    for ifault, tpd in faultypdDict.items():
-                        tpath = os.path.join(savepath, filename, str(time), str(icore))
-                        tfilename = os.path.join(tpath, str(ifault) + ".csv")
-                        if not os.path.exists(tpath):
-                            os.makedirs(tpath)
-                        tpd.to_csv(tfilename)
+    for filename, time_core_pdDict in ftcPD.items():
+        for time, core_pdDict in time_core_pdDict.items():
+            for icore, faultypdDict in core_pdDict.items():
+                for ifault, tpd in faultypdDict.items():
+                    tpath = os.path.join(savepath, filename, str(time), str(icore))
+                    tfilename = os.path.join(tpath, str(ifault) + ".csv")
+                    if not os.path.exists(tpath):
+                        os.makedirs(tpath)
+                    tpd.to_csv(tfilename)
 
 
 def readFilename_Time_Core_Faulty_pdDict(readpath: str) -> Dict:
