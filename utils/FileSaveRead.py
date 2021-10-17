@@ -4,12 +4,12 @@ from typing import Dict, Tuple, Union, Any, List
 
 import pandas as pd
 
-
 """
 -   文件目的：从路径下读取对应的核信息，
 readpath： 读取的路径
 excludecore: 要排除读取信息的核
 """
+
 
 # 读取某个单独的错误码
 # readpath指的是 包含1.csv的目录
@@ -31,9 +31,10 @@ def readCoresPD(readpath: str, excludecore=None, select_feature: List[str] = Non
         core_pd_Dict[icore] = tpd
     return core_pd_Dict, False
 
+
 # 将readpath路径下的所有错误码进行读取，排除excludeFaulty，readDir是每个错误码下的读取目录
 # 返回一个字典 faulty-core-DataFrame
-def readFaultyPD(readpath: str, readDir : str, excludeFaulty=None, select_feature=None) -> Union[
+def readFaultyPD(readpath: str, readDir: str, excludeFaulty=None, select_feature=None) -> Union[
     Tuple[None, bool], Tuple[defaultdict[Any, Dict], bool]]:
     if select_feature is None:
         select_feature = []
@@ -57,14 +58,17 @@ def readFaultyPD(readpath: str, readDir : str, excludeFaulty=None, select_featur
         faultDict[ifaulty] = tdict
     return faultDict, False
 
+
 # 将int - DataFrame这种格式的字典保存
 # 将会在savepath目录下生成一系列的 0.csv的文件
 def saveFaultyDict(savepath: str, faultydict: Dict[int, pd.DataFrame]):
     if not os.path.exists(savepath):
         os.makedirs(savepath)
-    for ifaulty, ifaultypd in  faultydict.items():
+    for ifaulty, ifaultypd in faultydict.items():
         tfilepath = os.path.join(savepath, str(ifaulty) + ".csv")
         ifaultypd.to_csv(tfilepath, index=False)
+
+
 def readFaultyDict(savepath: str):
     faultydict = {}
     files = os.listdir(savepath)
@@ -74,6 +78,7 @@ def readFaultyDict(savepath: str):
         tpd = pd.read_csv(tpathfile)
         faultydict[tfile] = tpd
     return faultydict
+
 
 # 将int-int-DataFrame这种格式的字典进行保存
 def saveFaultyCoreDict(savepath: str, faulty_core_dict: Dict[int, Dict[int, pd.DataFrame]]):
@@ -86,6 +91,7 @@ def saveFaultyCoreDict(savepath: str, faulty_core_dict: Dict[int, Dict[int, pd.D
         for icore, ipd in icoredict.items():
             tfaultcorefile = os.path.join(tfaultpath, str(icore) + ".csv")
             ipd.to_csv(tfaultcorefile, index=False)
+
 
 def readFaultyCoreDict(savepath: str) -> Dict[int, Dict[int, pd.DataFrame]]:
     if not os.path.exists(savepath):
@@ -111,11 +117,13 @@ def saveFilename_Time_Core_pdDict(savepath: str, ftcPD: Dict):
     for filename, time_core_pdDict in ftcPD.items():
         for time, core_pdDict in time_core_pdDict.items():
             for icore, tpd in core_pdDict.items():
-                tpath = os.path.join(savepath, filename, str(time), str(icore) + ".csv")
+                tpath = os.path.join(savepath, filename, str(time))
+                tfilename = os.path.join(tpath, str(icore) + ".csv")
                 if not os.path.exists(tpath):
                     os.makedirs(tpath)
-                tpd : pd.DataFrame
-                tpd.to_csv(tpath)
+                tpd.to_csv(tfilename)
+
+
 def readFilename_Time_Core_pdDict(readpath: str) -> Dict:
     filename_time_corePd = {}
     filenames = os.listdir(readpath)
@@ -123,7 +131,7 @@ def readFilename_Time_Core_pdDict(readpath: str) -> Dict:
         filepath = os.path.join(readpath, istrfilename)
         ifilename = int(istrfilename)
         times = os.listdir(filepath)
-        filename_time_corePd[ifilename]={}
+        filename_time_corePd[ifilename] = {}
         for istrtime in times:
             file_timepath = os.path.join(filepath, istrtime)
             itime = int(istrtime)
@@ -136,6 +144,7 @@ def readFilename_Time_Core_pdDict(readpath: str) -> Dict:
                 filename_time_corePd[ifilename][itime][icore] = pd.read_csv(file_time_corepath)
     return filename_time_corePd
 
+
 # 保存 str-int-int-int类型
 # 文件-时间段-核心-错误PD
 
@@ -145,10 +154,13 @@ def saveFilename_Time_Core_Faulty_pdDict(savepath: str, ftcPD: Dict):
             for time, core_pdDict in time_core_pdDict.items():
                 for icore, faultypdDict in core_pdDict.items():
                     for ifault, tpd in faultypdDict.items():
-                        tpath = os.path.join(savepath, filename, str(time), str(icore), str(ifault) + ".csv")
+                        tpath = os.path.join(savepath, filename, str(time), str(icore))
+                        tfilename = os.path.join(tpath, str(ifault) + ".csv")
                         if not os.path.exists(tpath):
                             os.makedirs(tpath)
-                        tpd.to_csv(tpath)
+                        tpd.to_csv(tfilename)
+
+
 def readFilename_Time_Core_Faulty_pdDict(readpath: str) -> Dict:
     filename_time_core_faultPd = {}
     filenames = os.listdir(readpath)
@@ -156,7 +168,7 @@ def readFilename_Time_Core_Faulty_pdDict(readpath: str) -> Dict:
         filepath = os.path.join(readpath, istrfilename)
         ifilename = int(istrfilename)
         times = os.listdir(filepath)
-        filename_time_core_faultPd[ifilename]={}
+        filename_time_core_faultPd[ifilename] = {}
         for istrtime in times:
             file_timepath = os.path.join(filepath, istrtime)
             itime = int(istrtime)
@@ -165,7 +177,7 @@ def readFilename_Time_Core_Faulty_pdDict(readpath: str) -> Dict:
             for istrcore in coresname:
                 icore = int(istrcore)
                 file_time_corepath = os.path.join(file_timepath, istrcore)
-                filename_time_core_faultPd[ifilename][itime][icore]={}
+                filename_time_core_faultPd[ifilename][itime][icore] = {}
                 faultys = os.listdir(file_time_corepath)
                 for istrfaultyname in faultys:
                     sfaulty = os.path.splitext(istrfaultyname)[0]
@@ -173,37 +185,3 @@ def readFilename_Time_Core_Faulty_pdDict(readpath: str) -> Dict:
                     file_timr_core_faultpath = os.path.join(file_time_corepath, istrfaultyname)
                     filename_time_core_faultPd[ifilename][itime][icore][ifaulty] = pd.read_csv(file_timr_core_faultpath)
     return filename_time_core_faultPd
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
