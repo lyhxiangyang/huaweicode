@@ -5,6 +5,7 @@ import pandas as pd
 
 from utils.DataFrameOperation import PushLabelToFirst, PushLabelToEnd, SortLabels, mergeTwoDF
 from utils.DefineData import FAULT_FLAG, TIME_COLUMN_NAME
+from utils.FeatureExtraction import featureExtractionUsingFeatures
 from utils.FileSaveRead import readFilename_Time_Core_pdDict, saveFilename_Time_Core_pdDict, saveFaultyDict
 
 """
@@ -276,7 +277,7 @@ def FeaExtra_file_time_core(ftcDict, windowSize: int = 5, windowRealSize: int = 
             resDict[filename][time] = {}
             print("filename:{}-time:{}".format(filename, time))
             for icore, tpd in core_pdDict.items():
-                fePD, fault_Dict = featureExtraction(tpd, windowSize, windowRealSize, silidWindows, extraFeature)
+                fePD, fault_Dict = featureExtractionUsingFeatures(tpd, windowSize, windowRealSize, silidWindows, extraFeature)
                 resDict[filename][time][icore] = fePD
                 fault_PDDict = mergeTwoDF(fault_Dict, fault_PDDict)
     return resDict, fault_PDDict
