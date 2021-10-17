@@ -265,12 +265,13 @@ def featureExtraction(df: pd.DataFrame, windowSize: int = 5, windowRealSize: int
     return originDF, resDFDict
 
 
-def standard_FeaExtra_file_time_core(ftcDict, windowSize: int = 5, windowRealSize: int = 1,
-                                     silidWindows: bool = True,
-                                     extraFeature=None):
+def FeaExtra_file_time_core(ftcDict, windowSize: int = 5, windowRealSize: int = 1,
+                            silidWindows: bool = True,
+                            extraFeature=None):
     resDict = {}
     fault_PDDict = {}
     for filename, time_core_pdDict in ftcDict.items():
+        resDict[filename] = {}
         for time, core_pdDict in time_core_pdDict.items():
             resDict[filename][time] = {}
             for icore, tpd in core_pdDict.items():
@@ -287,8 +288,8 @@ if __name__ == "__main__":
     file_time_core_standardPath = "tmp/tData-10-18/多机-E5-process-server-1KM/4.filename-time-core-标准化"
     file_time_core_standardDict = readFilename_Time_Core_pdDict(file_time_core_standardPath)
     # 进行特征提取
-    file_time_core_standard_FeatureExtractionDict, allFault_PDDict = standard_FeaExtra_file_time_core(file_time_core_standardDict, windowSize=3, windowRealSize=3, silidWindows=True,
-                                                                                 extraFeature=extractedFeaturee)
+    file_time_core_standard_FeatureExtractionDict, allFault_PDDict = FeaExtra_file_time_core(file_time_core_standardDict, windowSize=3, windowRealSize=3, silidWindows=True,
+                                                                                             extraFeature=extractedFeaturee)
     # 将特征提取之后的文件进行保存
     print("filename-time-core-标准化-特征提取开始".center(40, "*"))
     sspath = os.path.join(spath, "6.filename-time-core-标准化-特征提取")
