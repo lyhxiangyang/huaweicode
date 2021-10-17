@@ -129,19 +129,18 @@ def readFilename_Time_Core_pdDict(readpath: str) -> Dict:
     filenames = os.listdir(readpath)
     for istrfilename in filenames:
         filepath = os.path.join(readpath, istrfilename)
-        ifilename = int(istrfilename)
         times = os.listdir(filepath)
-        filename_time_corePd[ifilename] = {}
+        filename_time_corePd[istrfilename] = {}
         for istrtime in times:
             file_timepath = os.path.join(filepath, istrtime)
             itime = int(istrtime)
             coresname = os.listdir(file_timepath)
-            filename_time_corePd[ifilename][itime] = {}
+            filename_time_corePd[istrfilename][itime] = {}
             for istrcorename in coresname:
                 score = os.path.splitext(istrcorename)[0]
                 icore = int(score)
                 file_time_corepath = os.path.join(file_timepath, istrcorename)
-                filename_time_corePd[ifilename][itime][icore] = pd.read_csv(file_time_corepath)
+                filename_time_corePd[istrfilename][itime][icore] = pd.read_csv(file_time_corepath)
     return filename_time_corePd
 
 
@@ -165,22 +164,21 @@ def readFilename_Time_Core_Faulty_pdDict(readpath: str) -> Dict:
     filenames = os.listdir(readpath)
     for istrfilename in filenames:
         filepath = os.path.join(readpath, istrfilename)
-        ifilename = int(istrfilename)
         times = os.listdir(filepath)
-        filename_time_core_faultPd[ifilename] = {}
+        filename_time_core_faultPd[istrfilename] = {}
         for istrtime in times:
             file_timepath = os.path.join(filepath, istrtime)
             itime = int(istrtime)
             coresname = os.listdir(file_timepath)
-            filename_time_core_faultPd[ifilename][itime] = {}
+            filename_time_core_faultPd[istrfilename][itime] = {}
             for istrcore in coresname:
                 icore = int(istrcore)
                 file_time_corepath = os.path.join(file_timepath, istrcore)
-                filename_time_core_faultPd[ifilename][itime][icore] = {}
+                filename_time_core_faultPd[istrfilename][itime][icore] = {}
                 faultys = os.listdir(file_time_corepath)
                 for istrfaultyname in faultys:
                     sfaulty = os.path.splitext(istrfaultyname)[0]
                     ifaulty = int(sfaulty)
                     file_timr_core_faultpath = os.path.join(file_time_corepath, istrfaultyname)
-                    filename_time_core_faultPd[ifilename][itime][icore][ifaulty] = pd.read_csv(file_timr_core_faultpath)
+                    filename_time_core_faultPd[istrfilename][itime][icore][ifaulty] = pd.read_csv(file_timr_core_faultpath)
     return filename_time_core_faultPd
