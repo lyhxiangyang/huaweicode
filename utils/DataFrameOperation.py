@@ -263,3 +263,20 @@ def subtractLastLineFromDataFrame(df: pd.DataFrame, columns: List) -> Union[
 
     df.loc[0, columns] = df.loc[1, columns]
     return df, False
+
+# 合并的两个类型是fault-DataFrame
+def mergeTwoDF(dic1: Dict[int, pd.DataFrame], dic2: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
+    allfaulty = list(dic1.keys())
+    allfaulty.extend(list(dic2.keys()))
+    allfauly = list(set(allfaulty))
+    resDict = {}
+    for ifaulty in allfauly:
+        tpd: pd.DataFrame = pd.DataFrame()
+        if ifaulty in dic1 and ifaulty in dic2:
+            tpd = pd.concat([dic1[ifaulty], dic2[ifaulty]], ignore_index=True)
+        elif ifaulty in dic1:
+            tpd = dic1[ifaulty]
+        elif ifaulty in dic2:
+            tpd = dic2[ifaulty]
+        resDict[ifaulty] = tpd
+    return resDict
