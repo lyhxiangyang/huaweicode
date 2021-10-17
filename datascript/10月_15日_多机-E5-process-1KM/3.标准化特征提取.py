@@ -274,8 +274,8 @@ def FeaExtra_file_time_core(ftcDict, windowSize: int = 5, windowRealSize: int = 
         resDict[filename] = {}
         for time, core_pdDict in time_core_pdDict.items():
             resDict[filename][time] = {}
+            print("filename:{}-time:{}".format(filename, time))
             for icore, tpd in core_pdDict.items():
-                print("filename:{}-time:{}-icore:{}".format(filename, time, icore))
                 fePD, fault_Dict = featureExtraction(tpd, windowSize, windowRealSize, silidWindows, extraFeature)
                 resDict[filename][time][icore] = fePD
                 fault_PDDict = mergeTwoDF(fault_Dict, fault_PDDict)
