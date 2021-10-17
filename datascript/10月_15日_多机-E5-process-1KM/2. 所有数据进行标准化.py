@@ -9,7 +9,7 @@ import pandas as pd
 # 需要标准化的错误码
 from utils.DataFrameOperation import SortLabels, PushLabelToFirst, PushLabelToEnd
 from utils.DefineData import TIME_COLUMN_NAME, FAULT_FLAG
-from utils.FileSaveRead import saveFaultyDict
+from utils.FileSaveRead import saveFaultyDict, readFilename_Time_Core_pdDict, readFilename_Time_Core_Faulty_pdDict
 from utils.ProcessData import standardPDfromOriginal
 
 standardized_normalflag = 0
@@ -108,9 +108,24 @@ def standardPDfromOriginal(df: pd.DataFrame, standardFeatures=None, meanValue=No
     return standardDf
 
 
+
+
 if __name__ == "__main__":
     normalpath = "tmp/tData-10-18/多机-E5-process-server-1KM/1.所有process错误码信息/0.csv"
+    file_time_corePath = "tmp/tData-10-18/多机-E5-process-server-1KM/2.filename-time-core"
+    file_time_core_faultyPath: str = "tmp/tData-10-18/多机-E5-process-server-1KM/3.filename-time-core-faulty"
+
     # 获得所有正常情况下各个特征的平均值
     nomalpd = pd.read_csv(normalpath)
-    normalmean =
-    pass
+    normalmean = nomalpd.mean()
+
+    #读取所有的文件到字典中
+    print("开始读取file_time_core信息".center(40, "*"))
+    file_time_corePDDict = readFilename_Time_Core_pdDict(file_time_corePath)
+    print("结束读取file_time_core信息".center(40, "*"))
+    print("开始读取file_time_core_faulty信息".center(40, "*"))
+    file_time_core_faultyPDDict = readFilename_Time_Core_Faulty_pdDict(file_time_core_faultyPath)
+    print("结束读取file_time_core_faulty信息".center(40, "*"))
+
+
+
