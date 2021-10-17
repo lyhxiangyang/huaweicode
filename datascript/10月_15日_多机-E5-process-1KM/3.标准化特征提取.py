@@ -275,6 +275,7 @@ def FeaExtra_file_time_core(ftcDict, windowSize: int = 5, windowRealSize: int = 
         for time, core_pdDict in time_core_pdDict.items():
             resDict[filename][time] = {}
             for icore, tpd in core_pdDict.items():
+                print("filename:{}-time:{}-icore:{}".center(filename, time, icore))
                 fePD, fault_Dict = featureExtraction(tpd, windowSize, windowRealSize, silidWindows, extraFeature)
                 resDict[filename][time][icore] = fePD
                 fault_PDDict = mergeTwoDF(fault_Dict, fault_PDDict)
@@ -286,8 +287,10 @@ if __name__ == "__main__":
     extractedFeaturee = ["load1"]
     # 将所有的标准化数据读取
     file_time_core_standardPath = "tmp/tData-10-18/多机-E5-process-server-1KM/4.filename-time-core-标准化"
+    print("读取filename-time-core数据中".center(40, "*"))
     file_time_core_standardDict = readFilename_Time_Core_pdDict(file_time_core_standardPath)
     # 进行特征提取
+    print("特征提取中".center(40, "*"))
     file_time_core_standard_FeatureExtractionDict, allFault_PDDict = FeaExtra_file_time_core(file_time_core_standardDict, windowSize=3, windowRealSize=3, silidWindows=True,
                                                                                              extraFeature=extractedFeaturee)
     # 将特征提取之后的文件进行保存
