@@ -8,26 +8,49 @@ from Classifiers.TrainToTest import ModelTrainAndTest
 from utils.DataFrameOperation import mergeDataFrames
 from utils.DefineData import FAULT_FLAG
 
+# 1KM数据预测
+# trainNormalDataPath = [
+#     "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/0.csv",
+#     "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/0.csv",
+# ]
+#
+# trainAbnormalDataPath = [
+#     "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/13.csv",
+#     "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/14.csv",
+#     "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/15.csv",
+# ]
+#
+# testNormalDataPath = [
+#     "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/0.csv",
+# ]
+#
+# testAbnormalDataPath = [
+#     "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/13.csv",
+#     "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/14.csv",
+#     "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/15.csv",
+# ]
+
 trainNormalDataPath = [
-    "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/0.csv",
-    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/0.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/0.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/0.csv",
 ]
 
 trainAbnormalDataPath = [
-    "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/13.csv",
-    "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/14.csv",
-    "tmp/tData-10-18/多机-E5-process-server-1KM/7.特征提取所有错误/15.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/13.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/14.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/15.csv",
 ]
 
 testNormalDataPath = [
-    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/0.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/0.csv",
 ]
 
 testAbnormalDataPath = [
-    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/13.csv",
-    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/14.csv",
-    "tmp/tData-10-18/多机-红区-process-server-1KM/7.特征提取所有错误/15.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/13.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/14.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/15.csv",
 ]
+
 
 def get_List_pre_suffix(clist: List[str], prefix: str = "", suffix: str = "") -> List[str]:
     return [i for i in clist if i.startswith(prefix) and i.endswith(suffix)]
