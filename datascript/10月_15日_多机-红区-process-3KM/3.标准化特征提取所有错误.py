@@ -287,7 +287,7 @@ if __name__ == "__main__":
     spath = "tmp/tData-10-18/多机-红区-process-server-3KM"
     extractedFeaturee = ["load1"]
     # 将所有的标准化数据读取
-    file_time_core_standardPath = "tmp/tData-10-18/多机-红区-process-server-1KM/4.filename-time-core-标准化"
+    file_time_core_standardPath = "tmp/tData-10-18/多机-红区-process-server-3KM/4.filename-time-core-标准化"
     print("读取filename-time-core数据中".center(40, "*"))
     file_time_core_standardDict = readFilename_Time_Core_pdDict(file_time_core_standardPath)
     # 进行特征提取
