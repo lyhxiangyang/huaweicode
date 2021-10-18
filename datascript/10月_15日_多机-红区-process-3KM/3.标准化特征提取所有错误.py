@@ -286,7 +286,7 @@ def FeaExtra_file_time_core(ftcDict, windowSize: int = 5, windowRealSize: int = 
 
 if __name__ == "__main__":
     spath = "tmp/tData-10-18/多机-红区-process-server-3KM"
-    extractedFeaturee = ["load1"]
+    extractedFeaturee = ["load1", "used"]
     # 将所有的标准化数据读取
     file_time_core_standardPath = "tmp/tData-10-18/多机-红区-process-server-3KM/4.filename-time-core-标准化"
     print("读取filename-time-core数据中".center(40, "*"))

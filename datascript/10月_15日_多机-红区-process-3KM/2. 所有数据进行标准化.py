@@ -154,7 +154,7 @@ if __name__ == "__main__":
     file_time_corePath = "tmp/tData-10-18/多机-红区-process-server-3KM/2.filename-time-core"
     file_time_core_faultyPath: str = "tmp/tData-10-18/多机-红区-process-server-3KM/3.filename-time-core-faulty"
     spath = "tmp/tData-10-18/多机-红区-process-server-3KM"
-    standardfeatur = ["load1"]
+    standardfeatur = ["load1", "used"]
 
     # 获得所有正常情况下各个特征的平均值
     nomalpd = pd.read_csv(normalpath)
