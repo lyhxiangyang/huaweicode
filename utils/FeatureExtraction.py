@@ -554,11 +554,24 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
     beginLineNumber = 0
     endLineNumber = windowSize
 
+    lastLabel = 0
     while endLineNumber <= lendf:
 
         tpd = df.iloc[beginLineNumber:endLineNumber, :]
         nowtime = tpd.loc[beginLineNumber, TIME_COLUMN_NAME]
         realLabel = getRealLabel(tpd.loc[:, FAULT_FLAG])
+        # 上一个是标签是0， 这个标签不是0 下面这段代码主要是用来区别
+        if lastLabel == 0 and realLabel != 0:
+            lastLabel = realLabel
+            beginLineNumber += 6
+            endLineNumber += 6
+            continue
+        if lastLabel != 0 and realLabel == 0:
+            lastLabel = 0
+            beginLineNumber += 8
+            endLineNumber += 8
+            continue
+
         if realLabel not in resFaulty_PDDict:
             resFaulty_PDDict[realLabel] = {}
         # 添加时间
