@@ -542,7 +542,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
             if i != 0:
                 flag = i
                 inum += 1
-        if inum == windowRealSize:
+        if inum >= windowRealSize:
             return flag
         return 0
 
