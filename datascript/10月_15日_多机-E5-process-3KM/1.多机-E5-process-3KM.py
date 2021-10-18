@@ -133,7 +133,7 @@ process_features = [
     "involuntary",
     "faultFlag",
 ]
-datapathsever = "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_1km_multi_43/wrf_3km_e5-43_server.csv"
+datapathsever = "D:/HuaweiMachine/数据分类/wrf/多机/E5/1KM/异常数据/wrf_3km_multi_43/wrf_3km_e5-43_server.csv"
 datapath = [
     "D:/HuaweiMachine/数据分类/wrf/多机/E6/1KM/异常数据/wrf_1km_multi_43/wrf_3km_e5-43_process-61.csv",
     "D:/HuaweiMachine/数据分类/wrf/多机/E6/1KM/异常数据/wrf_1km_multi_43/wrf_3km_e5-43_process-62.csv",
