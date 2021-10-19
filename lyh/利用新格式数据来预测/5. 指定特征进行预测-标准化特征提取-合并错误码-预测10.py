@@ -54,6 +54,8 @@ testAbnormalDataPath = [
 
 def get_List_pre_suffix(clist: List[str], prefix: str = "", suffix: str = "") -> List[str]:
     return [i for i in clist if i.startswith(prefix) and i.endswith(suffix)]
+def get_List_pre_nosuffix(clist: List[str], prefix: str = "", suffix: str = "") -> List[str]:
+    return [i for i in clist if i.startswith(prefix) and not i.endswith(suffix)]
 def get_List_nosuffix(clist: List[str], suffix: str="") -> List[str]:
     if suffix == "":
         return clist
@@ -131,7 +133,7 @@ if __name__ == "__main__":
 
 
     # 获得需要训练的特征
-    allfeatureload1_nosuffix = get_List_nosuffix(list(allTrainedPD.columns.array), suffix="_diff")
+    allfeatureload1_nosuffix = get_List_pre_nosuffix(list(allTrainedPD.columns.array),prefix="load1_", suffix="_diff")
 
     print("选择的特征：{}".format(str(allfeatureload1_nosuffix)))
     ModelTrainAndTest(allTrainedPD, allTestPD, spath=spath, selectedFeature=allfeatureload1_nosuffix, modelpath="Classifiers/saved_model/tmp_load1_nosuffix")
