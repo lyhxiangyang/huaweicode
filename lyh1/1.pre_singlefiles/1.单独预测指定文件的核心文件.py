@@ -12,7 +12,7 @@ from Classifiers.TrainToTest import testThree
 from utils.DefineData import FAULT_FLAG
 
 
-def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
+def setPDfaultFlag(df: pd.DataFrame) -> pd.DataFrame:
     realflag = list(df[FAULT_FLAG])
     if FAULT_FLAG in df.columns.array:
         df = df.drop(FAULT_FLAG, axis=1)
@@ -37,5 +37,6 @@ if __name__ == "__main__":
         print("文件不存在")
         exit(1)
     prepd = pd.read_csv(filepath)
+    prepd = setPDfaultFlag(prepd)
     testThree(prepd, spath=fileinfosavepath, modelpath=usemodelpath)
 
