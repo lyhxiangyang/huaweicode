@@ -9,6 +9,7 @@ import pandas as pd
 from Classifiers.TrainToTest import testThree
 
 # 将一个DataFrame的FAULT_FLAG重值为ff
+from utils.DataFrameOperation import mergeDataFrames
 from utils.DefineData import FAULT_FLAG
 
 
@@ -24,19 +25,21 @@ def setPDfaultFlag(df: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == "__main__":
     spath = "tmp/allpreinformation"
-    rpath = "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取"
-    prefilename = "wrf_3km_160_process"
-    timeequantum = 0
-    prefilenamecore = 0
     usemodelpath = "Classifiers/saved_model/tmp_load1_nosuffix"
+    prefiles = [
+        "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取/wrf_3km_160_process/0/0.csv",
+        "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取/wrf_3km_160_process/0/0.csv",
+    ]
 
     # 要预测文件的路径
-    filepath = os.path.join(rpath, prefilename, str(timeequantum), str(prefilenamecore) + ".csv")
-    fileinfosavepath = os.path.join(spath, prefilename, str(timeequantum), str(prefilenamecore))
-    if not os.path.exists(filepath):
-        print("文件不存在")
-        exit(1)
-    prepd = pd.read_csv(filepath)
-    prepd = setPDfaultFlag(prepd)
-    testThree(prepd, spath=fileinfosavepath, modelpath=usemodelpath)
+    pdlist = []
+    for ipath in prefiles:
+        if not os.path.exists(ipath):
+            print("文件不存在")
+            exit(1)
+        prepd = pd.read_csv(ipath)
+        prepd = setPDfaultFlag(prepd)
+        pdlist.append(prepd)
+    prepd, err = mergeDataFrames(pdlist)
+    testThree(prepd, spath=spath, modelpath=usemodelpath)
 

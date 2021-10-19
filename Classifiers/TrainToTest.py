@@ -79,7 +79,7 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
     ittpd = PushLabelToFirst(ittpd, TIME_COLUMN_NAME)
     ittpd = PushLabelToEnd(ittpd, FAULT_FLAG)
     savefilename = "2.三种模型预测值比较.csv"
-    ittpd.to_csv(os.path.join(spath, savefilename), index=True)
+    ittpd.to_csv(os.path.join(spath, savefilename), index=False)
 
 
     print("预测信息结束")
