@@ -6,6 +6,7 @@ import pandas as pd
 
 from Classifiers.ModelPred import select_and_pred
 from Classifiers.ModelTrain import model_train, getTestRealLabels, getTestPreLabels
+from utils.DataFrameOperation import PushLabelToFirst, PushLabelToEnd
 from utils.DefineData import MODEL_TYPE, FAULT_FLAG, TIME_COLUMN_NAME
 from utils.GetMetrics import get_metrics
 
@@ -45,7 +46,7 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
     tDic = {}
     reallist = testpd[FAULT_FLAG]
     resDict = {}
-    resDict["rightlabels"] = list(reallist)
+    resDict[FAULT_FLAG] = list(reallist)
     resDict[TIME_COLUMN_NAME] = list(testpd[TIME_COLUMN_NAME])
     for itype in MODEL_TYPE:
         prelist = select_and_pred(testpd, model_type=itype, saved_model_path=modelpath)
@@ -75,6 +76,8 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
     itpd.to_csv(os.path.join(spath, savefilename), index=False)
 
     ittpd = pd.DataFrame(data=resDict)
+    ittpd = PushLabelToFirst(ittpd, TIME_COLUMN_NAME)
+    ittpd = PushLabelToEnd(ittpd, FAULT_FLAG)
     savefilename = "2.三种模型预测值比较.csv"
     ittpd.to_csv(os.path.join(spath, savefilename), index=False)
 
