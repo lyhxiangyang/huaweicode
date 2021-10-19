@@ -46,7 +46,7 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
     reallist = testpd[FAULT_FLAG]
     resDict = {}
     resDict["rightlabels"] = list(reallist)
-    resDict["time"] = testpd[TIME_COLUMN_NAME]
+    resDict[TIME_COLUMN_NAME] = list(testpd[TIME_COLUMN_NAME])
     for itype in MODEL_TYPE:
         prelist = select_and_pred(testpd, model_type=itype, saved_model_path=modelpath)
         resDict[itype + "_labels"] = prelist
@@ -72,11 +72,11 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
 
     itpd = pd.DataFrame(data=tDic).T
     savefilename = "1.预测数据信息统计.csv"
-    itpd.to_csv(os.path.join(spath, savefilename))
+    itpd.to_csv(os.path.join(spath, savefilename), index=False)
 
     ittpd = pd.DataFrame(data=resDict)
     savefilename = "2.三种模型预测值比较.csv"
-    ittpd.to_csv(os.path.join(spath, savefilename))
+    ittpd.to_csv(os.path.join(spath, savefilename), index=False)
 
 
     print("预测信息结束")
