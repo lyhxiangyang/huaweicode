@@ -8,6 +8,19 @@ import pandas as pd
 
 from Classifiers.TrainToTest import testThree
 
+# 将一个DataFrame的FAULT_FLAG重值为ff
+from utils.DefineData import FAULT_FLAG
+
+
+def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
+    realflag = list(df[FAULT_FLAG])
+    if FAULT_FLAG in df.columns.array:
+        df = df.drop(FAULT_FLAG, axis=1)
+    dealflag = [(i // 10) * 10 for i in realflag]
+    ffdict = {FAULT_FLAG: dealflag}
+    tpd = pd.DataFrame(data=ffdict)
+    tpd = pd.concat([df, tpd], axis=1)
+    return tpd
 
 if __name__ == "__main__":
     spath = "tmp/allpreinformation"

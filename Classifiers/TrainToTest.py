@@ -73,7 +73,7 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
 
     itpd = pd.DataFrame(data=tDic).T
     savefilename = "1.预测数据信息统计.csv"
-    itpd.to_csv(os.path.join(spath, savefilename), index=False)
+    itpd.to_csv(os.path.join(spath, savefilename), index=True)
 
     ittpd = pd.DataFrame(data=resDict)
     ittpd = PushLabelToFirst(ittpd, TIME_COLUMN_NAME)
