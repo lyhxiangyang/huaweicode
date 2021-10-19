@@ -20,6 +20,9 @@ if __name__ == "__main__":
     # 要预测文件的路径
     filepath = os.path.join(rpath, prefilename, str(timeequantum), str(prefilenamecore) + ".csv")
     fileinfosavepath = os.path.join(spath, prefilename, str(timeequantum), str(prefilenamecore))
+    if not os.path.exists(filepath):
+        print("文件不存在")
+        exit(1)
     prepd = pd.read_csv(filepath)
     testThree(prepd, spath=fileinfosavepath, modelpath=usemodelpath)
 
