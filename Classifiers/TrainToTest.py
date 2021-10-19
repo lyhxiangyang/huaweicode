@@ -6,7 +6,7 @@ import pandas as pd
 
 from Classifiers.ModelPred import select_and_pred
 from Classifiers.ModelTrain import model_train, getTestRealLabels, getTestPreLabels
-from utils.DefineData import MODEL_TYPE, FAULT_FLAG
+from utils.DefineData import MODEL_TYPE, FAULT_FLAG, TIME_COLUMN_NAME
 from utils.GetMetrics import get_metrics
 
 
@@ -46,6 +46,7 @@ def testThree(testpd: pd.DataFrame, spath: str, modelpath: str = "Classifiers/sa
     reallist = testpd[FAULT_FLAG]
     resDict = {}
     resDict["rightlabels"] = list(reallist)
+    resDict["time"] = testpd[TIME_COLUMN_NAME]
     for itype in MODEL_TYPE:
         prelist = select_and_pred(testpd, model_type=itype, saved_model_path=modelpath)
         resDict[itype + "_labels"] = prelist
