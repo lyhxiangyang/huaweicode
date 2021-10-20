@@ -134,6 +134,13 @@ if __name__ == "__main__":
 
     # 获得需要训练的特征
     allfeatureload1_nosuffix = get_List_pre_nosuffix(list(allTrainedPD.columns.array),prefix="load1_", suffix="_diff")
+    # 使用平均值 最大值 和最小值
+    allfeatureload1_nosuffix = [
+        "load1_mean",
+        "load1_max",
+        "load1_min",
+        "load1_percentage_50",
+    ]
 
     print("选择的特征：{}".format(str(allfeatureload1_nosuffix)))
     ModelTrainAndTest(allTrainedPD, allTestPD, spath=spath, selectedFeature=allfeatureload1_nosuffix, modelpath="Classifiers/saved_model/tmp_load1_nosuffix")
