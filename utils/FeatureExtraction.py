@@ -560,6 +560,12 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
         abnormalNum, realLabel = getRealLabel(tpd.loc[:, FAULT_FLAG])
         # 上一个是标签是0， 这个标签不是0 下面这段代码主要是用来区别
         if realLabel != 0 and abnormalNum < windowRealSize:
+            if not silidWindows:
+                beginLineNumber += windowSize
+                endLineNumber += windowSize
+            else:
+                beginLineNumber += 1
+                endLineNumber += 1
             continue
 
         if realLabel not in resFaulty_PDDict:
