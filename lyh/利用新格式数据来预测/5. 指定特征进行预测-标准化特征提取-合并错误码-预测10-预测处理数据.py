@@ -75,6 +75,7 @@ def setPDfaultFlag(df: pd.DataFrame, ff: int) -> pd.DataFrame:
 """
 指定标准化之后并且特征提取的数据， 去除后缀为_diff的特征，对强度为15的数据进行验证
 """
+# 预测未处理数据
 if __name__ == "__main__":
     spath = "tmp/E5多机预测红区-单特征load1-标准化特征提取-合并错误"
     # trainedPDList: list[Union[Union[TextFileReader, Series, DataFrame, None], Any]] = []

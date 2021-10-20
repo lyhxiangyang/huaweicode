@@ -558,7 +558,7 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
         tpd = df.iloc[beginLineNumber:endLineNumber, :]
         nowtime = tpd.loc[beginLineNumber, TIME_COLUMN_NAME]
         abnormalNum, realLabel = getRealLabel(tpd.loc[:, FAULT_FLAG])
-        # 上一个是标签是0， 这个标签不是0 下面这段代码主要是用来区别
+        # 用来跳过中间阶段
         if realLabel != 0 and abnormalNum < windowRealSize:
             if not silidWindows:
                 beginLineNumber += windowSize
