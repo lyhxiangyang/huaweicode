@@ -31,24 +31,24 @@ from utils.DefineData import FAULT_FLAG
 # ]
 
 trainNormalDataPath = [
-    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/0.csv",
-    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/0.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误-未处理首尾/0.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/0.csv",
 ]
 
 trainAbnormalDataPath = [
-    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/13.csv",
-    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/14.csv",
-    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/15.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误-未处理首尾/13.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误-未处理首尾/14.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误-未处理首尾/15.csv",
 ]
 
 testNormalDataPath = [
-    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/0.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/9.特征提取所有错误-处理首尾/0.csv",
 ]
 
 testAbnormalDataPath = [
-    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/13.csv",
-    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/14.csv",
-    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/15.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/9.特征提取所有错误-处理首尾/13.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/9.特征提取所有错误-处理首尾/14.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/9.特征提取所有错误-处理首尾/15.csv",
 ]
 
 
