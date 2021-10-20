@@ -30,7 +30,7 @@ if __name__ == "__main__":
     # 要预测的文件
     prefiles = [
         "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取-未处理首尾/wrf_3km_160_process/0/0.csv",
-        "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取-未处理首尾/wrf_3km_160_process/0/0.csv",
+        "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取-未处理首尾/wrf_3km_160_process/1/0.csv",
     ]
 
     # 要预测文件的路径
