@@ -7,6 +7,8 @@ from numpy import nan
 from typing import Tuple, Union, List, Any
 
 import pandas as pd
+from statsmodels.sandbox.regression.sympy_diff import df
+from webencodings import labels
 
 from utils.DataFrameOperation import isEmptyInDataFrame, SortLabels, PushLabelToFirst, PushLabelToEnd
 from utils.DefineData import *
@@ -510,7 +512,7 @@ def featureExtraction_excludeAccumulation(featurePD: pd.DataFrame, windowSize: i
 
 
 def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, windowRealSize: int = 1, silidWindows: bool = True,
-                      extraFeature=None, omitHeadStep: int = 0, omitTailStep: int = 0) -> \
+                      extraFeature=None) -> \
         Union[dict[int, dict], Any]:
     if extraFeature is None:
         extraFeature = []
@@ -535,16 +537,15 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
     #         if i != 0:
     #             return i
     #     return 0
-    def getRealLabel(labels: pd.Series) -> int:
+    def getRealLabel(labels: pd.Series) -> Tuple[int, int]:
         inum = 0
         flag = 0
         for i in labels:
             if i != 0:
                 flag = i
                 inum += 1
-        if inum >= windowRealSize:
-            return flag
-        return 0
+        # 先返回异常的数量，再返回异常的种类
+        return inum, flag
 
     def getListEnd(list1: List):
         if len(list1) == 0:
@@ -554,22 +555,13 @@ def featureExtractionUsingFeatures(df: pd.DataFrame, windowSize: int = 5, window
     beginLineNumber = 0
     endLineNumber = windowSize
 
-    lastLabel = 0
     while endLineNumber <= lendf:
 
         tpd = df.iloc[beginLineNumber:endLineNumber, :]
         nowtime = tpd.loc[beginLineNumber, TIME_COLUMN_NAME]
-        realLabel = getRealLabel(tpd.loc[:, FAULT_FLAG])
+        abnormalNum, realLabel = getRealLabel(tpd.loc[:, FAULT_FLAG])
         # 上一个是标签是0， 这个标签不是0 下面这段代码主要是用来区别
-        if lastLabel == 0 and realLabel != 0:
-            lastLabel = realLabel
-            beginLineNumber += omitHeadStep
-            endLineNumber += omitHeadStep
-            continue
-        if lastLabel != 0 and realLabel == 0:
-            lastLabel = 0
-            beginLineNumber += omitTailStep
-            endLineNumber += omitTailStep
+        if realLabel != 0 and abnormalNum < windowRealSize:
             continue
 
         if realLabel not in resFaulty_PDDict:
