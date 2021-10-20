@@ -29,8 +29,8 @@ if __name__ == "__main__":
     usemodelpath = "Classifiers/saved_model/tmp_load1_nosuffix"
     # 要预测的文件
     prefiles = [
-        "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/wrf_3km_160_process/0/0.csv",
-        "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/wrf_3km_160_process/0/0.csv",
+        "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取-未处理首尾/wrf_3km_160_process/0/0.csv",
+        "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取-未处理首尾/wrf_3km_160_process/0/0.csv",
     ]
 
     # 要预测文件的路径
