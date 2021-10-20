@@ -25,7 +25,9 @@ def setPDfaultFlag(df: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == "__main__":
     spath = "tmp/allpreinformation"
+    # 使用模型路径
     usemodelpath = "Classifiers/saved_model/tmp_load1_nosuffix"
+    # 要预测的文件
     prefiles = [
         "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取/wrf_3km_160_process/0/0.csv",
         "tmp/tData-10-18/多机-红区-process-server-3KM/6.filename-time-core-标准化-特征提取/wrf_3km_160_process/0/0.csv",

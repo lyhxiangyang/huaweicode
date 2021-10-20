@@ -283,24 +283,23 @@ def FeaExtra_file_time_core(ftcDict, windowSize: int = 5, windowRealSize: int = 
     return resDict, fault_PDDict
 
 
-
 if __name__ == "__main__":
-    spath = "tmp/tData-10-18/多机-红区-process-server-3KM"
+    spath = "tmp/tData-10-18/多机-E5-process-server-3KM"
     extractedFeaturee = ["load1", "used"]
     # 将所有的标准化数据读取
-    file_time_core_standardPath = "tmp/tData-10-18/多机-红区-process-server-3KM/4.filename-time-core-标准化"
+    file_time_core_standardPath = "tmp/tData-10-18/多机-E5-process-server-3KM/4.filename-time-core-标准化"
     print("读取filename-time-core数据中".center(40, "*"))
     file_time_core_standardDict = readFilename_Time_Core_pdDict(file_time_core_standardPath)
     # 进行特征提取
     print("特征提取中".center(40, "*"))
     file_time_core_standard_FeatureExtractionDict, allFault_PDDict = FeaExtra_file_time_core(file_time_core_standardDict, windowSize=3, windowRealSize=3, silidWindows=True,
-                                                                                             extraFeature=extractedFeaturee, omitHeadStep=0, omitTailStep=0)
+                                                                                             extraFeature=extractedFeaturee, omitHeadStep=3, omitTailStep=3)
     # 将特征提取之后的文件进行保存
     print("filename-time-core-标准化-特征提取开始".center(40, "*"))
-    sspath = os.path.join(spath, "6.filename-time-core-标准化-特征提取")
+    sspath = os.path.join(spath, "8.filename-time-core-标准化-特征提取-未处理首尾")
     saveFilename_Time_Core_pdDict(sspath, file_time_core_standard_FeatureExtractionDict)
     print("filename-time-core-标准化-特征提取结束".center(40, "*"))
 
     # 将获得的所有特征提取之后的错误进行保存
-    sspath = os.path.join(spath, "7.特征提取所有错误")
+    sspath = os.path.join(spath, "9.特征提取所有错误-未处理首尾")
     saveFaultyDict(sspath, allFault_PDDict)
