@@ -110,7 +110,7 @@ if __name__ == "__main__":
     for i in trainAbnormalDataPath:
         tpd = pd.read_csv(i)
         # 修改list的标签
-        tpd = setPDfaultFlag(tpd, 10)
+        tpd = setPDfaultFlag(tpd, 60)
         trainAbnormalList.append(tpd)
     #==================================================================读取测试的normal数据
     testNormalList = []
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     testAbnormalList = []
     for i in testAbnormalDataPath:
         tpd = pd.read_csv(i)
-        tpd = setPDfaultFlag(tpd, 10)
+        tpd = setPDfaultFlag(tpd, 60)
         testNormalList.append(tpd)
 
     #==================================================================将所有的训练数据进行合并
