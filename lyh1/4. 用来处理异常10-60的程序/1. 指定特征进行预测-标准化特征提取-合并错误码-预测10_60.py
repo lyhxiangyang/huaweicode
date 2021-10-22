@@ -47,7 +47,7 @@ trainAbnormalDataPath = [
 ]
 
 testNormalDataPath = [
-    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/0.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/0.csv",
 ]
 
 testAbnormalDataPath = [
