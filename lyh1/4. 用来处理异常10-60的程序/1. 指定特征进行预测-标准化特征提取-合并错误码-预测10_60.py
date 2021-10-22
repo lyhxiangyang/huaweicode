@@ -31,19 +31,19 @@ from utils.DefineData import FAULT_FLAG
 # ]
 
 trainNormalDataPath = [
-    "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/0.csv",
-    "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/0.csv",
+    "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/0.csv",
+    "tmp/tData-10-18/多机-红区-process-server-3KM/9.特征提取所有错误-处理首尾/0.csv",
 ]
 
 trainAbnormalDataPath = [
-    (10, "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/13.csv"),
-    (10, "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/14.csv"),
-    (10, "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/15.csv"),
-    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/61.csv"),
-    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/62.csv"),
-    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/63.csv"),
-    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/64.csv"),
-    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/7.特征提取所有错误/65.csv"),
+    (10, "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/13.csv"),
+    (10, "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/14.csv"),
+    (10, "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/15.csv"),
+    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/61.csv"),
+    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/62.csv"),
+    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/63.csv"),
+    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/64.csv"),
+    (60, "tmp/tData-10-18/多机-E5-process-server-3KM/9.特征提取所有错误-处理首尾/65.csv"),
 ]
 
 testNormalDataPath = [
@@ -51,14 +51,14 @@ testNormalDataPath = [
 ]
 
 testAbnormalDataPath = [
-    (10, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/13.csv"),
-    (10, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/14.csv"),
-    (10, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/15.csv"),
-    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/61.csv"),
-    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/62.csv"),
-    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/63.csv"),
-    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/64.csv"),
-    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误/65.csv"),
+    (10, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/13.csv"),
+    (10, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/14.csv"),
+    (10, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/15.csv"),
+    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/61.csv"),
+    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/62.csv"),
+    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/63.csv"),
+    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/64.csv"),
+    (60, "tmp/tData-10-18/多机-红区-process-server-3KM/7.特征提取所有错误-未处理首尾/65.csv"),
 ]
 
 
